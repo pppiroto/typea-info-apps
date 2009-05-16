@@ -6,37 +6,22 @@
   <Content type="html">
      <![CDATA[ 
      	<script type="text/javascript">
-       		/**
-       		 *オーナーおよびオーナーの友人のリクエスト
-       		 */
-       		function request() {
-       			var idsec = opensocial.newIdSpec({ "userId" : "OWNER", "groupId" : "FRIENDS"});
-       			var req   = opensocial.newDataRequest();
-       			req.add(req.newFetchPersonRequest("OWNER"), "get_owner");
-       			req.qdd(req.newFetchPeopleRequest(idspec), "get_friends");
-       			req.send(response);
-       		};
-       		/**
-       		 * レスポンスの解析およびオーナーとオーナーの友人の名前リストHTML生成
-       		 * @param {Object} dataResponse 要求された友人情報
-       		 */
-       		function response(dataResponse) {
-       			var owner = dataResponse.get('get_owner').getData();
-       			var friend = dataResponse.get('get_friends').getData();
-       			var html = 'Friends of ' + owner.getDisplayName();
-       			html += ':<br><ul>';
-       			friends.each(function(person) {
-       				html += '<li>' + person.getDisplayName() + '</li>';
-       			});
-       			html += '</ul>';
-       			document.getElementById('message').innerHTML = html;
-       		};
-       		// アプリケーションのロード完了時に request 関数を実行
-       		gadgets.util.registerOnLoadHandler(request);
+	        function request() {
+	             var req = opensocial.newDataRequest();
+	             req.add(req.newFetchPersonRequest("VIEWER"), "viewer_data");
+	             req.send(response);
+	        }
+	
+	        function response(dataResponse) {
+	             var viewer = dataResponse.get("viewer_data").getData();
+	             var nickname = document.getElementById('nickname');
+	
+	             var text = document.createTextNode(viewer.getDisplayName());
+	             nickname.appendChild(text);
+	        }
+	        gadgets.util.registerOnLoadHandler(request);
        	</script>
-       	<div id="message"></div>
-       
-       
+       	<p>こんにちは<span id="nickname"></span>さん.</p>
      ]]>
   </Content> 
 </Module>
