@@ -1,9 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" ?> 
 <Module>
-  <ModulePrefs title="hello world example" /> 
+  <ModulePrefs title="hello world example">
+  	<Require feature="opensocial-0.8"/>
+  </ModulePrefs> 
   <Content type="html">
      <![CDATA[ 
-       Hello, world2!
+     	<script type="text/javascript">
+       		/**
+       		 *オーナーおよびオーナーの友人のリクエスト
+       		 */
+       		function request() {
+       			var idsec = opensocial.newIdSpec({ "userId" : "OWNER", "groupId" : "FRIENDS"});
+       			var req   = opensocial.newDataRequest();
+       			req.add(req.newFetchPersonRequest("OWNER"), "get_owner");
+       			req.qdd(req.newFetchPeopleRequest(idspec), "get_friends");
+       			req.send(response);
+       		};
+       		/**
+       		 * レスポンスの解析およびオーナーとオーナーの友人の名前リストHTML生成
+       		 * @param {Object} dataResponse 要求された友人情報
+       		 */
+       		function response(dataResponse) {
+       			var owner = dataResponse.get('get_owner').getData();
+       			var friend = dataResponse.get('get_friends').getData();
+       			var html = 'Friends of ' + owner.getDisplayName();
+       			html += ':<br><ul>';
+       			friends.each(function(person) {
+       				html += '<li>' + person.getDisplayName() + '</li>';
+       			});
+       			html += '</ul>';
+       			document.getElementById('message').innerHTML = html;
+       		};
+       		// アプリケーションのロード完了時に request 関数を実行
+       		gadgets.util.registerOnLoadHandler(request);
+       	</script>
+       	<div id="message"></div>
+       
+       
      ]]>
   </Content> 
 </Module>
