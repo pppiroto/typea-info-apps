@@ -18,10 +18,18 @@
 	
 	             var text = document.createTextNode(viewer.getDisplayName());
 	             nickname.appendChild(text);
+	             
+	             var p = "";
+	             for (pp in viewer) {
+	             	p += '<br>' + pp;
+	             }
+				document.getElementById("props").innerHTML = p;
+					             
 	        }
 	        gadgets.util.registerOnLoadHandler(request);
        	</script>
        	<p>こんにちは<span id="nickname"></span>さん.</p>
+       	<div id="props"></div>
      ]]>
   </Content> 
 </Module>
