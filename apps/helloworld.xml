@@ -15,7 +15,7 @@
 	            var req = opensocial.newDataRequest();
 	            //req.add(req.newFetchPeesonRequest(opensocial.IdSpec.PersonId.OWNER),  "owner");
 	            //req.add(req.newFetchPeesonRequest(opensocial.IdSpec.PersonId.VIEWER), "viewer");
-	            req.add(req.newFetchPeesonRequest("OWNER"),  "owner");
+	            //req.add(req.newFetchPeesonRequest("OWNER"),  "owner");
 	            req.add(req.newFetchPeesonRequest("VIEWER"), "viewer");
 	            req.send(response);
 	        }
@@ -23,14 +23,14 @@
 	        function response(dataResponse) {
 	            // http://code.google.com/intl/ja/apis/opensocial/docs/0.8/reference/#opensocial.DataResponse
 	            // 要求されたキーにマップされた、要求されたサーバー データが含まれます。
-				var owner  = dataResponse.get("owner").getData();
+				//var owner  = dataResponse.get("owner").getData();
 	            var viewer = dataResponse.get("viewer").getData();
 	             
-				document.getElementById("owner_inf").innerHTML 
-					= printPropertiesAsTable(owner);
+				//document.getElementById("owner_inf").innerHTML 
+				//	= printPropertiesAsTable(owner);
 
 				document.getElementById("viewer_inf").innerHTML 
-					= printPropertiesAsTable(owner);
+					= printPropertiesAsTable(viewer);
 	        }
 	        function printPropertiesAsTable(obj) {
 	        	var tbl = "<table>";
@@ -46,7 +46,6 @@
 	        }
 	        gadgets.util.registerOnLoadHandler(request);
        	</script>
-		<div id="owner_inf"/>
 		<div id="viewer_inf"/>
      ]]>
   </Content> 
