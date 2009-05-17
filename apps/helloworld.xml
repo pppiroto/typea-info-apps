@@ -25,7 +25,7 @@
 					tbl += "<tr>";
 					tbl += "<td>" + prop + "</td>";
 					tbl += "<td>" + type + "</td>";
-					tbl += "<td>" + eval("obj." + prop + ((type == "function)?"()":""))) + "</td>";
+					tbl += "<td>" + eval("obj." + prop + ((type == "function)?"()":"")) + "</td>";
 					tbl += "</tr>";
 				}
 	        	tbl += "</table>";
