@@ -21,11 +21,12 @@
 	        	var tbl = "<table>";
 			
 				for (prop in obj) {
-					var type = typeof(eval("obj." + prop));
+					var type  = typeof(eval("obj." + prop));
+					var blnkt = (type == "function")?"()":""; 
 					tbl += "<tr>";
 					tbl += "<td>" + prop + "</td>";
 					tbl += "<td>" + type + "</td>";
-					tbl += "<td>" + ("obj." + prop + ((type == "function)?"()":"")) + "</td>";
+					tbl += "<td>" + "obj." + prop + blnkt + "</td>";
 					tbl += "</tr>";
 				}
 	        	tbl += "</table>";
