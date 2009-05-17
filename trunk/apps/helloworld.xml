@@ -26,7 +26,7 @@
 					tbl += "<tr>";
 					tbl += "<td>" + prop + "</td>";
 					tbl += "<td>" + type + "</td>";
-					tbl += "<td>" + "obj." + prop + blnkt + "</td>";
+					tbl += "<td>" + eval("obj." + prop + blnkt) + "</td>";
 					tbl += "</tr>";
 				}
 	        	tbl += "</table>";
