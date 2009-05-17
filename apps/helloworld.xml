@@ -7,14 +7,14 @@
      <![CDATA[ 
      	<script type="text/javascript">
 	        function request() {
-	            var req = opensocial.newDataRequest();
-                req.add(req.newFetchPeesonRequest("VIEWER"), "viewer");
-	            req.send(response);
+				var req = opensocial.newDataRequest();
+				req.add(req.newFetchPersonRequest("VIEWER"), "viewer_data");
+				req.send(response);
 	        }
 	
 	        function response(dataResponse) {
-	            var viewer = dataResponse.get("viewer").getData();
-	    		document.getElementById("viewer_inf").innerHTML 
+				var viewer = dataResponse.get("viewer_data").getData();
+    			document.getElementById("viewer_inf").innerHTML 
 					= printPropertiesAsTable(viewer);
 	        }
 	        function printPropertiesAsTable(obj) {
