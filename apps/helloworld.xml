@@ -13,8 +13,10 @@
 				// 個人情報へのアクセスを必要とするアプリケーションは、
 				// すべて DataRequest を送信する必要がある
 	            var req = opensocial.newDataRequest();
-	            req.add(req.newFetchPeesonRequest(opensocial.IdSpec.PersonId.OWNER),  "owner");
-	            req.add(req.newFetchPeesonRequest(opensocial.IdSpec.PersonId.VIEWER), "viewer");
+	            //req.add(req.newFetchPeesonRequest(opensocial.IdSpec.PersonId.OWNER),  "owner");
+	            //req.add(req.newFetchPeesonRequest(opensocial.IdSpec.PersonId.VIEWER), "viewer");
+	            req.add(req.newFetchPeesonRequest("OWNER"),  "owner");
+	            req.add(req.newFetchPeesonRequest("VIEWER"), "viewer");
 	            req.send(response);
 	        }
 	
