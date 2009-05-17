@@ -23,8 +23,7 @@
 				for (prop in obj) {
 					tbl += "<tr>";
 					tbl += "<td>" + prop + "</td>";
-					tbl += "<td>" + typeof(prop) + "</td>";
-					tbl += "<td>" + eval("obj." + prop) + "</td>";
+					tbl += "<td>" + typeof(eval("obj." + prop)) + "</td>";
 					tbl += "</tr>";
 				}
 	        	tbl += "</table>";
