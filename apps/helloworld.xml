@@ -18,7 +18,7 @@
 					= printPropertiesAsTable(viewer, 0);
 	        }
 	        function printPropertiesAsTable(obj, dpth) {
-	        	if (dpth > 1) {
+	        	if (dpth > 5) {
 	        		return "<b>parse limit over</b>";
 	        	}
 	        	var tbl = "<table border='1'>";
@@ -30,7 +30,7 @@
 					tbl += "<td>" + prop + "</td>";
 					tbl += "<td>" + type + "</td>";
 					if (type == 'object') {
-						tbl += "<td>" + printPropertiesAsTable(obj, dpth++) + "</td>"; 
+						tbl += "<td>" + printPropertiesAsTable(val("obj." + prop), dpth++) + "</td>"; 
 					} else {
 						tbl += "<td>" + eval("obj." + prop + blnkt) + "</td>";
 					}
