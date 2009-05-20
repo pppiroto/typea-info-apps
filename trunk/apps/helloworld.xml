@@ -26,7 +26,11 @@
 					tbl += "<tr>";
 					tbl += "<td>" + prop + "</td>";
 					tbl += "<td>" + type + "</td>";
-					tbl += "<td>" + eval("obj." + prop + blnkt) + "</td>";
+					if (type == 'object') {
+						tbl += "<td>" + printPropertiesAsTable(obj) + "</td>"; 
+					} else {
+						tbl += "<td>" + eval("obj." + prop + blnkt) + "</td>";
+					}
 					tbl += "</tr>";
 				}
 	        	tbl += "</table>";
