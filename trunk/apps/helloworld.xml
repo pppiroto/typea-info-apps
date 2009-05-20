@@ -18,7 +18,7 @@
 					= printPropertiesAsTable(viewer, 0);
 	        }
 	        function printPropertiesAsTable(obj, dpth) {
-	        	if (dpth > 2) {
+	        	if (dpth > 1) {
 	        		return "<b>parse limit over</b>";
 	        	}
 	        	var tbl = "<table border='1'>";
