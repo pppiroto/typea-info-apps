@@ -15,9 +15,12 @@
 	        function response(dataResponse) {
 				var viewer = dataResponse.get("viewer_data").getData();
     			document.getElementById("viewer_inf").innerHTML 
-					= printPropertiesAsTable(viewer);
+					= printPropertiesAsTable(viewer, 0);
 	        }
-	        function printPropertiesAsTable(obj) {
+	        function printPropertiesAsTable(obj, dpth) {
+	        	if (dpth > 5) {
+	        		return "<b>parse limit over</b>";
+	        	}
 	        	var tbl = "<table border='1'>";
 			    tbl += "<tr><th>Property</th><th>Type</th><th>Value</th></tr>";
 				for (prop in obj) {
@@ -27,7 +30,7 @@
 					tbl += "<td>" + prop + "</td>";
 					tbl += "<td>" + type + "</td>";
 					if (type == 'object') {
-						tbl += "<td>" + printPropertiesAsTable(obj) + "</td>"; 
+						tbl += "<td>" + printPropertiesAsTable(obj, dpth++) + "</td>"; 
 					} else {
 						tbl += "<td>" + eval("obj." + prop + blnkt) + "</td>";
 					}
