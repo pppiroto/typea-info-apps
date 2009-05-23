@@ -18,12 +18,11 @@
 	        }
 	        function printFriendsList(friends) {
 				var html = "<table border='1'>";
-				html += "<tr><th>Image</th><th>NickName</th><th>Gender</th><th>Age</th></tr>";
+				html += "<tr><th>Image</th><th>NickName</th><th>Age</th></tr>";
 				friends.each( function(friend) {
 					html += "<tr>";
 					html += "<td><img src='" + friend.getField("thumbnailUrl") + "'></td>";
 					html += "<td><a href='" + friend.getField("profileUrl") + "'>" + friend.getDisplayName() + "</a></td>";
-					html += "<td>" + friend.getField("gender").key + "</td>";
 					html += "<td>" + friend.getField("age") + "</td>";
 					html += "</tr>";
 				});
