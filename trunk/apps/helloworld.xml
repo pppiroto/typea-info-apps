@@ -9,11 +9,11 @@
 	        function request() {
 	        	var idspec = opensocial.newIdSpec({ "userId" : "VIEWER", "groupId" : "FRIENDS" });
 				var req = opensocial.newDataRequest();
-				req.add(req.newFetchPersonRequest(idspec), "friends");
+				req.add(req.newFetchPersonRequest(idspec), "friends_data");
 				req.send(response);
 	        }
 	        function response(dataResponse) {
-	        	var friends = dataResponse.get("friends").getData();
+	        	var friends = dataResponse.get("friends_data").getData();
 	        	document.getElementById("friend_list").innerHTML = printFriendsList(friends);
 	        }
 	        function printFriendsList(friends) {
