@@ -17,9 +17,11 @@
 	        	document.getElementById("friend_list").innerHTML = printFriendsList(friends);
 	        }
 	        function printFriendsList(friends) {
-				var html = "<table>";
+				var html = "<table border='1'>";
+				html += "<tr><th>Image</th><th>NickName</th></tr>";
 				friends.each( function(friend) {
 					html += "<tr>";
+					html += "<td><img src='" + friend.thumbnailUrl + "'></td>";
 					html += "<td>" + friend.getDisplayName() + "</td>";
 					html += "</tr>";
 				});
