@@ -19,9 +19,9 @@
 	    	function printFriendsList(friends) {
 	    		var html = "<table>"
 	    		
-	    		friends.each( function(friend) { 
+	    		friends.each( function(person) { 
 						html += "<tr>";
-						html += "<td>" + friend.getDisplayName() + "</td>";	    		
+						html += "<td>" + person.getDisplayName() + "</td>";	    		
 						html += "</tr>";
 					}	    		
 	    		);
