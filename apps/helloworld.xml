@@ -30,7 +30,7 @@
 	    	}
 	        gadgets.util.registerOnLoadHandler(request);
        	</script>
-       	<div id="friends_list"/>
+       	<div id="friend_list"/>
      ]]>
   </Content> 
 </Module>
