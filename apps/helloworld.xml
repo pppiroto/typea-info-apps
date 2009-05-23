@@ -23,7 +23,7 @@
 					html += "<tr>";
 					html += "<td><img src='" + friend.getField("thumbnailUrl") + "'></td>";
 					html += "<td><a href='" + friend.getField("profileUrl") + "'>" + friend.getDisplayName() + "</a></td>";
-					html += "<td>" + friend.getField("name") + "</td>";
+					html += "<td>" + friend.getField("name")["unstructured"] + "</td>";
 					html += "</tr>";
 				});
 				html += "</table>";
