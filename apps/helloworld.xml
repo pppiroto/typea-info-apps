@@ -18,7 +18,7 @@
 	        }
 	    	function printFriendsList(friends) {
 	    		
-	    		var html += ':<br><ul>';
+	    		var html = "<ul>";
 		        friends.each(function(person) {
 		          html += '<li>' + person.getDisplayName() + '</li>';
 		        });
