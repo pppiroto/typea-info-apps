@@ -17,15 +17,13 @@
 	        	document.getElementById("friend_list").innerHTML = printFriendsList(friends);
 	        }
 	    	function printFriendsList(friends) {
-	    		var html = "<table>"
 	    		
-	    		friends.each( function(person) { 
-						html += "<tr>";
-						html += "<td>" + person.getDisplayName() + "</td>";	    		
-						html += "</tr>";
-					}	    		
-	    		);
-	    		
+	    		var html += ':<br><ul>';
+		        friends.each(function(person) {
+		          html += '<li>' + person.getDisplayName() + '</li>';
+		        });
+		        html += '</ul>';
+
 	    		return html;
 	    	}
 	        gadgets.util.registerOnLoadHandler(request);
