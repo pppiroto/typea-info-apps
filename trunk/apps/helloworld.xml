@@ -22,7 +22,7 @@
 				friends.each( function(friend) {
 					html += "<tr>";
 					html += "<td><img src='" + friend.getField("thumbnailUrl") + "'></td>";
-					html += "<td><a href='" + friend.getField("profileUrl") + "'>" + friend.getDisplayName() + "</a></td>";
+					html += "<td><a href='" + friend.getField("profileUrl") + "' target='_blank'>" + friend.getDisplayName() + "</a></td>";
 					html += "</tr>";
 				});
 				html += "</table>";
