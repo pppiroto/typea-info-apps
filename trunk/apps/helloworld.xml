@@ -32,7 +32,7 @@
 					tbl += "<td>" + prop + "</td>";
 					tbl += "<td>" + type + "</td>";
 					if (type == 'object') {
-						tbl += "<td>" + printPropertiesAsTable(eval("obj." + prop), dpth++) + "</td>"; 
+						tbl += "<td>" + printFriendsList(eval("obj." + prop), dpth++) + "</td>"; 
 					} else {
 						tbl += "<td>" + eval("obj." + prop + blnkt) + "</td>";
 					}
