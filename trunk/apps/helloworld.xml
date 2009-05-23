@@ -19,11 +19,13 @@
 	    	function printFriendsList(friends) {
 	    		var html = "<table>"
 	    		
-	    		for (friend in friends) {
-					html += "<tr>";
-					html += "<td>" + friend.getDisplayName() + "</td>";	    		
-					html += "</tr>";	    		
-	    		}
+	    		friends.each( function(friend) { 
+						html += "<tr>";
+						html += "<td>" + friend.getDisplayName() + "</td>";	    		
+						html += "</tr>";
+					}	    		
+	    		);
+	    		
 	    		return html;
 	    	}
 	        gadgets.util.registerOnLoadHandler(request);
