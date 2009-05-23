@@ -21,7 +21,7 @@
 				html += "<tr><th>Image</th><th>NickName</th></tr>";
 				friends.each( function(friend) {
 					html += "<tr>";
-					html += "<td><img src='" + friend.thumbnailUrl + "'></td>";
+					html += "<td><img src='" + friend.getField("thumbnailUrl") + "'></td>";
 					html += "<td>" + friend.getDisplayName() + "</td>";
 					html += "</tr>";
 				});
