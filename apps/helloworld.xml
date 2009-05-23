@@ -1,47 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" ?> 
 <Module>
-  <ModulePrefs title="hello world example">
+  <ModulePrefs title="list_friends">
   	<Require feature="opensocial-0.8"/>
   </ModulePrefs> 
   <Content type="html">
      <![CDATA[ 
      	<script type="text/javascript">
 	        function request() {
+	        	var idspec = opensocial.newIdSpec({ "userId" : "VIEWER", "groupId" : "FRIENDS" });
 				var req = opensocial.newDataRequest();
-				req.add(req.newFetchPersonRequest("OWNER"), "viewer_data");
+				req.add(req.newFetchPersonRequest(idspec), "friends");
 				req.send(response);
 	        }
-	
 	        function response(dataResponse) {
-				var viewer = dataResponse.get("viewer_data").getData();
-    			document.getElementById("viewer_inf").innerHTML 
-					= printPropertiesAsTable(viewer, 0);
+	        	var friends = dataResponse.get("friends").getData();
+	        	document.getElementById("friend_list").innerHTML = printFriendsList(friends);
 	        }
-	        function printPropertiesAsTable(obj, dpth) {
-	        	if (dpth > 5) {
-	        		return "<b>parse limit over</b>";
-	        	}
-	        	var tbl = "<table border='1'>";
-			    tbl += "<tr><th>Property</th><th>Type</th><th>Value</th></tr>";
-				for (prop in obj) {
-					var type  = typeof(eval("obj." + prop));
-					var blnkt = (type == "function")?"()":""; 
-					tbl += "<tr>";
-					tbl += "<td>" + prop + "</td>";
-					tbl += "<td>" + type + "</td>";
-					if (type == 'object') {
-						tbl += "<td>" + printPropertiesAsTable(eval("obj." + prop), dpth++) + "</td>"; 
-					} else {
-						tbl += "<td>" + eval("obj." + prop + blnkt) + "</td>";
-					}
-					tbl += "</tr>";
-				}
-	        	tbl += "</table>";
-	        	return tbl;
-	        }
+	    	function printFriendsList(friends) {
+	    		var html = "<table>"
+	    		
+	    		for (friend in friends) {
+					html += "<tr>";
+					html += "<td>" + friend.getDisplayName() + "</td>";	    		
+					html += "</tr>";	    		
+	    		}
+	    		return html;
+	    	}
 	        gadgets.util.registerOnLoadHandler(request);
        	</script>
-		<div id="viewer_inf"/>
+       	<div id="friends_list"/>
      ]]>
   </Content> 
 </Module>
