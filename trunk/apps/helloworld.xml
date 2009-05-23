@@ -20,7 +20,7 @@
 				var html = "<table>";
 				friends.each( function(friend) {
 					html += "<tr>";
-					html += "<td>" + frined.getDisplayName() + "</td>";
+					html += "<td>" + friend.getDisplayName() + "</td>";
 					html += "</tr>";
 				});
 				html += "</table>";
