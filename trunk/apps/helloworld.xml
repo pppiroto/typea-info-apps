@@ -13,7 +13,7 @@
 				req.send(response);
 	        }
 	        function response(dataResponse) {
-	        	var friends = dataResponse.get("friends").getData();
+	        	var friends = dataResponse.get("friends");
 	        	document.getElementById("friend_list").innerHTML = printFriendsList(friends);
 	        }
 	        function printFriendsList(friends) {
