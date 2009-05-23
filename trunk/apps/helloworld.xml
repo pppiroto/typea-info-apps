@@ -19,7 +19,7 @@
 	        function printFriendsList(friends) {
 				var html = "";
 				for (var i=0; i<friends.size; i++) {
-					html += friends[i].getDisplayName(); + "<br>";
+					html += friends[i] + "<br>";
 				}
 				return html;
 	        }
