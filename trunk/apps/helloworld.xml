@@ -18,9 +18,8 @@
 	        }
 	        function printFriendsList(friends) {
 				var html = "";
-				for (p in friends) {
-					html += p + "<br>";
-				}
+				html += friends.getId();
+				html += friends.getDisplayName();
 				return html;
 	        }
 	        gadgets.util.registerOnLoadHandler(request);
