@@ -18,13 +18,7 @@
 	        }
 	    	function printFriendsList(friends) {
 	    		
-	    		var html = "<ul>";
-		        friends.each(function(person) {
-		          html += '<li>' + person.getDisplayName() + '</li>';
-		        });
-		        html += '</ul>';
-
-	    		return html;
+	    		return new String(friends);
 	    	}
 	        gadgets.util.registerOnLoadHandler(request);
        	</script>
