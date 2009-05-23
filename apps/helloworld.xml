@@ -17,8 +17,10 @@
 	        	document.getElementById("friend_list").innerHTML = printFriendsList(friends);
 	        }
 	        function printFriendsList(friends) {
-				var html = friends.each + "<br>";
-				html += friends.forEach + "<br>";
+				var html = "";
+				for (p in friends) {
+					html += p + "<br>";
+				}
 				return html;
 	        }
 	        gadgets.util.registerOnLoadHandler(request);
