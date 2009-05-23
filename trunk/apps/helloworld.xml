@@ -16,10 +16,31 @@
 	        	var friend = dataResponse.get("friends").getData();
 	        	document.getElementById("friend_list").innerHTML = printFriendsList(friend);
 	        }
-	    	function printFriendsList(friends) {
-	    		
-	    		return new String(friends);
-	    	}
+	        function printFriendsList(obj, dpth) {
+	        	if (dpth == undefined) {
+	        		dpth = 0;
+	        	}
+	        	if (dpth > 5) {
+	        		return "<b>parse limit over</b>";
+	        	}
+	        	var tbl = "<table border='1'>";
+			    tbl += "<tr><th>Property</th><th>Type</th><th>Value</th></tr>";
+				for (prop in obj) {
+					var type  = typeof(eval("obj." + prop));
+					var blnkt = (type == "function")?"()":""; 
+					tbl += "<tr>";
+					tbl += "<td>" + prop + "</td>";
+					tbl += "<td>" + type + "</td>";
+					if (type == 'object') {
+						tbl += "<td>" + printPropertiesAsTable(eval("obj." + prop), dpth++) + "</td>"; 
+					} else {
+						tbl += "<td>" + eval("obj." + prop + blnkt) + "</td>";
+					}
+					tbl += "</tr>";
+				}
+	        	tbl += "</table>";
+	        	return tbl;
+	        }
 	        gadgets.util.registerOnLoadHandler(request);
        	</script>
        	<div id="friend_list"/>
