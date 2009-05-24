@@ -26,6 +26,7 @@
 				txtMemo.disabled = false;	        	
 	        }
 	        function registRequest() {
+	        	alert("registRequest");
 				var req = opensocial.newDataRequest();
 	        	var key = "memo";
 	        	var txtMemo = document.getElementById("memo");
@@ -35,6 +36,7 @@
 	        	req.send(registResponse);
 	        }
 	        function registResponse(data) {
+	        	alert("registResponse");
 	        	if (data.hadError()) {
 	        		document.getElementById("message").innerHTML = data.getErrorMessage();	
 	        		return;
