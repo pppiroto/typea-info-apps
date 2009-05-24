@@ -19,9 +19,8 @@
 	        		document.getElementById("message").innerHTML = data.getErrorMessage();
 	        		return;
 	        	}
-	        	
 	        	var txtMemo = document.getElementById("memo");
-				txtMemo.value = memo_data.getData()[viewer.getId()];
+				txtMemo.value = gadgets.json.stringify(memo_data);
 				txtMemo.disabled = false;	        	
 	        }
 	        function registRequest() {
