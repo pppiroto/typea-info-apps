@@ -9,19 +9,21 @@
 	        function loadRequest() {
 	        	var req = opensocial.newDataRequest();
 	        	req.add(req.newFetchPersonRequest("VIEWER"), "viewer");
-				req.add(req.newFetchPersonAppDataRequest("VIEWER", "memo"), "memo_data");
+	        	var fields = {"memo"};
+				req.add(req.newFetchPersonAppDataRequest("VIEWER", fields), "viewer_data");
 				req.send(loadResponse);
 	        }
 	        function loadResponse(data) {
 	        	var viewer = data.get("viewer").getData();
-	        	var memo_data = data.get("memo_data");
-	        	if (memo_data.hadError()) {
+	        	var viewer_data = data.get("viewer_data");
+	        	if (viewer_data.hadError()) {
 	        		document.getElementById("message").innerHTML = data.getErrorMessage();
 	        		return;
 	        	}
+	        	var dataAry = viewer_data.getData()[viewer.getId()];
+	        	var memo = dataAry["memo"];
 	        	var txtMemo = document.getElementById("memo");
-	        	// debug gadgets.json.stringify(memo_data)
-				txtMemo.value = memo_data.getData()[viewer.getId()]["memo"];
+	        	txtMemo.value = gadgets.util.unescapeString(memo);
 				txtMemo.disabled = false;	        	
 	        }
 	        function registRequest() {
