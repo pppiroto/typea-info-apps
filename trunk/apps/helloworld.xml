@@ -7,14 +7,12 @@
      <![CDATA[ 
      	<script type="text/javascript">
 	        function loadRequest() {
-	        	alert("loadRequest");
 	        	var req = opensocial.newDataRequest();
 	        	req.add(req.newFetchPersonRequest("VIEWER"), "viewer");
 				req.add(req.newFetchPersonAppDataRequest("VIEWER", "memo"), "memo_data");
 				req.send(loadResponse);
 	        }
 	        function loadResponse(data) {
-	        	alert("loadResponse");
 	        	var viewer = data.get("viewer").getData();
 	        	var memo_data = data.get("memo_data");
 	        	if (memo_data.hadError()) {
@@ -22,21 +20,19 @@
 	        		return;
 	        	}
 	        	var txtMemo = document.getElementById("memo");
-				txtMemo.value = gadgets.json.stringify(memo_data);
+	        	// debug gadgets.json.stringify(memo_data)
+				txtMemo.value = memo_data.getData()[viewer.getId()];
 				txtMemo.disabled = false;	        	
 	        }
 	        function registRequest() {
-	        	alert("registRequest");
 				var req = opensocial.newDataRequest();
 	        	var key = "memo";
 	        	var txtMemo = document.getElementById("memo");
 	        	txtMemo.disabled = true;
-	        	alert(txtMemo.value);
 	        	req.add(req.newUpdatePersonAppDataRequest("VIEWER", key, txtMemo.value));
 	        	req.send(registResponse);
 	        }
 	        function registResponse(data) {
-	        	alert("registResponse");
 	        	if (data.hadError()) {
 	        		document.getElementById("message").innerHTML = data.getErrorMessage();	
 	        		return;
@@ -51,7 +47,7 @@
 		<textarea id="memo" rows="5" cols="40">
 		</textarea>
 		<br/>
-		<input type="button" id="regist" value="登録" onclick="alert('click');registRequest();"/>
+		<input type="button" id="regist" value="登録" onclick="registRequest();"/>
 		<input type="button" id="remove" value="削除" onclick="javascript:removeRequest();"/>
      ]]>
   </Content> 
