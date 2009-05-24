@@ -43,7 +43,7 @@
 	        	}
 	        	loadRequest();
 	        }
-	        function registRequest() {
+	        function removeRequest() {
 	        }
 	        gadgets.util.registerOnLoadHandler(loadRequest);
        	</script>
