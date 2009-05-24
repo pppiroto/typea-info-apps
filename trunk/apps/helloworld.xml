@@ -14,14 +14,14 @@
 	        }
 	        function loadResponse(data) {
 	        	var viewer = data.get("viewer").getData();
-	        	var memo_data = data.get("memo_data").getData();
+	        	var memo_data = data.get("memo_data");
 	        	if (memo_data.hadError()) {
 	        		document.getElementById("message").innerHTML = data.getErrorMessage();
 	        		return;
 	        	}
 	        	
 	        	var txtMemo = document.getElementById("memo");
-				txtMemo.value = memo_data[viewer.getId()];
+				txtMemo.value = memo_data.getData()[viewer.getId()];
 				txtMemo.disabled = false;	        	
 	        }
 	        function registRequest() {
