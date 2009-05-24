@@ -8,17 +8,20 @@
      	<script type="text/javascript">
 	        function loadRequest() {
 	        	var req = opensocial.newDataRequest();
+	        	req.add(req.newFetchPersonRequest("VIEWER"), "viewer");
 				req.add(req.newFetchPersonAppDataRequest("VIEWER", "memo"), "memo_data");
 				req.send(loadResponse);
 	        }
 	        function loadResponse(data) {
-	        	var memo_data = data.get("memo_data");
+	        	var viewer = data.get("viewer").getData();
+	        	var memo_data = data.get("memo_data").getData();
 	        	if (memo_data.hadError()) {
 	        		document.getElementById("message").innerHTML = data.getErrorMessage();
 	        		return;
 	        	}
+	        	
 	        	var txtMemo = document.getElementById("memo");
-				txtMemo.value = memo_data.getData();
+				txtMemo.value = memo_data[viewer.getId()];
 				txtMemo.disabled = false;	        	
 	        }
 	        function registRequest() {
