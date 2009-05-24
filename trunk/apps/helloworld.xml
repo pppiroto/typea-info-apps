@@ -25,7 +25,7 @@
 	        	var req = opensocial.newDataRequest();
 	        	var key = "memo";
 	        	var txtMemo = document.getElementById("memo");
-	        	req.add(req.newUpdatePersonAppDataRequest("VIEWER", key, txtMemo.value);
+	        	req.add(req.newUpdatePersonAppDataRequest("VIEWER", key, txtMemo.value));
 	        	req.send(registResponse);
 	        	txtMemo.disabled = true;
 	        }
@@ -34,7 +34,7 @@
 	        		document.getElementById("message").innerHTML = data.getErrorMessage();	
 	        		return;
 	        	}
-	        	loadrequest();
+	        	loadRequest();
 	        }
 	        function registRequest() {
 	        }
