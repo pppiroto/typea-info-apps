@@ -7,12 +7,14 @@
      <![CDATA[ 
      	<script type="text/javascript">
 	        function loadRequest() {
+	        	alert("loadRequest");
 	        	var req = opensocial.newDataRequest();
 	        	req.add(req.newFetchPersonRequest("VIEWER"), "viewer");
 				req.add(req.newFetchPersonAppDataRequest("VIEWER", "memo"), "memo_data");
 				req.send(loadResponse);
 	        }
 	        function loadResponse(data) {
+	        	alert("loadResponse");
 	        	var viewer = data.get("viewer").getData();
 	        	var memo_data = data.get("memo_data");
 	        	if (memo_data.hadError()) {
@@ -24,12 +26,13 @@
 				txtMemo.disabled = false;	        	
 	        }
 	        function registRequest() {
-	        	var req = opensocial.newDataRequest();
+				var req = opensocial.newDataRequest();
 	        	var key = "memo";
 	        	var txtMemo = document.getElementById("memo");
+	        	txtMemo.disabled = true;
+	        	alert(txtMemo.value);
 	        	req.add(req.newUpdatePersonAppDataRequest("VIEWER", key, txtMemo.value));
 	        	req.send(registResponse);
-	        	txtMemo.disabled = true;
 	        }
 	        function registResponse(data) {
 	        	if (data.hadError()) {
