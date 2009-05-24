@@ -51,7 +51,7 @@
 		<textarea id="memo" rows="5" cols="40">
 		</textarea>
 		<br/>
-		<input type="button" id="regist" value="登録" onclick="javascript:registRequest();"/>
+		<input type="button" id="regist" value="登録" onclick="alert('click');registRequest();"/>
 		<input type="button" id="remove" value="削除" onclick="javascript:removeRequest();"/>
      ]]>
   </Content> 
