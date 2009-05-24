@@ -21,7 +21,7 @@
 	        	}
 	        	var txtMemo = document.getElementById("memo");
 	        	// debug gadgets.json.stringify(memo_data)
-				txtMemo.value = gadgets.json.stringify(memo_data.getData());
+				txtMemo.value = memo_data.getData()[viewer.getId()]["memo"];
 				txtMemo.disabled = false;	        	
 	        }
 	        function registRequest() {
