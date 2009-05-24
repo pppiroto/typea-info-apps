@@ -43,7 +43,7 @@
 	        gadgets.util.registerOnLoadHandler(loadRequest);
        	</script>
        	<div id="message"/>
-		<textarea id="memo" rows="3" cols="10">
+		<textarea id="memo" rows="5" cols="40">
 		</textarea>
 		<br/>
 		<input type="button" id="regist" value="登録" onclick="javascript:registRequest();"/>
