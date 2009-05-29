@@ -42,6 +42,10 @@
 	        	loadRequest();
 	        }
 	        function removeRequest() {
+	        	var req = opensocial.newDataRequest();
+	        	var fields = ["memo"];
+	        	req.add(req.newRemovePersonAppDataRequest("VIEWER", fields), "viewer_data");
+	        	req.send(loadResponse);
 	        }
 	        gadgets.util.registerOnLoadHandler(loadRequest);
        	</script>
