@@ -6,10 +6,11 @@
   <Content type="html">
      <![CDATA[ 
      	<script type="text/javascript">
+     	    var key1 = "key_memo";
 	        function loadRequest() {
 	        	var req = opensocial.newDataRequest();
 	        	req.add(req.newFetchPersonRequest("VIEWER"), "viewer");
-	        	var fields = ["memo"];
+	        	var fields = [key1];
 				req.add(req.newFetchPersonAppDataRequest("VIEWER", fields), "viewer_data");
 				req.send(loadResponse);
 	        }
@@ -21,17 +22,16 @@
 	        		return;
 	        	}
 	        	var dataAry = viewer_data.getData()[viewer.getId()];
-	        	var memo = (dataAry==null)?"":dataAry["memo"];
+	        	var memo = (dataAry==null)?"":dataAry[key1];
 	        	var txtMemo = document.getElementById("memo");
 	        	txtMemo.value = gadgets.util.unescapeString(memo);
 				txtMemo.disabled = false;	        	
 	        }
 	        function registRequest() {
 				var req = opensocial.newDataRequest();
-	        	var key = "memo";
 	        	var txtMemo = document.getElementById("memo");
 	        	txtMemo.disabled = true;
-	        	req.add(req.newUpdatePersonAppDataRequest("VIEWER", key, txtMemo.value));
+	        	req.add(req.newUpdatePersonAppDataRequest("VIEWER", key1, txtMemo.value));
 	        	req.send(registResponse);
 	        }
 	        function registResponse(data) {
@@ -44,17 +44,16 @@
 	        function removeRequest() {
 	        	var req = opensocial.newDataRequest();
 	        	req.add(req.newFetchPersonRequest("VIEWER"), "viewer");
-	        	var fields = ["memo"];
+	        	var fields = [key1];
 				req.add(req.newRemovePersonAppDataRequest("VIEWER", fields), "viewer_data");
 				req.send(loadResponse);
 	        }
 	        gadgets.util.registerOnLoadHandler(loadRequest);
        	</script>
        	<p style="text-weight:bold;">Memo</p>
-       	<div id="message"/>
-		<textarea id="memo" rows="3" cols="20">
+       	<textarea id="memo" rows="3" cols="20">
 		</textarea>
-		<br/>
+		<div id="message"/>
 		<input type="button" id="regist" value="登録" onclick="registRequest();"/>
 		<input type="button" id="remove" value="削除" onclick="javascript:removeRequest();"/>
      ]]>
