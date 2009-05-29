@@ -43,8 +43,9 @@
 	        }
 	        function removeRequest() {
 	        	var req = opensocial.newDataRequest();
+	        	req.add(req.newFetchPersonRequest("VIEWER"), "viewer");
 	        	var fields = ["memo"];
-	        	req.add(req.newRemovePersonAppDataRequest("VIEWER", fields), "viewer_data");
+	        	req.add(req.newRemovePersonAppDataRequest("VIEWER", fields), "clear_data");
 	        	req.send(loadResponse);
 	        }
 	        gadgets.util.registerOnLoadHandler(loadRequest);
