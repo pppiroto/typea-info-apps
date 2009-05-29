@@ -21,7 +21,7 @@
 	        		return;
 	        	}
 	        	var dataAry = viewer_data.getData()[viewer.getId()];
-	        	var memo = dataAry["memo"];
+	        	var memo = (dataAry==null)?"":dataAry["memo"];
 	        	var txtMemo = document.getElementById("memo");
 	        	txtMemo.value = gadgets.util.unescapeString(memo);
 				txtMemo.disabled = false;	        	
@@ -45,8 +45,8 @@
 	        	var req = opensocial.newDataRequest();
 	        	req.add(req.newFetchPersonRequest("VIEWER"), "viewer");
 	        	var fields = ["memo"];
-	        	req.add(req.newRemovePersonAppDataRequest("VIEWER", fields), "viewer_data");
-	        	req.send(loadResponse);
+				req.add(req.newRemovePersonAppDataRequest("VIEWER", fields), "viewer_data");
+				req.send(loadResponse);
 	        }
 	        gadgets.util.registerOnLoadHandler(loadRequest);
        	</script>
