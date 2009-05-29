@@ -50,7 +50,7 @@
 	        }
 	        gadgets.util.registerOnLoadHandler(loadRequest);
        	</script>
-       	<h1>Memo</h1>
+       	<p style="text-weight:bold;">Memo</p>
        	<div id="message"/>
 		<textarea id="memo" rows="3" cols="20">
 		</textarea>
