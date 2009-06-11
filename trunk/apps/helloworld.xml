@@ -13,7 +13,7 @@
 				opensocial.requestCreateActivity(
 					activity, opensocial.CreateActivityPriority.HIGH,activityResultCallback);
 				var panel = document.getElementById("activity_panel");
-				panel.innerText = "MyPage";
+				panel.innerHTML = "アクティビティを作成するテストmixiアプリ";
 			}
 			
 			function activityResultCallback(status) {
