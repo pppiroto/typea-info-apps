@@ -43,8 +43,7 @@
 			  //Call startActivity as soon as the gadget finishes loading.
 			    gadgets.util.registerOnLoadHandler(startActivity);
 		</script>
+		<div id="content_div"></div>
 	]]>
-	<div id="content_div"></div>
-	
   </Content> 
 </Module>
