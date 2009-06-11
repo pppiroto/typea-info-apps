@@ -8,9 +8,9 @@
     	<script type="text/javascript">
 			function postActivity(activity_msg) {
 				var parms = {};
-				params[opensocial.Activity.Field.TITLE] = activity_msg;
-				params[opensocial.Activity.Field.URL] = "http://typea.info/tips/wiki.cgi?page=mixi+%A5%A2%A5%D7%A5%EA";
-				var activity = opensocial.newActivity(params);
+				parms[opensocial.Activity.Field.TITLE] = activity_msg;
+				parms[opensocial.Activity.Field.URL] = "http://typea.info/tips/wiki.cgi?page=mixi+%A5%A2%A5%D7%A5%EA";
+				var activity = opensocial.newActivity(parms);
 				opensocial.requestCreateActivity(
 					activity, opensocial.CreateAcitivityPriority.HIGH,activityResultCallback);
 				var panel = document.getElementById("activity_panel");
