@@ -1,61 +1,49 @@
 <?xml version="1.0" encoding="UTF-8" ?> 
 <Module>
-  <ModulePrefs title="list_friends">
+  <ModulePrefs title="acitivity_test">
   	<Require feature="opensocial-0.8"/>
   </ModulePrefs> 
   <Content type="html">
-     <![CDATA[ 
-     	<script type="text/javascript">
-     	    var key1 = "key_memo";
-	        function loadRequest() {
-	        	var req = opensocial.newDataRequest();
-	        	req.add(req.newFetchPersonRequest("VIEWER"), "viewer");
-	        	var fields = [key1];
-				req.add(req.newFetchPersonAppDataRequest("VIEWER", fields), "viewer_data");
-				req.send(loadResponse);
-	        }
-	        function loadResponse(data) {
-	        	var viewer = data.get("viewer").getData();
-	        	var viewer_data = data.get("viewer_data");
-	        	if (viewer_data.hadError()) {
-	        		document.getElementById("message").innerHTML = data.getErrorMessage();
-	        		return;
-	        	}
-	        	var dataAry = viewer_data.getData()[viewer.getId()];
-	        	var memo = (dataAry==null)?"":dataAry[key1];
-	        	var txtMemo = document.getElementById("memo");
-	        	txtMemo.value = gadgets.util.unescapeString(memo);
-				txtMemo.disabled = false;	        	
-	        }
-	        function registRequest() {
-				var req = opensocial.newDataRequest();
-	        	var txtMemo = document.getElementById("memo");
-	        	txtMemo.disabled = true;
-	        	req.add(req.newUpdatePersonAppDataRequest("VIEWER", key1, txtMemo.value));
-	        	req.send(registResponse);
-	        }
-	        function registResponse(data) {
-	        	if (data.hadError()) {
-	        		document.getElementById("message").innerHTML = data.getErrorMessage();	
-	        		return;
-	        	}
-	        	loadRequest();
-	        }
-	        function removeRequest() {
-	        	var req = opensocial.newDataRequest();
-	        	req.add(req.newFetchPersonRequest("VIEWER"), "viewer");
-	        	var fields = [key1];
-				req.add(req.newRemovePersonAppDataRequest("VIEWER", fields), "viewer_data");
-				req.send(loadResponse);
-	        }
-	        gadgets.util.registerOnLoadHandler(loadRequest);
-       	</script>
-       	<p style="text-weight:bold;">Memo</p>
-       	<textarea id="memo" rows="3" cols="20">
-		</textarea>
-		<div id="message"/>
-		<input type="button" id="regist" value="登録" onclick="registRequest();"/>
-		<input type="button" id="remove" value="削除" onclick="javascript:removeRequest();"/>
-     ]]>
+	<div id="content_div"></div>
+	<![CDATA[ 
+    	<script type="text/javascript">
+			  var div = document.getElementById('content_div');
+			
+			  /**
+			   * Create the new activity and send it to the server.
+			   */
+			  function postActivity(text) {  
+			    var params = {};  
+			    params[opensocial.Activity.Field.TITLE] = text;
+			    var activity = opensocial.newActivity(params); 
+			    opensocial.requestCreateActivity(activity, opensocial.CreateActivityPriority.HIGH, callback);
+			    div.innerHTML = "Activity title is: " + activity.getField(opensocial.Activity.Field.TITLE);
+			  };        
+			  
+			  /**
+			  * Server calls this function to indicate whether the activity post succeeded or failed.
+			  */
+			  function callback(status) {
+			    if (status.hadError())
+			    {
+			      alert("Error creating activity.");
+			    }
+			    else 
+			    {
+			      alert("Activity successfully created.");
+			    }
+			  };
+			  
+			  /**
+			   * Start the process of posting an activity.
+			   */
+			  function startActivity; {
+			    postActivity("This is a sample activity, created at " + new Date().toString());
+			  };
+			
+			  //Call startActivity as soon as the gadget finishes loading.
+			    gadgets.util.registerOnLoadHandler(startActivity);
+		</script>
+	]]>
   </Content> 
 </Module>
