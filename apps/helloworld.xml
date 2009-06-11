@@ -37,7 +37,7 @@
 			  /**
 			   * Start the process of posting an activity.
 			   */
-			  function startActivity; {
+			  function startActivity() {
 			    postActivity("This is a sample activity, created at " + new Date().toString());
 			  };
 			
