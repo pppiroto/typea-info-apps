@@ -6,44 +6,29 @@
   <Content type="html">
 	<![CDATA[ 
     	<script type="text/javascript">
+			function postActivity(activity_msg) {
+				var parms = {};
+				params[opensocial.Activity.Field.TITLE] = activity_msg;
+				params[opensocial.Activity.Field.URL] = "http://typea.info/tips/wiki.cgi?page=mixi+%A5%A2%A5%D7%A5%EA";
+				var activity = opensocial.newActivity(params);
+				opensocial.requestCreateActivity(
+					activity, opensocial.CreateAcitivityPriority.HIGH,activityResultCallback);
+				var panel = document.getElementById("activity_panel");
+				panel.innerText = "MyPage";
+			}
 			
-			  /**
-			   * Create the new activity and send it to the server.
-			   */
-			  function postActivity(text) {  
-			    var params = {};  
-			    params[opensocial.Activity.Field.TITLE] = text;
-			    var activity = opensocial.newActivity(params); 
-			    opensocial.requestCreateActivity(activity, opensocial.CreateActivityPriority.HIGH, callback);
-			  	var div = document.getElementById('content_div');
-			    div.innerHTML = "Activity title is: " + activity.getField(opensocial.Activity.Field.TITLE);
-			  };        
-			  
-			  /**
-			  * Server calls this function to indicate whether the activity post succeeded or failed.
-			  */
-			  function callback(status) {
-			    if (status.hadError())
-			    {
-			      alert("Error creating activity.");
-			    }
-			    else 
-			    {
-			      alert("Activity successfully created.");
-			    }
-			  };
-			  
-			  /**
-			   * Start the process of posting an activity.
-			   */
-			  function startActivity() {
-			    postActivity("This is a sample activity, created at " + new Date().toString());
-			  };
-			
-			  //Call startActivity as soon as the gadget finishes loading.
-			    gadgets.util.registerOnLoadHandler(startActivity);
+			function activityResultCallback(status) {
+				if (status.hadError()) {
+					alert("Error Creating activity.");
+				} 
+			}
+
+			function startActivity() {
+				postActivity("アクティビティのテストです！クリックして!");
+			}
+			gadgets.util.registerOnLoadHandler(startActivity);
 		</script>
-		<div id="content_div"></div>
+		<div id="activity_panel"></div>
 	]]>
   </Content> 
 </Module>
