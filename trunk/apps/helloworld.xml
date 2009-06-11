@@ -4,10 +4,8 @@
   	<Require feature="opensocial-0.8"/>
   </ModulePrefs> 
   <Content type="html">
-	<div id="content_div"></div>
 	<![CDATA[ 
     	<script type="text/javascript">
-			  var div = document.getElementById('content_div');
 			
 			  /**
 			   * Create the new activity and send it to the server.
@@ -17,6 +15,7 @@
 			    params[opensocial.Activity.Field.TITLE] = text;
 			    var activity = opensocial.newActivity(params); 
 			    opensocial.requestCreateActivity(activity, opensocial.CreateActivityPriority.HIGH, callback);
+			  	var div = document.getElementById('content_div');
 			    div.innerHTML = "Activity title is: " + activity.getField(opensocial.Activity.Field.TITLE);
 			  };        
 			  
@@ -45,5 +44,7 @@
 			    gadgets.util.registerOnLoadHandler(startActivity);
 		</script>
 	]]>
+	<div id="content_div"></div>
+	
   </Content> 
 </Module>
