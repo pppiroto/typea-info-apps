@@ -12,7 +12,7 @@
 				parms[opensocial.Activity.Field.URL] = "http://typea.info/tips/wiki.cgi?page=mixi+%A5%A2%A5%D7%A5%EA";
 				var activity = opensocial.newActivity(parms);
 				opensocial.requestCreateActivity(
-					activity, opensocial.CreateAcitivityPriority.HIGH,activityResultCallback);
+					activity, opensocial.CreateActivityPriority.HIGH,activityResultCallback);
 				var panel = document.getElementById("activity_panel");
 				panel.innerText = "MyPage";
 			}
