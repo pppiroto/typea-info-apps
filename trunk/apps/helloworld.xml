@@ -9,6 +9,7 @@
 			function postActivity(activity_msg) {
 				var parms = {};
 				parms[opensocial.Activity.Field.TITLE] = activity_msg;
+				parms[opensocial.Activity.Field.URL]   = "http://typea.info";
 				var activity = opensocial.newActivity(parms);
 				opensocial.requestCreateActivity(
 					activity, opensocial.CreateActivityPriority.HIGH,activityResultCallback);
