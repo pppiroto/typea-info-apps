@@ -12,9 +12,6 @@
 	    		var params = {};
 	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
 	    		params[gadgets.io.RequestParameters.CONENT_TYPE] = gadgets.io.ContentType.FEED;
-	    		//var post_data = {action : "RSS"};
-	    		//params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues(post_data);
-	    		params[gadgets.io.RequestParameters.AUTHORIZATION] = gadgets.io.AuthorizationType.NONE;
 				gadgets.io.makeRequest(url,printRss,params);
 			}
 			    		
@@ -24,7 +21,6 @@
 				
 				var feed = response.data;
 				alert(feed);
-				/*
 				title_area.innerHTML = "<h1><a href='" + feed.Link + "'>" + feed.Title + "</a></h1>"
 			
 				var buf = "";
@@ -34,7 +30,6 @@
 					buf += "<a href='" + entry.Link + "'>" + entry.Title + "</a><br/>";
 				}			
 				feed_area.innerHTML = buf;
-				*/
 			}			    		
 			gadgets.util.registerOnLoadHandler(getMypageRss);
 		</script>
