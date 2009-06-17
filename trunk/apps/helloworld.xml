@@ -8,12 +8,12 @@
     	<script type="text/javascript">
     		var res = null
     		function getMypageRss() {
-	    		var url = "http://typea.info/tips/wiki.cgi";
+	    		var url = "http://typea.info/blg/glob/index.xml";
 	    		var params = {};
 	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
 	    		params[gadgets.io.RequestParameters.CONENT_TYPE] = gadgets.io.ContentType.FEED;
-	    		var post_data = {action : "RSS"};
-	    		params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues(post_data);
+	    		//var post_data = {action : "RSS"};
+	    		//params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues(post_data);
 	    		params[gadgets.io.RequestParameters.AUTHORIZATION] = gadgets.io.AuthorizationType.NONE;
 				gadgets.io.makeRequest(url,printRss,params);
 			}
@@ -24,15 +24,6 @@
 				
 				var feed = response.data;
 				alert(feed);
-				res = feed;
-				
-				var b = "";
-				for (p in feed) {
-					b += (p + "<br/>");
-				}
-				title_area.innerHTML = b;
-				
-				
 				/*
 				title_area.innerHTML = "<h1><a href='" + feed.Link + "'>" + feed.Title + "</a></h1>"
 			
