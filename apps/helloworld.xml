@@ -8,11 +8,13 @@
     	<script type="text/javascript">
     		var res = null
     		function getMypageRss() {
-	    		var url = "http://typea.info/blg/glob/index.xml";
+	    		// var url = "http://typea.info/blg/glob/index.xml";
+	    		var url = "http://typea.info/tips/wiki.cgi?action=RSS";
 	    		var params = {};
 	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
-	    		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.FEED;
-				gadgets.io.makeRequest(url,printRss,params);
+	    		params[gadgets.io.RequestParameters.CONENT_TYPE] = gadgets.io.ContentType.FEED;
+	    		
+	    		gadgets.io.makeRequest(url,printRss,params);
 			}
 			    		
 			function printRss(response) {
