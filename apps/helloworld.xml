@@ -19,12 +19,12 @@
 			}
 			    		
 			function printRss(response) {
-				res = response;
-				alert(res);
 				var title_area = document.getElementById("title_area");
 				var feed_area = document.getElementById("feed_area");
 				
 				var feed = response.data;
+				alert(feed);
+				res = feed;
 				title_area.innerHTML = "<h1><a href='" + feed.Link + "'>" + feed.Title + "</a></h1>"
 			
 				var buf = "";
