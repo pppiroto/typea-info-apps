@@ -6,28 +6,8 @@
   <Content type="html">
 	<![CDATA[ 
     	<script type="text/javascript">
-			function postActivity(activity_msg) {
-				var parms = {};
-				parms[opensocial.Activity.Field.TITLE] = activity_msg;
-				var activity = opensocial.newActivity(parms);
-				opensocial.requestCreateActivity(
-					activity, opensocial.CreateActivityPriority.HIGH,activityResultCallback);
-				var panel = document.getElementById("activity_panel");
-				panel.innerHTML = "アクティビティを作成するテストmixiアプリ";
-			}
-			
-			function activityResultCallback(status) {
-				if (status.hadError()) {
-					alert("Error Creating activity.");
-				} 
-			}
-
-			function startActivity() {
-				postActivity("アクティビティのテストです！クリックして!");
-			}
 			gadgets.util.registerOnLoadHandler(startActivity);
 		</script>
-		<div id="activity_panel"></div>
 	]]>
   </Content> 
 </Module>
