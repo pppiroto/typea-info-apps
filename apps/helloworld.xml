@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?> 
 <Module>
-  <ModulePrefs title="acitivity_test">
+  <ModulePrefs title="rss_list">
   	<Require feature="opensocial-0.8"/>
   </ModulePrefs> 
   <Content type="html">
 	<![CDATA[ 
     	<script type="text/javascript">
-    		var res = null
-    		function getMypageRss() {
-	    		// var url = "http://typea.info/blg/glob/index.xml";
-	    		var url = "http://typea.info/tips/wiki.cgi?action=RSS";
+    		function getMyBlogRss() {
+	    		var url = "http://typea.info/blg/glob/index.xml";
 	    		var params = {};
 	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
 	    		params[gadgets.io.RequestParameters.CONENT_TYPE] = gadgets.io.ContentType.FEED;
-	    		
+	    		params[gadgets.io.RequestParameters.NUM_ENTRIES] = new Number(10); 
+	    		 
 	    		gadgets.io.makeRequest(url,printRss,params);
 			}
 			    		
 			function printRss(response) {
 				var title_area = document.getElementById("title_area");
-				var feed_area = document.getElementById("feed_area");
+				var feed_area  = document.getElementById("feed_area");
 				
 				var feed = response.data;
-				alert(feed);
+				
 				title_area.innerHTML = "<h1><a href='" + feed.Link + "'>" + feed.Title + "</a></h1>"
 			
 				var buf = "";
@@ -33,7 +32,7 @@
 				}			
 				feed_area.innerHTML = buf;
 			}			    		
-			gadgets.util.registerOnLoadHandler(getMypageRss);
+			gadgets.util.registerOnLoadHandler(getMyBlogRss);
 		</script>
 		<div id="title_area"></div>
 		<div id="feed_area"></div>
