@@ -28,9 +28,9 @@
 				
 				var b = "";
 				for (p in feed) {
-					b += p + ":" + eval("feed." + p) + "<br/>";
+					b += (p + ":" + eval("feed." + p) + "<br/>");
 				}
-				title_area.innerHTML = b
+				title_area.innerHTML = b;
 				
 				
 				/*
