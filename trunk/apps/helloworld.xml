@@ -10,7 +10,7 @@
     		function getMypageRss() {
 	    		var url = "http://typea.info/blg/glob/index.xml";
 	    		var params = {};
-	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
+	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
 	    		params[gadgets.io.RequestParameters.CONENT_TYPE] = gadgets.io.ContentType.FEED;
 	    		//var post_data = {action : "RSS"};
 	    		//params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues(post_data);
