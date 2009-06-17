@@ -6,8 +6,36 @@
   <Content type="html">
 	<![CDATA[ 
     	<script type="text/javascript">
-			gadgets.util.registerOnLoadHandler(startActivity);
+    		function getMypageRss() {
+	    		var url = "http://typea.info/tips/wiki.cgi";
+	    		var parms = {};
+	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
+	    		params[gadgets.io.RequestParameters.CONENT_TYPE] = gadgets.io.ContentType.FEED;
+	    		var post_data = {action : "RSS"};
+	    		params[gadgets.io.RequestParameters.POST_DATA] = gadgets.io.encodeValues(post_data);
+	    		params[gadgets.io.RequestParameters.AUTHORIZATION] = gadgets.io.AuthorizationType.NONE;
+				gadgets.io.makeRequest(url,printRss,params);
+			}
+			    		
+			function printRss(response) {
+				var title_area = document.getElementById("title_area");
+				var feed_area = document.getElementById("feed_area");
+				
+				var feed = response.data;
+				title_area.innerHTML = "<h1><a href='" + feed.Link + "'>" + feed.Title + "</a></h1>"
+			
+				var buf = "";
+				var entries = feed.Entry;
+				for (var i=0; i<entries.length; i++) {
+					var entry = entries[i];
+					buf += "<a href='" + entry.Link + "'>" + entry.Title + "</a><br/>";
+				}			
+				feed_area.innerHTML = buf;
+			}			    		
+			gadgets.util.registerOnLoadHandler(getMypageRss);
 		</script>
+		<div id="title_area"></div>
+		<div id="feed_area"></div>
 	]]>
   </Content> 
 </Module>
