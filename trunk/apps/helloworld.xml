@@ -8,7 +8,7 @@
     	<script type="text/javascript">
     		function getMypageRss() {
 	    		var url = "http://typea.info/tips/wiki.cgi";
-	    		var parms = {};
+	    		var params = {};
 	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
 	    		params[gadgets.io.RequestParameters.CONENT_TYPE] = gadgets.io.ContentType.FEED;
 	    		var post_data = {action : "RSS"};
