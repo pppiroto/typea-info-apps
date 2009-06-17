@@ -11,7 +11,7 @@
 	    		var url = "http://typea.info/blg/glob/index.xml";
 	    		var params = {};
 	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
-	    		params[gadgets.io.RequestParameters.CONENT_TYPE] = gadgets.io.ContentType.FEED;
+	    		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.FEED;
 				gadgets.io.makeRequest(url,printRss,params);
 			}
 			    		
