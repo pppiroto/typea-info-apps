@@ -10,7 +10,7 @@
 	    		var url = "http://typea.info/blg/glob/index.xml";
 	    		var params = {};
 	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
-	    		params[gadgets.io.RequestParameters.CONENT_TYPE] = gadgets.io.ContentType.FEED;
+	    		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.FEED;
 	    		params[gadgets.io.RequestParameters.NUM_ENTRIES] = new Number(10); 
 	    		 
 	    		gadgets.io.makeRequest(url,printRss,params);
@@ -21,7 +21,7 @@
 				var feed_area  = document.getElementById("feed_area");
 				
 				var feed = response.data;
-				alert(feed);
+				
 				title_area.innerHTML = "<h1><a href='" + feed.Link + "'>" + feed.Title + "</a></h1>"
 			
 				var buf = "";
