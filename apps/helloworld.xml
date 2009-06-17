@@ -7,7 +7,7 @@
 	<![CDATA[ 
     	<script type="text/javascript">
     		function getMypageRss() {
-	    		var url = "http://typea.info/tips/wiki.cgi";
+	    		var url = "http://typea.info/tips/wiki.cgi?action=RSS";
 	    		var params = {};
 	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.POST;
 	    		params[gadgets.io.RequestParameters.CONENT_TYPE] = gadgets.io.ContentType.FEED;
