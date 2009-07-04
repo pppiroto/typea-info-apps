@@ -13,7 +13,7 @@
 	     	 */
      		function search_twitter() {
      			var url = "http://search.twitter.com/search.json";
-     			url += makeHttpParam('q');
+     			url += makeHttpParam('q', true);
 alert(url);
      			var params = {};
 	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
@@ -33,12 +33,14 @@ alert(url);
      			document.getElementById('content_div').innerHTML = html;
      		}
      		function makeHttpParam(param_id, isFirstParam) {
+     		alert('make');
      			isFirstParam = !(isFirstParam == undefined);
-     			
+     		alert(isFirstParam);
      			var paramObj = document.getElementById(param_id);
+     		alert(paramObj.name);
 				var ret = "";
 				if (paramObj != null) {
-	     			ret =  (isFirstParam)?"?":"&" + param_id = "="
+	     			ret = (isFirstParam)?"?":"&" + param_id + "="
 	     			     + encodeURIComponent(paramObj.value);
     			}
     			return ret;
