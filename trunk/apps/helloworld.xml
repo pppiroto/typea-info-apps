@@ -11,10 +11,11 @@
 	     	 * @see http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-search
 	     	 * @see http://code.google.com/intl/ja/apis/gadgets/docs/remote-content.html#Fetch_JSON
 	     	 */
-     		function search_twitter() {
-     			var url = "http://search.twitter.com/search.json";
-     			url += makeHttpParam('q', true);
-alert(url);
+     		function search_twitter(url) {
+     			if (!url) {
+     				url = "http://search.twitter.com/search.json";
+     				url += makeHttpParam('q', true);
+				}
      			var params = {};
 	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
 	    		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
@@ -23,6 +24,12 @@ alert(url);
      		function searchResponse(responseObj) {
      			var html = "";
      			var jsondata = responseObj.data
+     			
+     			var nextpage = jsondata['nextpage'];
+     			if (nextpage) {
+     				html += "<a href='javascript:search_twitter(\'" + nextpage + "\');'>next</a>";
+     			}
+     			
      			var results = jsondata['results'];
      			for (var i=0; i<results.length; i++) {
      				var result = results[i];
@@ -32,17 +39,16 @@ alert(url);
      			}
      			document.getElementById('content_div').innerHTML = html;
      		}
+			/**
+			 * HTTP GETリクエストパラメータを生成
+			 */
      		function makeHttpParam(param_id, isFirstParam) {
-     		alert('make');
      			isFirstParam = !(isFirstParam == undefined);
-     		alert(param_id);
      			var paramObj = document.getElementById(param_id);
-     		alert(paramObj);
 				var ret = "";
 				if (paramObj != null) {
 	     			ret = ((isFirstParam)?"?":"&") + param_id + "="
 	     			     + encodeURIComponent(paramObj.value);
-	     			alert(ret);
     			}
     			return ret;
      		}
