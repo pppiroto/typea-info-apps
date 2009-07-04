@@ -5,12 +5,12 @@
   </ModulePrefs> 
   <Content type="html">
      <![CDATA[ 
-     	/**
-     	 * mixi アプリ :
-     	 * @see http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-search
-     	 * @see http://code.google.com/intl/ja/apis/gadgets/docs/remote-content.html#Fetch_JSON
-     	 */
      	<script type="text/javascript">
+	     	/**
+	     	 * mixi アプリ :
+	     	 * @see http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-search
+	     	 * @see http://code.google.com/intl/ja/apis/gadgets/docs/remote-content.html#Fetch_JSON
+	     	 */
      		function search_twitter() {
      			var search_word = document.getElementById('search_word').value;
      			
@@ -20,7 +20,7 @@
      			var params = {};
 	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
 	    		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
-     			gadjets.io.makeRequest(url, searchResponse, parms);
+     			gadgets.io.makeRequest(url, searchResponse, parms);
      		}
      		function searchResponse(responseObj) {
      			var jsondat = responseObj.data
