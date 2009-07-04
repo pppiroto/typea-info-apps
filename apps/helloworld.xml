@@ -29,7 +29,7 @@
      			
      			var next_page = jsondata['next_page'];
      			if (next_page) {
-     				html += "<a href='javascript:search_twitter(\"" + next_page + "\");'>next</a>";
+     				html += "<a href='javascript:search_twitter(\"" + next_page + "\");'>next page</a>";
      				html += "<br/>";
      			}
      			
@@ -77,7 +77,7 @@
     			return ret;
      		}
        	</script>
-       	<input type="text" size="16" id="q"/><input type="button" name="search" value="search" onclick="javascript:search_twitter();"/>
+       	<input type="text" size="16" id="q"/><input type="button" name="search" value="twitter search" onclick="javascript:search_twitter();"/>
        	<div id="content_div"/>
      ]]>
   </Content> 
