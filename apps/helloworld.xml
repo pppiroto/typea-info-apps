@@ -16,19 +16,17 @@
      			
      			var url = "http://search.twitter.com/search.json";
      			url += ("?q=" + encodeURIComponent(search_word));
-     			alert(url);
+
      			var params = {};
 	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
 	    		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
-	    		alert("req");
      			gadgets.io.makeRequest(url, searchResponse, params);
-     			alert("req finish");
      		}
      		function searchResponse(responseObj) {
      			alert("callback");
-     			var jsondat = responseObj.data
+     			var jsondata = responseObj.data
      			var html = "";
-     			for (var key in jsondat) {
+     			for (var key in jsondata) {
 // FROM			
         var value = jsondata[key];
         html += key + ": ";
