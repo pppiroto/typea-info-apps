@@ -52,12 +52,12 @@
      				var result = results[i];
      				html += "<tr style='font-size:small;'>";
      				html +=   "<td>";
-     				html +=     "<a href='" + result['source'] + "'>";
+     				html +=     "<a href='http://twitter.com/" + result['from_user'] + "' target='_blank'>";
      				html +=         "<img src='" + result['profile_image_url'] + "' border='none'/>";
      				html +=     "</a>";
      				html +=   "</td>";
      				html +=   "<td>";
-     				html +=     "<a href='" + result['source'] + "'>";
+     				html +=     "<a href='http://twitter.com/" + result['from_user'] + "'>";
      				html +=       "<span style='color:#2FC2EF;font-weight:bold;'>" + result['from_user'] + ":</span>"
      				html +=     "</a>";
      				html +=     createLink(result['text']) + "</br>";
