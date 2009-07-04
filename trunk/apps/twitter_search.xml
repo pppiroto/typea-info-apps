@@ -74,7 +74,7 @@
      		/** ちょっといい加減にURLをリンクに変更する関数 */
 			function toFuzzyUrlText(text) {
 				var ret = text;
-				var ptn = /(http:\/\/.{1,}?)[ $]/g;
+				var ptn = /(http:\/\/.*)[ $]?/g;
 				var ary = ptn.exec(text);
 				while(ary) {
 					ret = ret.replace(ary[0], "<a href='" + RegExp.$1 + "' target='_blank'>" + ary[0] + "</a>");
