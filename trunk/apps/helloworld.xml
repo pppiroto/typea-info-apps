@@ -34,13 +34,22 @@
      			}
      			
      			var results = jsondata['results'];
+     			html +="<table border='0'>";
      			for (var i=0; i<results.length; i++) {
      				var result = results[i];
-     				html += "<a href='" + result['source'] + "'>";
-     				html +=     "<img src='" + result['profile_image_url'] + "'/>";
-     				html += "</a>";
-     				html += toFuzzyUrlText(result['text']) + "</br>";
+     				html += "<tr style='font-size:small;'>";
+     				html +=   "<td>";
+     				html +=     "<a href='" + result['source'] + "'>";
+     				html +=         "<img src='" + result['profile_image_url'] + "'/>";
+     				html +=     "</a>";
+     				html +=   "</td>";
+     				html +=   "<td>";
+     				html +=       toFuzzyUrlText(result['text']) + "</br>";
+     				html +=   "</td>";
+     				html += "</tr>";
      			}
+     			html += "</table>";
+     			
      			document.getElementById('content_div').innerHTML = html;
      		}
      		/** ちょっといい加減にURLをリンクに変更する関数 */
