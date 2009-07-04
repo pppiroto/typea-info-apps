@@ -5,12 +5,53 @@
   </ModulePrefs> 
   <Content type="html">
      <![CDATA[ 
+     	/**
+     	 * mixi アプリ :
+     	 * @see http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-search
+     	 * @see http://code.google.com/intl/ja/apis/gadgets/docs/remote-content.html#Fetch_JSON
+     	 */
      	<script type="text/javascript">
      		function search_twitter() {
-     			alert("");
+     			var search_word = document.getElementById('search_word').value;
+     			
+     			var url = "http://search.twitter.com/search.json";
+     			url += ("?q=" + encodeURIComponent(search_word));
+     			
+     			var params = {};
+	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
+	    		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+     			gadjets.io.makeRequest(url, searchResponse, parms);
      		}
+     		function searchResponse(responseObj) {
+     			var jsondat = responseObj.data
+     			var html = "";
+     			for (var key in jsondat) {
+// FROM			
+        var value = jsondata[key];
+        html += key + ": ";
+        // If 'value' is an array, render its contents as a bulleted list
+        if (value instanceof Array)
+        {
+          html += "<br /><ul>";
+          for (var i = 0; i < value.length ; i++)
+          {
+            html += "<li>"+ jsondata.Hobbies[i] + "</li>";
+          }
+          html+= "</ul>";
+        }  
+        // If 'value' isn't an array, just write it out as a string
+        else {        
+          html += value + "<br />";
+        }      
+// TO     			
+     			}
+     			document.getElementById('content_div').innerHTML = html;
+     			
+     		}
+     		
        	</script>
-       	<input type="text" size="10" name="query_strings"/><input type="button" name="search" value="search" onclick="javascript:search_twitter();"/>
+       	<input type="text" size="10" id="search_word"/><input type="button" name="search" value="search" onclick="javascript:search_twitter();"/>
+       	<div id="content_div"/>
      ]]>
   </Content> 
 </Module>
