@@ -20,9 +20,12 @@
      			var params = {};
 	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
 	    		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+	    		alert("req");
      			gadgets.io.makeRequest(url, searchResponse, params);
+     			alert("req finish");
      		}
      		function searchResponse(responseObj) {
+     			alert("callback");
      			var jsondat = responseObj.data
      			var html = "";
      			for (var key in jsondat) {
