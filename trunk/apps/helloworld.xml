@@ -40,7 +40,7 @@ alert(url);
      		alert(paramObj);
 				var ret = "";
 				if (paramObj != null) {
-	     			ret = (isFirstParam)?"?":"&" + param_id + "="
+	     			ret = ((isFirstParam)?"?":"&") + param_id + "="
 	     			     + encodeURIComponent(paramObj.value);
 	     			alert(ret);
     			}
