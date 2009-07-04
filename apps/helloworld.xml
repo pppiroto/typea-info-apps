@@ -36,12 +36,24 @@
      			var results = jsondata['results'];
      			for (var i=0; i<results.length; i++) {
      				var result = results[i];
-     				html += "<img src='" + result['profile_image_url'] + "'/>";
-     				html += result['text'] + "</br>";
-     			
+     				html += "<a href='" + result['source'] + "'>";
+     				html +=     "<img src='" + result['profile_image_url'] + "'/>";
+     				html += "</a>";
+     				html += toFuzzyUrlText(result['text']) + "</br>";
      			}
      			document.getElementById('content_div').innerHTML = html;
      		}
+			function toFuzzyUrlText(text) {
+				var ret = text;
+				var ptn = /(http:\/\/.*)[^ ]/g;
+				var ary = ptn.exec(text);
+				while(ary) {
+					ret.replace(ary[0], "< a href='" + ary[0] + "'>" + ary[0] + "</a>");
+					ary = ptn.exec(text);
+				}
+				return ret;
+			}
+			
 			/**
 			 * HTTP GETリクエストパラメータを生成
 			 */
