@@ -16,11 +16,11 @@
      			
      			var url = "http://search.twitter.com/search.json";
      			url += ("?q=" + encodeURIComponent(search_word));
-     			
+     			alert(url);
      			var params = {};
 	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
 	    		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
-     			gadgets.io.makeRequest(url, searchResponse, parms);
+     			gadgets.io.makeRequest(url, searchResponse, params);
      		}
      		function searchResponse(responseObj) {
      			var jsondat = responseObj.data
