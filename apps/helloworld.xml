@@ -24,7 +24,16 @@
      		}
      		function searchResponse(responseObj) {
      			var jsondata = responseObj.data
+     			
+     			
 		      	document.getElementById('content_div').innerHTML = printPropertiesAsTable(jsondata, 0);
+		      	
+		      	
+		      	var html = "";
+		      	for ( p in jsondata) {
+		      		html += p + "<br/>";
+		      	}
+		      	document.getElementById('content_div').innerHTML = html;
 		      	
      		}
 

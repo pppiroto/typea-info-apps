@@ -6,6 +6,10 @@
   <Content type="html">
      <![CDATA[ 
      	<script type="text/javascript">
+     		/**
+     		 * mixi アプリ : Viewr情報の表示
+     		 * http://typea.info/tips/wiki.cgi?page=mixi+%A5%A2%A5%D7%A5%EA+VIEWER%A4%CE%BE%F0%CA%F3%C9%BD%BC%A8
+     		 */
 	        function request() {
 				var req = opensocial.newDataRequest();
 				req.add(req.newFetchPersonRequest("OWNER"), "viewer_data");
