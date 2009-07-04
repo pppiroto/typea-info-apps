@@ -25,43 +25,14 @@
      		function searchResponse(responseObj) {
      			var jsondata = responseObj.data
      			
-     			
-		      	document.getElementById('content_div').innerHTML = printPropertiesAsTable(jsondata, 0);
-		      	
-		      	
-		      	var html = "";
+				alert(jsondata);     			
+		      	var html = jsondata;
 		      	for ( p in jsondata) {
 		      		html += p + "<br/>";
 		      	}
 		      	document.getElementById('content_div').innerHTML = html;
 		      	
      		}
-
-            // 閲覧者情報表示
-            function printPropertiesAsTable(obj, dpth) {
-                if (dpth > 5) {
-                    return "<b>parse limit over</b>";
-                }
-                var tbl = "<table border='1'>";
-                tbl += "<tr><th>Property</th><th>Type</th><th>Value</th></tr>";
-                for (prop in obj) {
-                    var type  = typeof(eval("obj." + prop));
-                    var blnkt = (type == "function")?"()":""; 
-                    tbl += "<tr>";
-                    tbl += "<td>" + prop + "</td>";
-                    tbl += "<td>" + type + "</td>";
-                    if (type == 'object') {
-                        tbl += "<td>" + printPropertiesAsTable(eval("obj." + prop), dpth++) + "</td>"; 
-                    } else {
-                        tbl += "<td>" + eval("obj." + prop + blnkt) + "</td>";
-                    }
-                    tbl += "</tr>";
-                }
-                tbl += "</table>";
-                return tbl;
-            }
-
-     		
        	</script>
        	<input type="text" size="10" id="search_word"/><input type="button" name="search" value="search" onclick="javascript:search_twitter();"/>
        	<div id="content_div"/>
