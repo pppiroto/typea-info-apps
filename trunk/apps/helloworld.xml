@@ -27,7 +27,7 @@
      			var jsondata = responseObj.data
      			var results = jsondata['results'];
      			for (var i=0; i<results.length; i++) {
-     				html += results['text'] + "</br>";
+     				html += results[i]['text'] + "</br>";
      			
      			}
      			document.getElementById('content_div').innerHTML = html;
