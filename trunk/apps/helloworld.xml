@@ -49,12 +49,11 @@
 				var ptn = /(http:\/\/.*)[^ $]/g;
 				var ary = ptn.exec(text);
 				while(ary) {
-					ret = ret.replace(ary[0], "<a href='" + RegExp.$1 + "'>" + ary[0] + "</a>");
+					ret = ret.replace(ary[0], "<a href='" + RegExp.$1 + "' target='_blank'>" + ary[0] + "</a>");
 					ary = ptn.exec(text);
 				}
 				return ret;
 			}
-			
 			/**
 			 * HTTP GETリクエストパラメータを生成
 			 */
