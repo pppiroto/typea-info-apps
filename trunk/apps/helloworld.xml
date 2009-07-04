@@ -12,9 +12,11 @@
 	     	 * @see http://code.google.com/intl/ja/apis/gadgets/docs/remote-content.html#Fetch_JSON
 	     	 */
      		function search_twitter(url) {
-     			if (!url) {
-     				url = "http://search.twitter.com/search.json";
-     				url += makeHttpParam('q', true);
+     			var baseurl = "http://search.twitter.com/search.json";
+     			if (url) {
+     				url = baseurl + url;
+     			} else {
+     				url = baseurl + makeHttpParam('q', true);
 				}
      			var params = {};
 	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
@@ -26,7 +28,6 @@
      			var jsondata = responseObj.data
      			
      			var next_page = jsondata['next_page'];
-     			alert(next_page);
      			if (next_page) {
      				html += "<a href='javascript:search_twitter(\"" + next_page + "\");'>next</a>";
      				html += "<br/>";
