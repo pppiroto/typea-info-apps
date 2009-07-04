@@ -25,9 +25,9 @@
      			var html = "";
      			var jsondata = responseObj.data
      			
-     			var nextpage = jsondata['nextpage'];
-     			if (nextpage) {
-     				html += "<a href='javascript:search_twitter(\'" + nextpage + "\');'>next</a>";
+     			var next_page = jsondata['next_page'];
+     			if (next_page) {
+     				html += "<a href='javascript:search_twitter(\'" + next_page + "\');'>next</a>";
      			}
      			
      			var results = jsondata['results'];
