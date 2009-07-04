@@ -1,41 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?> 
 <Module>
-  <ModulePrefs title="rss_list">
+  <ModulePrefs title="twitter search sample">
   	<Require feature="opensocial-0.8"/>
   </ModulePrefs> 
   <Content type="html">
-	<![CDATA[ 
-    	<script type="text/javascript">
-    		function getMyBlogRss() {
-	    		var url = "http://typea.info/blg/glob/index.xml";
-	    		var params = {};
-	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
-	    		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.FEED;
-	    		params[gadgets.io.RequestParameters.NUM_ENTRIES] = new Number(10); 
-	    		 
-	    		gadgets.io.makeRequest(url,printRss,params);
-			}
-			    		
-			function printRss(response) {
-				var title_area = document.getElementById("title_area");
-				var feed_area  = document.getElementById("feed_area");
-				
-				var feed = response.data;
-				
-				title_area.innerHTML = "<h1><a href='" + feed.Link + "'>" + feed.Title + "</a></h1>"
-			
-				var buf = "";
-				var entries = feed.Entry;
-				for (var i=0; i<entries.length; i++) {
-					var entry = entries[i];
-					buf += "<a href='" + entry.Link + "'>" + entry.Title + "</a><br/>";
-				}			
-				feed_area.innerHTML = buf;
-			}			    		
-			gadgets.util.registerOnLoadHandler(getMyBlogRss);
-		</script>
-		<div id="title_area"></div>
-		<div id="feed_area"></div>
-	]]>
+     <![CDATA[ 
+     	<script type="text/javascript">
+     		function search_twitter() {
+     			alert("");
+     		}
+       	</script>
+       	<input type="text" size="10" name="query_strings"/><input type="button" name="search" value="search" onclick="javascript:search_twitter();"/>
+     ]]>
   </Content> 
 </Module>

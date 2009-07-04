@@ -6,6 +6,9 @@
   <Content type="html">
      <![CDATA[ 
      	<script type="text/javascript">
+     	    /**
+     	     * http://typea.info/tips/wiki.cgi?page=mixi+%A5%A2%A5%D7%A5%EA+%A5%C7%A1%BC%A5%BF%A4%CE%B1%CA%C2%B3%B2%BD
+     	     */
      	    var key1 = "key_memo";
      	    // 永続データ読み込み要求
 	        function loadRequest() {
@@ -59,7 +62,7 @@
        	<textarea id="memo" rows="3" cols="20">
 		</textarea>
 		<div id="message"/>
-		<input type="button" id="regist" value="登録" onclick="registRequest();"/>
+		<input type="button" id="regist" value="登録" onclick="javascript:registRequest();"/>
 		<input type="button" id="remove" value="削除" onclick="javascript:removeRequest();"/>
      ]]>
   </Content> 
