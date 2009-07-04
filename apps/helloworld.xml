@@ -35,13 +35,14 @@ alert(url);
      		function makeHttpParam(param_id, isFirstParam) {
      		alert('make');
      			isFirstParam = !(isFirstParam == undefined);
-     		alert(isFirstParam);
+     		alert(param_id);
      			var paramObj = document.getElementById(param_id);
-     		alert(paramObj.name);
+     		alert(paramObj);
 				var ret = "";
 				if (paramObj != null) {
 	     			ret = (isFirstParam)?"?":"&" + param_id + "="
 	     			     + encodeURIComponent(paramObj.value);
+	     			alert(ret);
     			}
     			return ret;
      		}
