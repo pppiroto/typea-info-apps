@@ -18,7 +18,7 @@
      	</style> 
      	<script type="text/javascript">
 	     	/**
-	     	 * mixi アプリ :
+	     	 * mixi アプリ : Twitter 検索を行う
 	     	 * @see http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-search
 	     	 * @see http://code.google.com/intl/ja/apis/gadgets/docs/remote-content.html#Fetch_JSON
 	     	 */
@@ -82,7 +82,7 @@
 				}
 				return ret;
 			}
-     		/** ちょっといい加減にURLをリンクに変更する関数 */
+     		/** ちょっといい加減にTwitter ID をリンクに変更する関数 */
 			function toUserUrlText(text) {
 				var ret = text;
 				var ptn = /@([A-Za-z]{1,}?):/g;
