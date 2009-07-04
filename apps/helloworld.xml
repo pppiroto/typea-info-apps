@@ -12,10 +12,8 @@
 	     	 * @see http://code.google.com/intl/ja/apis/gadgets/docs/remote-content.html#Fetch_JSON
 	     	 */
      		function search_twitter() {
-     			var search_word = document.getElementById('search_word').value;
-     			
      			var url = "http://search.twitter.com/search.json";
-     			url += ("?q=" + encodeURIComponent(search_word));
+     			url += makeHttpParam('q');
 
      			var params = {};
 	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
@@ -33,10 +31,20 @@
      			
      			}
      			document.getElementById('content_div').innerHTML = html;
-		      	
+     		}
+     		function makeHttpParam(param_id, isFirstParam) {
+     			isFirstParam = !(isFirstParam == undefined);
+     			
+     			var paramObj = document.getElementById(param_id);
+				var ret = "";
+				if (paramObj != null) {
+	     			ret =  (isFirstParam)?"?":"&" + param_id = "="
+	     			     + encodeURIComponent(paramObj.value);
+    			}
+    			return ret;
      		}
        	</script>
-       	<input type="text" size="10" id="search_word"/><input type="button" name="search" value="search" onclick="javascript:search_twitter();"/>
+       	<input type="text" size="16" id="q"/><input type="button" name="search" value="search" onclick="javascript:search_twitter();"/>
        	<div id="content_div"/>
      ]]>
   </Content> 
