@@ -4,7 +4,18 @@
   	<Require feature="opensocial-0.8"/>
   </ModulePrefs> 
   <Content type="html">
-     <![CDATA[ 
+     <![CDATA[
+     	<style type="text/css">
+			a:active, a:hover, .b:active, .link:active {
+				color:#AAAAAA;
+				text-decoration:underline;
+			}
+			a, .link {
+				color:#2694E8;
+				cursor:pointer;
+				text-decoration:none;
+			}     	
+     	</style> 
      	<script type="text/javascript">
 	     	/**
 	     	 * mixi アプリ :
