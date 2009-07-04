@@ -6,6 +6,10 @@
   <Content type="html">
 	<![CDATA[ 
     	<script type="text/javascript">
+    	    /**
+    	     * mixi アプリ : アクティビティのサンプル
+    	     * http://typea.info/tips/wiki.cgi?page=mixi+%A5%A2%A5%D7%A5%EA+%A5%A2%A5%AF%A5%C6%A5%A3%A5%D3%A5%C6%A5%A3
+    	     */
 			function postActivity(activity_msg) {
 				var parms = {};
 				parms[opensocial.Activity.Field.TITLE] = activity_msg;
