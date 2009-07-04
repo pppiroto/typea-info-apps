@@ -45,10 +45,10 @@
      		}
 			function toFuzzyUrlText(text) {
 				var ret = text;
-				var ptn = /(http:\/\/.*)[^ ]/g;
+				var ptn = /(http:\/\/.*)[^ $]/g;
 				var ary = ptn.exec(text);
 				while(ary) {
-					ret.replace(ary[0], "< a href='" + ary[0] + "'>" + ary[0] + "</a>");
+					ret = ret.replace(ary[0], "< a href='" + ary[0] + "'>" + ary[0] + "</a>");
 					ary = ptn.exec(text);
 				}
 				return ret;
