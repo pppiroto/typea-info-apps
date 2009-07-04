@@ -27,7 +27,7 @@
      			
      			var next_page = jsondata['next_page'];
      			if (next_page) {
-     				html += "<a href='javascript:search_twitter(\'" + next_page + "\');'>next</a>";
+     				html += "<a href='javascript:search_twitter(\"" + next_page + "\");'>next</a>";
      			}
      			
      			var results = jsondata['results'];
