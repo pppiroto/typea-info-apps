@@ -58,13 +58,16 @@
      				html +=     "<a href='" + result['source'] + "'>";
      				html +=       "<span style='color:#2FC2EF;font-weight:bold;'>" + result['from_user'] + ":</span>"
      				html +=     "</a>";
-     				html +=     toFuzzyUrlText(result['text']) + "</br>";
+     				html +=     createLink(result['text']) + "</br>";
      				html +=   "</td>";
      				html += "</tr>";
      			}
      			html += "</table>";
      			
      			document.getElementById('content_div').innerHTML = html;
+     		}
+     		function createLink(text) {
+     			return toUserUrlText(toFuzzyUrlText(text));
      		}
      		/** ちょっといい加減にURLをリンクに変更する関数 */
 			function toFuzzyUrlText(text) {
@@ -73,6 +76,17 @@
 				var ary = ptn.exec(text);
 				while(ary) {
 					ret = ret.replace(ary[0], "<a href='" + RegExp.$1 + "' target='_blank'>" + ary[0] + "</a>");
+					ary = ptn.exec(text);
+				}
+				return ret;
+			}
+     		/** ちょっといい加減にURLをリンクに変更する関数 */
+			function toUserUrlText(text) {
+				var ret = text;
+				var ptn = /(@.*?):/g;
+				var ary = ptn.exec(text);
+				while(ary) {
+					ret = ret.replace(ary[0], "<a href='http://twitter.com/" + RegExp.$1 + "' target='_blank'>" + ary[0] + "</a>");
 					ary = ptn.exec(text);
 				}
 				return ret;
