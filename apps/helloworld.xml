@@ -23,14 +23,14 @@
      			gadgets.io.makeRequest(url, searchResponse, params);
      		}
      		function searchResponse(responseObj) {
+     			var html = "";
      			var jsondata = responseObj.data
+     			var results = jsondata['results'];
+     			for (var i=0; i<results.length; i++) {
+     				html += results['text'] + "</br>";
      			
-				alert(jsondata);     			
-		      	var html = jsondata;
-		      	for ( p in jsondata) {
-		      		html += p + "<br/>";
-		      	}
-		      	document.getElementById('content_div').innerHTML = html;
+     			}
+     			document.getElementById('content_div').innerHTML = html;
 		      	
      		}
        	</script>
