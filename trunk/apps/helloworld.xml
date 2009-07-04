@@ -27,7 +27,9 @@
      			var jsondata = responseObj.data
      			var results = jsondata['results'];
      			for (var i=0; i<results.length; i++) {
-     				html += results[i]['text'] + "</br>";
+     				var result = results[i];
+     				html += "<img src='" + result['profile_image_url'] + "'/>";
+     				html += result['text'] + "</br>";
      			
      			}
      			document.getElementById('content_div').innerHTML = html;
