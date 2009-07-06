@@ -5,10 +5,12 @@
   </ModulePrefs> 
   <Content type="html">
      <![CDATA[ 
+		<!--
+    	    mixi アプリ : データ永続化サンプル
+    	    @author pppiroto@gmail.com
+    	    @see http://typea.info/tips/wiki.cgi?page=mixi+%A5%A2%A5%D7%A5%EA+%A5%C7%A1%BC%A5%BF%A4%CE%B1%CA%C2%B3%B2%BD
+		-->
      	<script type="text/javascript">
-     	    /**
-     	     * http://typea.info/tips/wiki.cgi?page=mixi+%A5%A2%A5%D7%A5%EA+%A5%C7%A1%BC%A5%BF%A4%CE%B1%CA%C2%B3%B2%BD
-     	     */
      	    var key1 = "key_memo";
      	    // 永続データ読み込み要求
 	        function loadRequest() {

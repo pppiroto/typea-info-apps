@@ -5,6 +5,11 @@
   </ModulePrefs> 
   <Content type="html">
      <![CDATA[ 
+		<!--
+    	    mixi アプリ : マイミクシィのリスト表示サンプル
+    	    @author pppiroto@gmail.com
+    	    @see http://typea.info/tips/wiki.cgi?page=mixi+%A5%A2%A5%D7%A5%EA+%A5%DE%A5%A4%A5%DF%A5%AF%A4%CE%A5%EA%A5%B9%A5%C8%C9%BD%BC%A8
+		-->
      	<script type="text/javascript">
 	        function request() {
 	        	var idspec = opensocial.newIdSpec({ "userId" : "VIEWER", "groupId" : "FRIENDS" });
