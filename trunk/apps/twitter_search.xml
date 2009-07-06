@@ -5,6 +5,13 @@
   </ModulePrefs> 
   <Content type="html">
      <![CDATA[
+		<!--
+    	    mixi アプリ : Twitter検索を行うサンプル
+    	    @author pppiroto@gmail.com
+    	    @see http://typea.info/tips/wiki.cgi?page=mixi+%A5%A2%A5%D7%A5%EA+Twitter+%B8%A1%BA%F7
+	     	@see http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-search
+	     	@see http://code.google.com/intl/ja/apis/gadgets/docs/remote-content.html#Fetch_JSON
+		-->
      	<style type="text/css">
 			a:active, a:hover, .b:active, .link:active {
 				color:#AAAAAA;
@@ -17,11 +24,6 @@
 			}     	
      	</style> 
      	<script type="text/javascript">
-	     	/**
-	     	 * mixi アプリ : Twitter 検索を行う
-	     	 * @see http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-search
-	     	 * @see http://code.google.com/intl/ja/apis/gadgets/docs/remote-content.html#Fetch_JSON
-	     	 */
 	     	function search_twitter(url) {
      			var baseurl = "http://search.twitter.com/search.json";
      			if (url) {
