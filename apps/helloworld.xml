@@ -22,7 +22,7 @@
 	     	 * @see http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-search
 	     	 * @see http://code.google.com/intl/ja/apis/gadgets/docs/remote-content.html#Fetch_JSON
 	     	 */
-     		function search_twitter(url) {
+	     	function search_twitter(url) {
      			var baseurl = "http://search.twitter.com/search.json";
      			if (url) {
      				url = baseurl + url;
@@ -34,6 +34,9 @@
 	    		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
      			gadgets.io.makeRequest(url, searchResponse, params);
      		}
+     		/**
+     		 * 検索結果処理
+     		 */
      		function searchResponse(responseObj) {
      			var html = "";
      			var jsondata = responseObj.data
@@ -43,7 +46,6 @@
      				html += "<a href='javascript:search_twitter(\"" + next_page + "\");'>next page</a>";
      				html += "<br/>";
      			}
-     			
      			var results = jsondata['results'];
      			html +="<table border='0'>";
      			for (var i=0; i<results.length; i++) {
