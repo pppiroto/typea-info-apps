@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<Module>
+  <ModulePrefs title="list_friends">
+  	<Require feature="opensocial-0.8"/>
+  </ModulePrefs> 
+  <Content type="html">
+     <![CDATA[ 
+     	<script type="text/javascript">
+	        function request() {
+	        	var idspec = opensocial.newIdSpec({ "userId" : "VIEWER", "groupId" : "FRIENDS" });
+				var req = opensocial.newDataRequest();
+				req.add(req.newFetchPeopleRequest(idspec), "friends");
+				req.send(response);
+	        }
+	        function response(dataResponse) {
+	        	var friends = dataResponse.get("friends").getData();
+	        	document.getElementById("friend_list").innerHTML = printFriendsList(friends);
+	        }
+	        function printFriendsList(friends) {
+				var html = "<table border='1'>";
+				html += "<tr><th>Image</th><th>NickName</th></tr>";
+				friends.each( function(friend) {
+					html += "<tr>";
+					html += "<td><img src='" + friend.getField("thumbnailUrl") + "'></td>";
+					html += "<td><a href='" + friend.getField("profileUrl") + "' target='_blank'>" + friend.getDisplayName() + "</a></td>";
+					html += "</tr>";
+				});
+				html += "</table>";
+				return html;
+	        }
+	        gadgets.util.registerOnLoadHandler(request);
+       	</script>
+       	<div id="friend_list"/>
+     ]]>
+  </Content> 
+</Module>
