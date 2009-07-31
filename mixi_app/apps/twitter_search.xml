@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<Module>
+  <ModulePrefs title="twitter search sample">
+  	<Require feature="opensocial-0.8"/>
+  </ModulePrefs> 
+  <Content type="html">
+     <![CDATA[
+		<!--
+    	    mixi アプリ : Twitter検索を行うサンプル
+    	    @author pppiroto@gmail.com
+    	    @see http://typea.info/tips/wiki.cgi?page=mixi+%A5%A2%A5%D7%A5%EA+Twitter+%B8%A1%BA%F7
+	     	@see http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-search
+	     	@see http://code.google.com/intl/ja/apis/gadgets/docs/remote-content.html#Fetch_JSON
+		-->
+     	<style type="text/css">
+			a:active, a:hover, .b:active, .link:active {
+				color:#AAAAAA;
+				text-decoration:underline;
+			}
+			a, .link {
+				color:#2694E8;
+				cursor:pointer;
+				text-decoration:none;
+			}     	
+     	</style> 
+     	<script type="text/javascript">
+	     	function search_twitter(url) {
+     			var baseurl = "http://search.twitter.com/search.json";
+     			if (url) {
+     				url = baseurl + url;
+     			} else {
+     				url = baseurl + makeHttpParam('q', true);
+				}
+     			var params = {};
+	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
+	    		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+     			gadgets.io.makeRequest(url, searchResponse, params);
+     		}
+     		/**
+     		 * 検索結果処理
+     		 */
+     		function searchResponse(responseObj) {
+     			var html = "";
+     			var jsondata = responseObj.data
+     			
+     			var next_page = jsondata['next_page'];
+     			if (next_page) {
+     				html += "<a href='javascript:search_twitter(\"" + next_page + "\");'>next page</a>";
+     				html += "<br/>";
+     			}
+     			var results = jsondata['results'];
+     			html +="<table border='0'>";
+     			for (var i=0; i<results.length; i++) {
+     				var result = results[i];
+     				html += "<tr style='font-size:small;'>";
+     				html +=   "<td>";
+     				html +=     "<a href='http://twitter.com/" + result['from_user'] + "' target='_blank'>";
+     				html +=         "<img src='" + result['profile_image_url'] + "' border='none'/>";
+     				html +=     "</a>";
+     				html +=   "</td>";
+     				html +=   "<td>";
+     				html +=     "<a href='http://twitter.com/" + result['from_user'] + "' target='_blank'>";
+     				html +=       "<span style='color:#2FC2EF;font-weight:bold;'>" + result['from_user'] + ":</span>"
+     				html +=     "</a>";
+     				html +=     createLink(result['text']) + "</br>";
+     				html +=   "</td>";
+     				html += "</tr>";
+     			}
+     			html += "</table>";
+     			
+     			document.getElementById('content_div').innerHTML = html;
+     		}
+     		function createLink(text) {
+     		    return toUserUrlText(toFuzzyUrlText(text + ' '));
+     		}
+     		/** ちょっといい加減にURLをリンクに変更する関数 */
+			function toFuzzyUrlText(text) {
+				var ret = text;
+				var ptn = /(http:\/\/.*?)[ $]/g; // 行末にマッチしない？？？
+				var ary = ptn.exec(text);
+				while(ary) {
+					ret = ret.replace(ary[0], "<a href='" + RegExp.$1 + "' target='_blank'>" + ary[0] + "</a>");
+					ary = ptn.exec(text);
+				}
+				return ret;
+			}
+     		/** ちょっといい加減にTwitter ID をリンクに変更する関数 */
+			function toUserUrlText(text) {
+				var ret = text;
+				var ptn = /@([A-Za-z]{1,}?):/g;
+				var ary = ptn.exec(text);
+				while(ary) {
+					ret = ret.replace(ary[0], "<a href='http://twitter.com/" + RegExp.$1 + "' target='_blank'>" + ary[0] + "</a>");
+					ary = ptn.exec(text);
+				}
+				return ret;
+			}
+			/**
+			 * HTTP GETリクエストパラメータを生成
+			 */
+     		function makeHttpParam(param_id, isFirstParam) {
+     			isFirstParam = !(isFirstParam == undefined);
+     			var paramObj = document.getElementById(param_id);
+				var ret = "";
+				if (paramObj != null) {
+	     			ret = ((isFirstParam)?"?":"&") + param_id + "="
+	     			     + encodeURIComponent(paramObj.value);
+    			}
+    			return ret;
+     		}
+       	</script>
+       	<input type="text" size="16" id="q"/><input type="button" name="search" value="twitter search" onclick="javascript:search_twitter();"/>
+       	<div id="content_div"/>
+     ]]>
+  </Content> 
+</Module>

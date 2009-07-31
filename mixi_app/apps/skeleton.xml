@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<Module>
+  <ModulePrefs title="skeleton">
+  	<Require feature="opensocial-0.8"/>
+  </ModulePrefs> 
+  <Content type="html">
+     <![CDATA[ 
+     	<script type="text/javascript">
+	        function request() {
+				var req = opensocial.newDataRequest();
+	        }
+	        function response(dataResponse) {
+	        }
+	        gadgets.util.registerOnLoadHandler(request);
+       	</script>
+     ]]>
+  </Content> 
+</Module>
