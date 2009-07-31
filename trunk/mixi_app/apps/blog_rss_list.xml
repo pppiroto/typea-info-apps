@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<Module>
+  <ModulePrefs title="rss_list">
+  	<Require feature="opensocial-0.8"/>
+  </ModulePrefs> 
+  <Content type="html">
+	<![CDATA[ 
+		<!--
+    	    mixi アプリ : ブログのRSSを表示するサンプル
+    	    http://typea.info/tips/wiki.cgi?page=mixi+%A5%A2%A5%D7%A5%EA+%A5%D6%A5%ED%A5%B0%A4%CERSS%A4%F2%C9%BD%BC%A8
+		-->
+	    <script type="text/javascript">
+    		function getMyBlogRss() {
+	    		var url = "http://typea.info/blg/glob/index.xml";
+	    		var params = {};
+	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
+	    		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.FEED;
+	    		params[gadgets.io.RequestParameters.NUM_ENTRIES] = new Number(10); 
+	    		 
+	    		gadgets.io.makeRequest(url,printRss,params);
+			}
+			    		
+			function printRss(response) {
+				var title_area = document.getElementById("title_area");
+				var feed_area  = document.getElementById("feed_area");
+				
+				var feed = response.data;
+				
+				title_area.innerHTML = "<h1><a href='" + feed.Link + "'>" + feed.Title + "</a></h1>"
+			
+				var buf = "";
+				var entries = feed.Entry;
+				for (var i=0; i<entries.length; i++) {
+					var entry = entries[i];
+					buf += "<a href='" + entry.Link + "'>" + entry.Title + "</a><br/>";
+				}			
+				feed_area.innerHTML = buf;
+			}			    		
+			gadgets.util.registerOnLoadHandler(getMyBlogRss);
+		</script>
+		<div id="title_area"></div>
+		<div id="feed_area"></div>
+	]]>
+  </Content> 
+</Module>
