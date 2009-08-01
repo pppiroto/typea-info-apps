@@ -139,7 +139,7 @@
      		}
      		
      		/* 初期検索 */
-     		fuction initialSearch() {
+     		function initialSearch() {
      			keyword = 'mixi';
      			document.getElementById('q').value = keyword;
      			search_amazon();
