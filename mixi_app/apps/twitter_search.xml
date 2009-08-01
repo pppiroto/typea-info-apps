@@ -137,6 +137,15 @@
     			}
     			return ret;
      		}
+     		
+     		/* 初期検索 */
+     		fuction initialSearch() {
+     			keyword = 'mixi'
+     			document.getElemnetById('q').value = keyword;
+     			javascript:search_amazon();
+     			javascript:search_twitter();
+     		}
+     		gadgets.util.registerOnLoadHandler(initialSearch);
        	</script>
        	<input type="text" size="16" id="q"/><input type="button" name="search" value="twitter search" onclick="javascript:search_amazon();javascript:search_twitter();"/>
        	<div id="amazon"></div>
