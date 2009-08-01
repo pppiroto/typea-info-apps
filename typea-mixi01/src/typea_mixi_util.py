@@ -1,3 +1,6 @@
+#!Python2.6
+# -*- coding: utf-8 -*-
+
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 
@@ -72,11 +75,19 @@ class AmazonItemSearch(webapp.RequestHandler):
     
     def get(self):
         del item_list[:]
-        keyword = self.request.get('q')
-        #self.response.headers['Content-Type'] = 'text/plain'
+        #keyword = self.request.get('q')
+        keyword = ''
+        queries = self.request.query_string.split('&')
+        for query in queries:
+            pair = query.split('=')
+            if pair[0] == 'q':
+                keyword = pair[1]
+                break;
         
+        keyword = urllib2.unquote(keyword).encode('utf-8')
+    
         operation = amazon_ecs.ItemSearch()
-        operation.keywords(urllib2.unquote(keyword))
+        operation.keywords(keyword)
         operation.search_index('Books')
         operation.response_group('Small')
         request = operation.request()
