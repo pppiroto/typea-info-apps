@@ -69,10 +69,4 @@ class ItemSearch(Operation):
         self.set_parameter('SearchIndex', value, remove)
 
 
-request = ItemSearch()
-request.keywords('手塚　治虫')
-request.search_index('Books')
-request.response_group('Reviews')
-print request.request()
-
     
