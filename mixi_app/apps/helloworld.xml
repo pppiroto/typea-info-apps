@@ -36,8 +36,9 @@
      		function amazonResponse(responseObj) {
      			var html = responseObj.data;
      			if (html) {
-     				document.getElementById('amazon').innerHTML = html;
+     				html = "";
      			}
+     			document.getElementById('amazon').innerHTML = html;
      		}
 
 	     	/**
@@ -116,6 +117,7 @@
 				}
 				return ret;
 			}
+			
 			/**
 			 * HTTP GETリクエストパラメータを生成
 			 */
