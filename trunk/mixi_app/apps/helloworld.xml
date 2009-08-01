@@ -21,7 +21,7 @@
      			var url = "http://typea-mixi01.appspot.com/am_is"
      			            +  makeHttpParam('q', true);
 
-				document.getElementById('amazon').innerHTML = baseurl;
+				document.getElementById('amazon').innerHTML = url;
 
      			var params = {};
 	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
