@@ -67,7 +67,7 @@
      			
      			var next_page = jsondata['next_page'];
      			if (next_page) {
-     				html += "<a href='javascript:search_twitter(\"" + next_page + "\");'>&lt;&lt;&nbsp;next page</a>";
+     				html += "<a href='javascript:search_twitter(\"" + next_page + "\");'>&gt;&gt;&nbsp;next page</a>";
      				html += "<br/>";
      			}
      			var results = jsondata['results'];
