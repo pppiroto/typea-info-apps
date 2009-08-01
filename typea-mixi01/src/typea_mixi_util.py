@@ -76,7 +76,7 @@ def CharacterDataHandler(data):
 
 class MainPage(webapp.RequestHandler):
     def get(self):
-        self.response.headers['Content-Type'] = 'text/plain'
+        self.redirect('/am_is?q=amazon')
 
 class AmazonItemSearch(webapp.RequestHandler):
     ''' Amazon Product Advertising API を利用し、キーワード検索を行う
@@ -104,6 +104,8 @@ class AmazonItemSearch(webapp.RequestHandler):
         #@see http://www.findxfine.com/default/495.html
         #FireFox のアドレスバーに漢字を打つとUTF-8でないコードにエンコードされてしまう？
         keyword = urllib2.unquote(keyword) #.encode('utf-8')
+        if keyword == '':
+            keyword = 'amazon'
     
         operation = amazon_ecs.ItemSearch()
         operation.keywords(keyword)
