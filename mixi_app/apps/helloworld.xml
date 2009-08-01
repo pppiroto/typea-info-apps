@@ -19,10 +19,10 @@
      	<script type="text/javascript">
 	     	function search_amazon() {
      			var url = "http://typea-mixi01.appspot.com/am_is"
-     			            +  encodeURIComponent(makeHttpParam('q', true));
-
+     			            +  makeHttpParam('q', true);
+				alert(url);
 				document.getElementById('amazon').innerHTML = url;
-
+	
      			var params = {};
 	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
 	    		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.TEXT;
