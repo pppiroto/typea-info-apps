@@ -142,8 +142,8 @@
      		fuction initialSearch() {
      			keyword = 'mixi'
      			document.getElemnetById('q').value = keyword;
-     			javascript:search_amazon();
-     			javascript:search_twitter();
+     			search_amazon();
+     			search_twitter();
      		}
      		gadgets.util.registerOnLoadHandler(initialSearch);
        	</script>
