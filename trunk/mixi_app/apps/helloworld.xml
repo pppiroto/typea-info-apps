@@ -20,7 +20,6 @@
 	     	function search_amazon() {
      			var url = "http://typea-mixi01.appspot.com/am_is"
      			            +  makeHttpParam('q', true);
-				alert(url);
 				document.getElementById('amazon').innerHTML = url;
 	
      			var params = {};
