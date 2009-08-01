@@ -17,6 +17,22 @@
 			}     	
      	</style> 
      	<script type="text/javascript">
+	     	function search_amazon() {
+     			var baseurl = "http://typea-mixi01.appspot.com/am_is";
+
+     			var params = {};
+	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
+	    		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.TEXT;
+     			gadgets.io.makeRequest(url, amazonResponse, params);
+     		}
+     		/**
+     		 * 検索結果処理
+     		 */
+     		function amazonResponse(responseObj) {
+     			var html = "";
+     			document.getElementById('amazon').innerHTML = responseObj.data;
+     		}
+
 	     	/**
 	     	 * mixi アプリ :
 	     	 * @see http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-search
@@ -107,7 +123,8 @@
     			return ret;
      		}
        	</script>
-       	<input type="text" size="16" id="q"/><input type="button" name="search" value="twitter search" onclick="javascript:search_twitter();"/>
+       	<input type="text" size="16" id="q"/><input type="button" name="search" value="twitter search" onclick="javascript:search_twitter();javascript:search_amazon()"/>
+       	<div id="amazon"/>
        	<div id="content_div"/>
      ]]>
   </Content> 
