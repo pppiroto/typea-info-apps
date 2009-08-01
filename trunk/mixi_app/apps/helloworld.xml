@@ -75,12 +75,12 @@
      				var result = results[i];
      				html += "<tr style='font-size:small;'>";
      				html +=   "<td>";
-     				html +=     "<a href='" + result['source'] + "'>";
+     				html +=     "<a href='http://twitter.com/" + result['from_user'] + "' target='_blank'>";
      				html +=         "<img src='" + result['profile_image_url'] + "' border='none'/>";
      				html +=     "</a>";
      				html +=   "</td>";
      				html +=   "<td>";
-     				html +=     "<a href='" + result['source'] + "'>";
+     				html +=     "<a href='http://twitter.com/" + result['from_user'] + "' target='_blank'>";
      				html +=       "<span style='color:#2FC2EF;font-weight:bold;'>" + result['from_user'] + ":</span>"
      				html +=     "</a>";
      				html +=     createLink(result['text']) + "</br>";
@@ -92,12 +92,12 @@
      			document.getElementById('content_div').innerHTML = html;
      		}
      		function createLink(text) {
-     			return toUserUrlText(toFuzzyUrlText(text));
+     		    return toUserUrlText(toFuzzyUrlText(text + ' '));
      		}
      		/** ちょっといい加減にURLをリンクに変更する関数 */
 			function toFuzzyUrlText(text) {
 				var ret = text;
-				var ptn = /(http:\/\/.*)[^ $]/g;
+				var ptn = /(http:\/\/.*?)[ $]/g; // 行末にマッチしない？？？
 				var ary = ptn.exec(text);
 				while(ary) {
 					ret = ret.replace(ary[0], "<a href='" + RegExp.$1 + "' target='_blank'>" + ary[0] + "</a>");
@@ -105,7 +105,7 @@
 				}
 				return ret;
 			}
-     		/** ちょっといい加減にURLをリンクに変更する関数 */
+     		/** ちょっといい加減にTwitter ID をリンクに変更する関数 */
 			function toUserUrlText(text) {
 				var ret = text;
 				var ptn = /@([A-Za-z]{1,}?):/g;
