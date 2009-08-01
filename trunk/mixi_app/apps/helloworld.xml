@@ -7,7 +7,7 @@
      <![CDATA[
      	<style type="text/css">
 			a:active, a:hover, .b:active, .link:active {
-				color:#AAAAAA;
+				color:#aaaaaa;
 				text-decoration:underline;
 			}
 			a, .link {
@@ -76,7 +76,7 @@
      			html +="<table border='0'>";
      			for (var i=0; i<results.length; i++) {
      				var result = results[i];
-     				html += "<tr style='font-size:small;" + ((i % 2 == 0)?"":"background-color:#BBFFFF")+ "'>";
+     				html += "<tr style='font-size:small;" + ((i % 2 == 0)?"":"background-color:#dfffff")+ "'>";
      				html +=   "<td>";
      				html +=     "<a href='http://twitter.com/" + result['from_user'] + "' target='_blank'>";
      				html +=         "<img src='" + result['profile_image_url'] + "' border='none'/>";
