@@ -34,8 +34,10 @@
      		 * 検索結果処理
      		 */
      		function amazonResponse(responseObj) {
-     			var html = "";
-     			document.getElementById('amazon').innerHTML = responseObj.data;
+     			var html = responseObj.data;
+     			if (html) {
+     				document.getElementById('amazon').innerHTML = html;
+     			}
      		}
 
 	     	/**
