@@ -147,10 +147,10 @@
      		}
      		gadgets.util.registerOnLoadHandler(initialSearch);
        	</script>
-       	<form>
-       	<input type="text" size="16" id="q"/><input type="submit" name="search" value="twitter search" onclick="javascript:search_amazon();javascript:search_twitter();"/>
-	       	<div id="amazon"></div>
-	       	<div id="content_div"></div>
+       	<form onsubmit="javascript:search_amazon();javascript:search_twitter();">
+       	  <input type="text" size="16" id="q"/><input type="submit" name="search" value="twitter search"/>
+	      <div id="amazon"></div>
+	      <div id="content_div"></div>
        	</form>
      ]]>
   </Content> 
