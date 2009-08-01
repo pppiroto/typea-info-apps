@@ -21,6 +21,8 @@
      			var baseurl = "http://typea-mixi01.appspot.com/am_is"
      			            +  makeHttpParam('q', true);
 
+				document.getElementById('amazon').innerHTML = baseurl;
+
      			var params = {};
 	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
 	    		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.TEXT;
@@ -126,7 +128,7 @@
     			return ret;
      		}
        	</script>
-       	<input type="text" size="16" id="q"/><input type="button" name="search" value="twitter search" onclick="javascript:search_twitter();javascript:search_amazon()"/>
+       	<input type="text" size="16" id="q"/><input type="button" name="search" value="twitter search" onclick="javascript:search_amazon();javascript:search_twitter();"/>
        	<div id="amazon">test amazon</div>
        	<div id="content_div"/>
      ]]>
