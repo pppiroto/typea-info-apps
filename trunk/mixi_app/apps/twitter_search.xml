@@ -140,8 +140,8 @@
      		
      		/* 初期検索 */
      		fuction initialSearch() {
-     			keyword = 'mixi'
-     			document.getElemnetById('q').value = keyword;
+     			keyword = 'mixi';
+     			document.getElementById('q').value = keyword;
      			search_amazon();
      			search_twitter();
      		}
