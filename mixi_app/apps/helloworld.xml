@@ -34,9 +34,9 @@
      		 * 検索結果処理
      		 */
      		function amazonResponse(responseObj) {
-     			var html = responseObj.data;
-     			if (html) {
-     				html = "";
+     			var html = "";
+     			if (!responseObj.data) {
+     				html = responseObj.data;
      			}
      			document.getElementById('amazon').innerHTML = html;
      		}
