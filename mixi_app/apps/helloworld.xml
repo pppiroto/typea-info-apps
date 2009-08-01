@@ -18,7 +18,7 @@
      	</style> 
      	<script type="text/javascript">
 	     	function search_amazon() {
-     			var baseurl = "http://typea-mixi01.appspot.com/am_is"
+     			var url = "http://typea-mixi01.appspot.com/am_is"
      			            +  makeHttpParam('q', true);
 
 				document.getElementById('amazon').innerHTML = baseurl;
