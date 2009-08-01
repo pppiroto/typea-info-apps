@@ -8,17 +8,23 @@ import amazon_ecs
 import urllib2
 import xml.parsers.expat
 
+# XMLParser(SAX)の状態制御
 proc_start = False
 img_start = False
 now_key = ''
 item_list = []
 
 class SearchedItem:
+    ''' Amazon ItemSearch Operation の結果格納  '''
     asin = ''
     detailPageURL = ''
     smallImageURL = ''
 
 def StartElementHandler(name, attributes):
+    ''' xml.parsers.expat XMLParser のハンドラ
+                要素の開始を処理するごとに呼び出される
+        @see http://www.python.jp/doc/release/lib/xmlparser-objects.html
+    '''
     global proc_start
     global img_start
     global now_key
@@ -35,6 +41,10 @@ def StartElementHandler(name, attributes):
             now_key = name
 
 def EndElementHandler(name):
+    ''' xml.parsers.expat XMLParser のハンドラ
+                要素の終端を処理するごとに呼び出される
+        @see http://www.python.jp/doc/release/lib/xmlparser-objects.html
+    '''
     global proc_start
     global img_start
     
@@ -44,6 +54,10 @@ def EndElementHandler(name):
         img_start = False
 
 def CharacterDataHandler(data):
+    ''' xml.parsers.expat XMLParser のハンドラ
+                文字データを処理するときに呼びだされる
+        @see http://www.python.jp/doc/release/lib/xmlparser-objects.html
+    '''
     global proc_start
     global img_start
     global now_key
@@ -65,9 +79,9 @@ class MainPage(webapp.RequestHandler):
         self.response.headers['Content-Type'] = 'text/plain'
 
 class AmazonItemSearch(webapp.RequestHandler):
-    """
-    example http://typea-mixi01.appspot.com/am_is?q=book
-    """
+    ''' Amazon Product Advertising API を利用し、キーワード検索を行う
+        example http://typea-mixi01.appspot.com/am_is?q=book
+    '''
     proc_start = False
     img_start = False
     now_key = ''
@@ -75,6 +89,8 @@ class AmazonItemSearch(webapp.RequestHandler):
     
     def get(self):
         del item_list[:]
+
+        #パラメータの切り出し request.getが機能しない
         #keyword = self.request.get('q')
         keyword = ''
         queries = self.request.query_string.split('&')
@@ -83,22 +99,26 @@ class AmazonItemSearch(webapp.RequestHandler):
             if pair[0] == 'q':
                 keyword = pair[1]
                 break;
-        
-        keyword = urllib2.unquote(keyword).encode('utf-8')
+
+        #パラメータのデコード
+        #@see http://www.findxfine.com/default/495.html
+        #FireFox のアドレスバーに漢字を打つとUTF-8でないコードにエンコードされてしまう？
+        keyword = urllib2.unquote(keyword) #.encode('utf-8')
     
         operation = amazon_ecs.ItemSearch()
         operation.keywords(keyword)
         operation.search_index('Books')
         operation.response_group('Small')
         request = operation.request()
-        
-        f = urllib2.urlopen(request)
 
+        # XMLParserの生成とハンドラのセット
         p = xml.parsers.expat.ParserCreate()
         p.StartElementHandler = StartElementHandler
         p.EndElementHandler = EndElementHandler
         p.CharacterDataHandler = CharacterDataHandler
-        
+
+        # リクエストの実行と解析
+        f = urllib2.urlopen(request)
         p.Parse(f.read())
         
         for itm in item_list:
