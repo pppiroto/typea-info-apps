@@ -29,16 +29,7 @@
             }       
         </style> 
         <script type="text/javascript">
-			$(document).ready(function(){
-			  alert('test');
-			  // 偶数行の色を設定
-			  $('table#stripe-table tr:even').css('background-color', '#666');
-			  // 奇数行の色を設定
-			  $('table#stripe-table tr:odd').css('background-color', '#333');
-			});
-
-        
-            /**
+		    /**
              * Amazon Web Services 検索処理
              */
             function search_amazon() {
@@ -118,6 +109,7 @@
                 html += html_next;
                 
                 document.getElementById('content_div').innerHTML = html;
+        		$('table#stripe-table tr:even').css('background-color', '#dfffff');
             }
             function createLink(text) {
                 return toUserUrlText(toFuzzyUrlText(text + ' '));
