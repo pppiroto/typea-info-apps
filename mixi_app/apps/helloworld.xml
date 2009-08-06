@@ -2,7 +2,17 @@
 <Module>
   <ModulePrefs title="twitter search sample">
     <Require feature="opensocial-0.8"/>
-     
+     <!-- 
+        OpenSocialコンテナにスクリプトをキャッシュさせない
+     	http://www.ark-web.jp/sandbox/wiki/3250.html
+     	http://orkutdeveloper.blogspot.com/2008/06/rewriting-returns-to-sandbox.html
+      -->
+     <Optional feature="content-rewrite">  
+       <Param name="expires">0</Param>  
+       <Param name="include-urls"></Param>  
+       <Param name="exclude-urls">.*</Param>  
+       <Param name="include-tags"></Param>
+     </Optional> 
   </ModulePrefs> 
   <Content type="html">
      <![CDATA[
