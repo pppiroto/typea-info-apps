@@ -110,7 +110,7 @@
                 html += html_next;
                 
                 document.getElementById('content_div').innerHTML = html;
-        		$('table#twitter tr:even').css('background-color', '#dfffff');
+        		$('table#twitter tr:odd').css('background-color', '#dfffff');
             }
             function createLink(text) {
                 return toUserUrlText(toFuzzyUrlText(text + ' '));
