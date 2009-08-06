@@ -16,7 +16,12 @@
                 text-decoration:none;
             }       
         </style> 
+        <script type="text/javascript" src="http://typea-mixi01.appspot.com/js/jquery-1.3.2.js"></script>
         <script type="text/javascript">
+        	$(document).ready(function() {
+        		$('table#strip-table tr:even').css('background-color', 'red'); //'#dfffff');
+        	});
+        
             /**
              * Amazon Web Services 検索処理
              */
@@ -79,7 +84,7 @@
                 html +="<table border='0'>";
                 for (var i=0; i<results.length; i++) {
                     var result = results[i];
-                    html += "<tr style='font-size:small;" + ((i % 2 == 0)?"":"background-color:#dfffff")+ "'>";
+                    html += "<tr style='font-size:small;'>";
                     html +=   "<td>";
                     html +=     "<a href='http://twitter.com/" + result['from_user'] + "' target='_blank'>";
                     html +=         "<img src='" + result['profile_image_url'] + "' border='none'/>";
