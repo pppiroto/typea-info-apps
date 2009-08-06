@@ -5,9 +5,16 @@
   </ModulePrefs> 
   <Content type="html">
      <![CDATA[
+		<!--
+    	    mixi アプリ : Twitter検索を行うサンプル
+    	    @author pppiroto@gmail.com
+    	    @see http://typea.info/tips/wiki.cgi?page=mixi+%A5%A2%A5%D7%A5%EA+Twitter+%B8%A1%BA%F7
+	     	@see http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-search
+	     	@see http://code.google.com/intl/ja/apis/gadgets/docs/remote-content.html#Fetch_JSON
+		-->
      	<style type="text/css">
 			a:active, a:hover, .b:active, .link:active {
-				color:#aaaaaa;
+				color:#AAAAAA;
 				text-decoration:underline;
 			}
 			a, .link {
@@ -17,37 +24,6 @@
 			}     	
      	</style> 
      	<script type="text/javascript">
-     		/**
-     		 * Amazon Web Services 検索処理
-     		 */
-	     	function search_amazon() {
-     			var url = "http://typea-mixi01.appspot.com/am_is"
-     			            +  makeHttpParam('q', true);
-				document.getElementById('amazon').innerHTML = url;
-	
-     			var params = {};
-	    		params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
-	    		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.TEXT;
-     			gadgets.io.makeRequest(url, amazonResponse, params);
-     			
-     			document.getElementById('amazon').innerHTML = "now seaching・・・"
-     		}
-     		/**
-     		 * Amazon Web Services 検索結果処理
-     		 */
-     		function amazonResponse(responseObj) {
-     			var html = "";
-     			if (responseObj.data != null) {
-     				html = responseObj.data;
-     			}
-     			document.getElementById('amazon').innerHTML = html;
-     		}
-
-	     	/**
-	     	 * Twitter 検索処理
-	     	 * @see http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-search
-	     	 * @see http://code.google.com/intl/ja/apis/gadgets/docs/remote-content.html#Fetch_JSON
-	     	 */
 	     	function search_twitter(url) {
      			var baseurl = "http://search.twitter.com/search.json";
      			if (url) {
@@ -60,26 +36,23 @@
 	    		params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
      			gadgets.io.makeRequest(url, searchResponse, params);
      		}
-
      		/**
-     		 * Twitter 検索結果処理
+     		 * 検索結果処理
      		 */
      		function searchResponse(responseObj) {
      			var html = "";
      			var jsondata = responseObj.data
      			
      			var next_page = jsondata['next_page'];
-     			var html_next = "";
      			if (next_page) {
-     				html_next = "<a href='javascript:search_twitter(\"" + next_page + "\");'>&gt;&gt;&nbsp;next page</a>"
-     				          + "<br/>";
-     				html += html_next
+     				html += "<a href='javascript:search_twitter(\"" + next_page + "\");'>next page</a>";
+     				html += "<br/>";
      			}
      			var results = jsondata['results'];
      			html +="<table border='0'>";
      			for (var i=0; i<results.length; i++) {
      				var result = results[i];
-     				html += "<tr style='font-size:small;" + ((i % 2 == 0)?"":"background-color:#dfffff")+ "'>";
+     				html += "<tr style='font-size:small;'>";
      				html +=   "<td>";
      				html +=     "<a href='http://twitter.com/" + result['from_user'] + "' target='_blank'>";
      				html +=         "<img src='" + result['profile_image_url'] + "' border='none'/>";
@@ -94,7 +67,6 @@
      				html += "</tr>";
      			}
      			html += "</table>";
-     			html += html_next;
      			
      			document.getElementById('content_div').innerHTML = html;
      		}
@@ -123,7 +95,6 @@
 				}
 				return ret;
 			}
-			
 			/**
 			 * HTTP GETリクエストパラメータを生成
 			 */
@@ -138,8 +109,7 @@
     			return ret;
      		}
        	</script>
-       	<input type="text" size="16" id="q"/><input type="button" name="search" value="twitter search" onclick="javascript:search_amazon();javascript:search_twitter();"/>
-       	<div id="amazon"></div>
+       	<input type="text" size="16" id="q"/><input type="button" name="search" value="twitter search" onclick="javascript:search_twitter();"/>
        	<div id="content_div"/>
      ]]>
   </Content> 
