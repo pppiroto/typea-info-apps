@@ -2,10 +2,15 @@
 <Module>
   <ModulePrefs title="twitter search sample">
     <Require feature="opensocial-0.8"/>
+     <!-- 
+     	http://www.ark-web.jp/sandbox/wiki/3250.html
+     	http://orkutdeveloper.blogspot.com/2008/06/rewriting-returns-to-sandbox.html
+      -->
      <Optional feature="content-rewrite">  
        <Param name="expires">0</Param>  
        <Param name="include-urls"></Param>  
        <Param name="exclude-urls">.*</Param>  
+       <Param name="include-tags"></Param>
      </Optional>      
   </ModulePrefs> 
   <Content type="html">
@@ -25,9 +30,13 @@
             }       
         </style> 
         <script type="text/javascript">
-        	$(document).ready(function() {
-        		$('table#strip-table tr:even').css('background-color', 'red'); //'#dfffff');
-        	});
+			$(document).ready(function(){
+			  // 偶数行の色を設定
+			  $('table#stripe-table tr:even').css('background-color', '#666');
+			  // 奇数行の色を設定
+			  $('table#stripe-table tr:odd').css('background-color', '#333');
+			});
+
         
             /**
              * Amazon Web Services 検索処理
