@@ -88,7 +88,7 @@
                     html += html_next
                 }
                 var results = jsondata['results'];
-                html +="<table border='0'>";
+                html +="<table border='0' id='twitter'>";
                 for (var i=0; i<results.length; i++) {
                     var result = results[i];
                     html += "<tr style='font-size:small;'>";
@@ -109,7 +109,7 @@
                 html += html_next;
                 
                 document.getElementById('content_div').innerHTML = html;
-        		$('table#stripe-table tr:even').css('background-color', '#dfffff');
+        		$('table#twitter tr:even').css('background-color', '#dfffff');
             }
             function createLink(text) {
                 return toUserUrlText(toFuzzyUrlText(text + ' '));
