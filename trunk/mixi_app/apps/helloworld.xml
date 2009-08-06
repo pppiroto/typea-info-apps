@@ -29,12 +29,6 @@
             }       
         </style> 
         <script type="text/javascript">
-			$(document).ready(function(){
-			  // 偶数行の色を設定
-			  $('table#twitter tr:even').css('background-color', '#666');
-			  // 奇数行の色を設定
-			  $('table#twitter tr:odd').css('background-color', '#333');
-			});
         
 		    /**
              * Amazon Web Services 検索処理
@@ -116,7 +110,7 @@
                 html += html_next;
                 
                 document.getElementById('content_div').innerHTML = html;
-        		// $('table#twitter tr:even').css('background-color', '#dfffff');
+        		$('table#twitter tr:even').css('background-color', '#dfffff');
             }
             function createLink(text) {
                 return toUserUrlText(toFuzzyUrlText(text + ' '));
