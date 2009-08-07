@@ -24,9 +24,7 @@
                 gadgets.io.makeRequest(tw.search_url(p), response, params);
 	        }
 	        function response(dataResponse) {
-	        	alert(dataResponse);
 	        	var jsondata = dataResponse.data;
-	        	alert(tw.json_to_html(jsondata));
 	        	$('#content').html(tw.json_to_html(jsondata));
 	        }
 	        gadgets.util.registerOnLoadHandler(request);
