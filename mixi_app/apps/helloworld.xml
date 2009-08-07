@@ -34,6 +34,13 @@
              * Amazon Web Services 検索処理
              */
             function search_amazon() {
+                var msg = gadgets.MiniMessage();
+                var staticMsg = msg.createStaticMessage("now searching...");
+                staticMsg.style.cursor = "pointer";
+				staticMsg.onclick = function() {
+					msg.dismissMessage(staticMsg);
+				};
+
                 var url = "http://typea-mixi01.appspot.com/am_is"
                             +  makeHttpParam('q', true);
                 document.getElementById('amazon').innerHTML = url;
@@ -45,13 +52,6 @@
                 
                 document.getElementById('amazon').innerHTML = "now seaching・・・"
                 
-                
-                var msg = gadgets.MiniMessage();
-                var staticMsg = msg.createStaticMessage("now searching...");
-                staticMsg.style.cursor = "pointer";
-				staticMsg.onclick = function() {
-					msg.dismissMessage(staticMsg);
-				};
             }
             /**
              * Amazon Web Services 検索結果処理
