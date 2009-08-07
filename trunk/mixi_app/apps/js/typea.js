@@ -66,7 +66,7 @@ TwitterUtil.prototype = {
             html +=     "<a href='http://twitter.com/" + result['from_user'] + "' target='_blank'>";
             html +=       "<span style='color:#2FC2EF;font-weight:bold;'>" + result['from_user'] + ":</span>"
             html +=     "</a>";
-            html +=     createLink(result['text']) + "</br>";
+            html +=     this.createLink(result['text']) + "</br>";
             html +=   "</td>";
             html += "</tr>";
         }
