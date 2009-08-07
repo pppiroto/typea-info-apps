@@ -36,7 +36,11 @@
              * Amazon Web Services 検索処理
              */
             function search_amazon() {
-                msg.createDismissibleMessage("Please close me when you're done reading me.");
+                var staticMsg = msg.createStaticMessage("now searching...");
+                staticMsg.style.cursor = "pointer";
+				staticMsg.onclick = function() {
+					msg.dismissMessage(staticMsg);
+				};
 
                 var url = "http://typea-mixi01.appspot.com/am_is"
                             +  makeHttpParam('q', true);
