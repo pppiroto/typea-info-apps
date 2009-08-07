@@ -29,7 +29,7 @@
             }       
         </style> 
         <script type="text/javascript">
-        
+        	
 		    /**
              * Amazon Web Services 検索処理
              */
@@ -44,6 +44,14 @@
                 gadgets.io.makeRequest(url, amazonResponse, params);
                 
                 document.getElementById('amazon').innerHTML = "now seaching・・・"
+                
+                
+                var msg = gadgets.MiniMessage();
+                var staticMsg = msg.createStaticMessage("now searching...");
+                staticMsg.style.cursor = "pointer";
+				staticMsg.onclick = function() {
+					msg.dismissMessage(staticMsg);
+				};
             }
             /**
              * Amazon Web Services 検索結果処理
