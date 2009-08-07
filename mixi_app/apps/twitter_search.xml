@@ -2,11 +2,24 @@
 <Module>
   <ModulePrefs title="twitter search sample">
     <Require feature="opensocial-0.8"/>
+     <!-- 
+        OpenSocialコンテナにスクリプトをキャッシュさせない
+     	http://www.ark-web.jp/sandbox/wiki/3250.html
+     	http://orkutdeveloper.blogspot.com/2008/06/rewriting-returns-to-sandbox.html
+      -->
+    <Optional feature="content-rewrite">  
+      <Param name="expires">0</Param>  
+      <Param name="include-urls"></Param>  
+      <Param name="exclude-urls">.*</Param>  
+      <Param name="include-tags"></Param>
+    </Optional> 
+    <Require feature="minimessage" />
   </ModulePrefs> 
   <Content type="html">
      <![CDATA[
+        <script type="text/javascript" src="http://typea-mixi01.appspot.com/js/jquery-1.3.2.js"></script>
         <style type="text/css">
-            a:active, a:hover, .b:active, .link:active {
+        	a:active, a:hover, .b:active, .link:active {
                 color:#aaaaaa;
                 text-decoration:underline;
             }
@@ -17,7 +30,10 @@
             }       
         </style> 
         <script type="text/javascript">
-            /**
+        	var msg = new gadgets.MiniMessage(__MODULE_ID__);
+        	var staticMsg = null;
+        	
+		    /**
              * Amazon Web Services 検索処理
              */
             function search_amazon() {
@@ -29,8 +45,6 @@
                 params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
                 params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.TEXT;
                 gadgets.io.makeRequest(url, amazonResponse, params);
-                
-                document.getElementById('amazon').innerHTML = "now seaching・・・"
             }
             /**
              * Amazon Web Services 検索結果処理
@@ -49,6 +63,8 @@
              * @see http://code.google.com/intl/ja/apis/gadgets/docs/remote-content.html#Fetch_JSON
              */
             function search_twitter(url) {
+                staticMsg = msg.createStaticMessage("now searching...");
+                
                 var baseurl = "http://search.twitter.com/search.json";
                 if (url) {
                     url = baseurl + url;
@@ -76,10 +92,10 @@
                     html += html_next
                 }
                 var results = jsondata['results'];
-                html +="<table border='0'>";
+                html +="<table border='0' id='twitter'>";
                 for (var i=0; i<results.length; i++) {
                     var result = results[i];
-                    html += "<tr style='font-size:small;" + ((i % 2 == 0)?"":"background-color:#dfffff")+ "'>";
+                    html += "<tr style='font-size:small;'>";
                     html +=   "<td>";
                     html +=     "<a href='http://twitter.com/" + result['from_user'] + "' target='_blank'>";
                     html +=         "<img src='" + result['profile_image_url'] + "' border='none'/>";
@@ -97,6 +113,9 @@
                 html += html_next;
                 
                 document.getElementById('content_div').innerHTML = html;
+        		$('table#twitter tr:odd').css('background-color', '#dfffff');
+				
+				msg.dismissMessage(staticMsg);
             }
             function createLink(text) {
                 return toUserUrlText(toFuzzyUrlText(text + ' '));
