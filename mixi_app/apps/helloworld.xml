@@ -13,6 +13,7 @@
        <Param name="exclude-urls">.*</Param>  
        <Param name="include-tags"></Param>
      </Optional> 
+     <Require feature="minimessage" />
   </ModulePrefs> 
   <Content type="html">
      <![CDATA[
