@@ -14,7 +14,7 @@
      	<script type="text/javascript" src="http://code.google.com/p/typea-info-apps/source/browse/trunk/mixi_app/apps/js/typea-twitter.js"></script>
      	
      	<script type="text/javascript">
-     		vat tw = new TwitterUtil();
+     		var tw = new TwitterUtil();
      		function request() {
 				var req = opensocial.newDataRequest();
 				alert(tw.search_url());
