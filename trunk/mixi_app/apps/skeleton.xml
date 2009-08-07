@@ -2,10 +2,16 @@
 <Module>
   <ModulePrefs title="skeleton">
   	<Require feature="opensocial-0.8"/>
+    <Optional feature="content-rewrite">  
+      <Param name="include-urls"></Param>  
+      <Param name="exclude-urls">.*</Param>  
+      <Param name="include-tags"></Param>
+    </Optional> 
   </ModulePrefs> 
   <Content type="html">
      <![CDATA[ 
-     	<script type="text/javascript">
+     	<script type="text/javascript" src="http://typea-mixi01.appspot.com/js/jquery-1.3.2.js"></script>
+        <script type="text/javascript">
 	        function request() {
 				var req = opensocial.newDataRequest();
 	        }
