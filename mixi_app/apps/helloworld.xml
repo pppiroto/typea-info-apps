@@ -7,19 +7,19 @@
      	http://www.ark-web.jp/sandbox/wiki/3250.html
      	http://orkutdeveloper.blogspot.com/2008/06/rewriting-returns-to-sandbox.html
       -->
-     <Optional feature="content-rewrite">  
-       <Param name="expires">0</Param>  
-       <Param name="include-urls"></Param>  
-       <Param name="exclude-urls">.*</Param>  
-       <Param name="include-tags"></Param>
-     </Optional> 
-     <Require feature="minimessage" />
+    <Optional feature="content-rewrite">  
+      <Param name="expires">0</Param>  
+      <Param name="include-urls"></Param>  
+      <Param name="exclude-urls">.*</Param>  
+      <Param name="include-tags"></Param>
+    </Optional> 
+    <Require feature="minimessage" />
   </ModulePrefs> 
   <Content type="html">
      <![CDATA[
         <script type="text/javascript" src="http://typea-mixi01.appspot.com/js/jquery-1.3.2.js"></script>
         <style type="text/css">
-            a:active, a:hover, .b:active, .link:active {
+        	a:active, a:hover, .b:active, .link:active {
                 color:#aaaaaa;
                 text-decoration:underline;
             }
@@ -30,17 +30,13 @@
             }       
         </style> 
         <script type="text/javascript">
+        	var msg = new gadgets.MiniMessage(__MODULE_ID__);
         	
 		    /**
              * Amazon Web Services 検索処理
              */
             function search_amazon() {
-                var msg = gadgets.MiniMessage();
-                var staticMsg = msg.createStaticMessage("now searching...");
-                staticMsg.style.cursor = "pointer";
-				staticMsg.onclick = function() {
-					msg.dismissMessage(staticMsg);
-				};
+                msg.createDismissibleMessage("Please close me when you're done reading me.");
 
                 var url = "http://typea-mixi01.appspot.com/am_is"
                             +  makeHttpParam('q', true);
