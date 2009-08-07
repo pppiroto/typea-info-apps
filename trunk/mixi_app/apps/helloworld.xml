@@ -31,17 +31,12 @@
         </style> 
         <script type="text/javascript">
         	var msg = new gadgets.MiniMessage(__MODULE_ID__);
+        	var staticMsg = null;
         	
 		    /**
              * Amazon Web Services 検索処理
              */
             function search_amazon() {
-                var staticMsg = msg.createStaticMessage("now searching...");
-                staticMsg.style.cursor = "pointer";
-				staticMsg.onclick = function() {
-					msg.dismissMessage(staticMsg);
-				};
-
                 var url = "http://typea-mixi01.appspot.com/am_is"
                             +  makeHttpParam('q', true);
                 document.getElementById('amazon').innerHTML = url;
@@ -50,9 +45,6 @@
                 params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
                 params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.TEXT;
                 gadgets.io.makeRequest(url, amazonResponse, params);
-                
-                document.getElementById('amazon').innerHTML = "now seaching・・・"
-                
             }
             /**
              * Amazon Web Services 検索結果処理
@@ -71,6 +63,8 @@
              * @see http://code.google.com/intl/ja/apis/gadgets/docs/remote-content.html#Fetch_JSON
              */
             function search_twitter(url) {
+                staticMsg = msg.createStaticMessage("now searching...");
+                
                 var baseurl = "http://search.twitter.com/search.json";
                 if (url) {
                     url = baseurl + url;
@@ -120,6 +114,8 @@
                 
                 document.getElementById('content_div').innerHTML = html;
         		$('table#twitter tr:odd').css('background-color', '#dfffff');
+				msg.dismissMessage(staticMsg);
+
             }
             function createLink(text) {
                 return toUserUrlText(toFuzzyUrlText(text + ' '));
