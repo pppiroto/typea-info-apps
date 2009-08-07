@@ -11,7 +11,7 @@
   <Content type="html">
      <![CDATA[ 
      	<script type="text/javascript" src="http://typea-mixi01.appspot.com/js/jquery-1.3.2.js"></script>
-     	<script type="text/javascript" src="http://code.google.com/p/typea-info-apps/source/browse/trunk/mixi_app/apps/js/typea-twitter.js"></script>
+     	<script type="text/javascript" src="http://typea-info-apps.googlecode.com/svn/trunk/mixi_app/apps/js/typea-twitter.js"></script>
      	
      	<script type="text/javascript">
      		var tw = new TwitterUtil();
