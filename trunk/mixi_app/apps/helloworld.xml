@@ -31,17 +31,19 @@
 	        	$('#content').html(tw.tw_search_gadget(jsondata,request));
 	        }
 	        function search_twitter() {
+	        	alert("1");
                 var paramObj = document.getElementById('q');
-                var ret = "";
+                var p = "";
                 if (paramObj != null) {
-                    ret = "q=" + paramObj.value;
+                    p = "q=" + paramObj.value;
                 }
-                request(ret);
+	        	alert(p);
+                request(tw.search_url(p));
 	        }
 	        gadgets.util.registerOnLoadHandler(request);
        	</script>
         <input type="text" size="16" id="q" /><!--
-        --><input type="submit" name="search" value="search" onclick="javascript:search_twitter();"/>
+        --><input type="submit" value="search" onclick="javascript:search_twitter();"/>
        	<div id="content"></div>
      ]]>
   </Content> 
