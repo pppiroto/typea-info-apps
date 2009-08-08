@@ -16,12 +16,11 @@
      	<script type="text/javascript">
      		var tw = new TwitterUtil();
      		function request(url) {
-     			alert(url);
-     			if (url == null) {
+     			var params = {};
+				if (url == null) {
 	     			var p = [];
 	     			p['q'] = 'mixi';
-	                var params = {};
-					url = tw.search_url(p);
+	            	url = tw.search_url(p);
                 } 
                 params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
                 params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
