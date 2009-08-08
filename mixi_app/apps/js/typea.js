@@ -90,7 +90,7 @@ TwitterUtil.prototype = {
     },
     markup_tw_user : function (text) {
         var ret = text;
-        var ptn = /@([A-Za-z0-9]{1,})/g;
+        var ptn = /@([A-Za-z0-9_-]{1,})/g;
         var ary = ptn.exec(text);
         while(ary) {
             ret = ret.replace(ary[0], "<a href='http://twitter.com/" + RegExp.$1 + "' target='_blank'>" + ary[0] + "</a>");
