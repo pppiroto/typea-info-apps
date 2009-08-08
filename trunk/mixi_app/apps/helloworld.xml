@@ -30,17 +30,18 @@
 	        	var jsondata = dataResponse.data;
 	        	$('#content').html(tw.tw_search_gadget(jsondata,request));
 	        }
-	        function mk_param(k) {
-	        	var v = "";
-	        	var c = document.getElmentsByName(k);
-	        	if (c) {
-	        		v = c.value;
-	        	}
-	        	var p = k + "=" + v;
+	        function search_twitter() {
+                var paramObj = document.getElementById('q');
+                var ret = "";
+                if (paramObj != null) {
+                    ret = "q=" + paramObj.value;
+                }
+                request(ret);
 	        }
 	        gadgets.util.registerOnLoadHandler(request);
        	</script>
-       	<input type="text" name="q" /><input type="button" value="search" onclick="request(mk_param('q'))"/>
+        <input type="text" size="16" id="q" /><!--
+        --><input type="submit" name="search" value="search" onclick="javascript:search_twitter();"/>
        	<div id="content"></div>
      ]]>
   </Content> 
