@@ -54,12 +54,15 @@ TwitterUtil.prototype = {
 				.replace("format", this.format) 
 				+ ((is_query_encoded)?query_string:this.urlencode(query_string));
 	},
-	tw_search_gadget : function(jsondata, naxt_page_handler) {
+	tw_search_gadget : function(jsondata, next_page_handler) {
         var html = "";
+        html += "<input id='tw_keyword' type='text'/>";
+        html += "<input type='button' value='search' onclick='javascript:" 
+        	    + next_page_handler.name + "(\"\")'/>";
         var next_page = jsondata['next_page'];
         var html_next = "";
         if (next_page) {
-            html_next = "<a href='javascript:" + naxt_page_handler.name + "(\"" + this.search_url(next_page, true) + "\");'>&gt;&gt;&nbsp;next page</a>"
+            html_next = "<a href='javascript:" + next_page_handler.name + "(\"" + this.search_url(next_page, true) + "\");'>&gt;&gt;&nbsp;next page</a>"
                       + "<br/>";
             html += html_next
         }
