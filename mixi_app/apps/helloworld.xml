@@ -30,8 +30,17 @@
 	        	var jsondata = dataResponse.data;
 	        	$('#content').html(tw.tw_search_gadget(jsondata,request));
 	        }
+	        function mk_param(k) {
+	        	var v = "";
+	        	var c = document.getElmentsByName(k);
+	        	if (c) {
+	        		v = c.value;
+	        	}
+	        	var p = k + "=" + v;
+	        }
 	        gadgets.util.registerOnLoadHandler(request);
        	</script>
+       	<input type="text" name="q" /><input type="button" value="search" onclick="request(mk_param('q'))"/>
        	<div id="content"></div>
      ]]>
   </Content> 
