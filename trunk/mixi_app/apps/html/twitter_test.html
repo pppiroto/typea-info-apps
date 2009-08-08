@@ -6,18 +6,16 @@
 <script type="text/javascript" src="http://typea-mixi01.appspot.com/js/jquery-1.3.2.js"></script>
 <script type="text/javascript" src="../js/typea.js"></script>
 <script type="text/javascript">
-	function twitter_test() {
-		var b = new TwitterUtil();
+	var b = new TwitterUtil();
+	function twitter_test(f) {
+		alert(f.name);
 		var p = [];
 		p['q'] = 'java';
-		alert(b.search_url(p));
-		$.getJSON(b.search_url(p), function(json){
-			  alert("JSON Data: " + json);
-			});
+	}
+	function test() {
 	}
 </script>
 </head>
-<body onload="twitter_test();">
-	<div id="content"></div>
+<body onload="twitter_test(test);">
 </body>
 </html>

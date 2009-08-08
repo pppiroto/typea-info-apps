@@ -15,17 +15,20 @@
      	
      	<script type="text/javascript">
      		var tw = new TwitterUtil();
-     		function request() {
-     			var p = [];
-     			p['q'] = 'mixi';
-                var params = {};
+     		function request(url) {
+     			if (url == null) {
+	     			var p = [];
+	     			p['q'] = 'mixi';
+	                var params = {};
+					url = tw.search_url(p);
+                } 
                 params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
                 params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
-                gadgets.io.makeRequest(tw.search_url(p), response, params);
+                gadgets.io.makeRequest(url, response, params);
 	        }
 	        function response(dataResponse) {
 	        	var jsondata = dataResponse.data;
-	        	$('#content').html(tw.tw_search_gadget(jsondata));
+	        	$('#content').html(tw.tw_search_gadget(jsondata,request));
 	        }
 	        gadgets.util.registerOnLoadHandler(request);
        	</script>
