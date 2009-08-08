@@ -26,7 +26,17 @@ TypeA.prototype = {
 			sep = "&";
 		}
 		return query_string;
-	}
+	},
+    markup_fuzzy_url :function (text) {
+        var ret = text;
+        var ptn = /(http:\/\/.*?)[ $]/g; // 行末にマッチしない？？？
+        var ary = ptn.exec(text);
+        while(ary) {
+            ret = ret.replace(ary[0], "<a href='" + RegExp.$1 + "' target='_blank'>" + ary[0] + "</a>");
+            ary = ptn.exec(text);
+        }
+        return ret;
+    }
 };
 
 var TwitterUtil = function(format) {
@@ -43,7 +53,7 @@ TwitterUtil.prototype = {
 				.replace("format", this.format) 
 				+ this.urlencode(query_string);
 	},
-	json_to_html : function(jsondata) {
+	tw_search_gadget : function(jsondata) {
         var html = "";
         var next_page = jsondata['next_page'];
         var html_next = "";
@@ -66,7 +76,7 @@ TwitterUtil.prototype = {
             html +=     "<a href='http://twitter.com/" + result['from_user'] + "' target='_blank'>";
             html +=       "<span style='color:#2FC2EF;font-weight:bold;'>" + result['from_user'] + ":</span>"
             html +=     "</a>";
-            html +=     this.createLink(result['text']) + "</br>";
+            html +=     this.markup_links(result['text']) + "</br>";
             html +=   "</td>";
             html += "</tr>";
         }
@@ -74,20 +84,10 @@ TwitterUtil.prototype = {
         html += html_next;
         return html;
 	},
-	createLink : function (text) {
-        return this.toUserUrlText(this.toFuzzyUrlText(text + ' '));
+	markup_links : function (text) {
+        return this.markup_tw_user(this.markup_fuzzy_url(text + ' '));
     },
-    toFuzzyUrlText :function (text) {
-        var ret = text;
-        var ptn = /(http:\/\/.*?)[ $]/g; // 行末にマッチしない？？？
-        var ary = ptn.exec(text);
-        while(ary) {
-            ret = ret.replace(ary[0], "<a href='" + RegExp.$1 + "' target='_blank'>" + ary[0] + "</a>");
-            ary = ptn.exec(text);
-        }
-        return ret;
-    },
-    toUserUrlText : function (text) {
+    markup_tw_user : function (text) {
         var ret = text;
         var ptn = /@([A-Za-z0-9]{1,})/g;
         var ary = ptn.exec(text);

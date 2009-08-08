@@ -25,7 +25,7 @@
 	        }
 	        function response(dataResponse) {
 	        	var jsondata = dataResponse.data;
-	        	$('#content').html(tw.json_to_html(jsondata));
+	        	$('#content').html(tw.tw_search_gadget(jsondata));
 	        }
 	        gadgets.util.registerOnLoadHandler(request);
        	</script>
