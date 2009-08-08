@@ -58,7 +58,7 @@ TwitterUtil.prototype = {
         var html = "";
         html += "<input id='q' type='text'/>";
         html += "<input type='button' value='search' onclick=\"javascript:"
-        	    + next_page_handler.name + "('q=' + document.getElementById(\"q\").value)\"/>";
+        	    + next_page_handler.name + "('q=' + document.getElementById(\'q\').value)\"/>";
         var next_page = jsondata['next_page'];
         var html_next = "";
         if (next_page) {
