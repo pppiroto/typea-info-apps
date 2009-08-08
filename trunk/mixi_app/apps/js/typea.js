@@ -11,6 +11,7 @@ TypeA.prototype = {
 	version : "0.0.1",
 	urlencode : function(query) {
 		if (query == null) return "";
+		
 		if (typeof(query) == "string") {
 			var queries = query.split("&");
 			query = [];
@@ -48,17 +49,17 @@ TwitterUtil.prototype = {
 		if (format != null) this.format = format;
 		return jQuery.extend(new TypeA(), this);
 	},
-	search_url : function(query_string) {
+	search_url : function(query_string, is_query_encoded) {
 		return "http://search.twitter.com/search.format"
 				.replace("format", this.format) 
-				+ this.urlencode(query_string);
+				+ ((is_query_encoded)?query_string:this.urlencode(query_string));
 	},
 	tw_search_gadget : function(jsondata, naxt_page_handler) {
         var html = "";
         var next_page = jsondata['next_page'];
         var html_next = "";
         if (next_page) {
-            html_next = "<a href='javascript:" + naxt_page_handler.name + "(\"" + next_page + "\");'>&gt;&gt;&nbsp;next page</a>"
+            html_next = "<a href='javascript:" + naxt_page_handler.name + "(\"" + this.search_url(next_page, true) + "\");'>&gt;&gt;&nbsp;next page</a>"
                       + "<br/>";
             html += html_next
         }
