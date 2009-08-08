@@ -31,13 +31,11 @@
 	        	$('#content').html(tw.tw_search_gadget(jsondata,request));
 	        }
 	        function search_twitter() {
-	        	alert("1");
                 var paramObj = document.getElementById('q');
                 var p = "";
                 if (paramObj != null) {
                     p = "q=" + paramObj.value;
                 }
-	        	alert(p);
                 request(tw.search_url(p));
 	        }
 	        gadgets.util.registerOnLoadHandler(request);
