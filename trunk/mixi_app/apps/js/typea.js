@@ -89,7 +89,7 @@ TwitterUtil.prototype = {
     },
     toUserUrlText : function (text) {
         var ret = text;
-        var ptn = /@([A-Za-z]{1,}?):/g;
+        var ptn = /@([A-Za-z]{1,}?)/g;
         var ary = ptn.exec(text);
         while(ary) {
             ret = ret.replace(ary[0], "<a href='http://twitter.com/" + RegExp.$1 + "' target='_blank'>" + ary[0] + "</a>");
