@@ -56,9 +56,9 @@ TwitterUtil.prototype = {
 	},
 	tw_search_gadget : function(jsondata, next_page_handler) {
         var html = "";
-        html += "<input id='tw_keyword' type='text'/>";
+        html += "<input id='q' type='text'/>";
         html += "<input type='button' value='search' onclick='javascript:" 
-        	    + next_page_handler.name + "(\"\")'/>";
+        	    + next_page_handler.name + "(\'\')'/>";
         var next_page = jsondata['next_page'];
         var html_next = "";
         if (next_page) {
