@@ -16,6 +16,7 @@
      	<script type="text/javascript">
      		var tw = new TwitterUtil();
      		function request(url) {
+     			alert(url);
      			if (url == null) {
 	     			var p = [];
 	     			p['q'] = 'mixi';
