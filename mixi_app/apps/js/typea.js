@@ -53,12 +53,12 @@ TwitterUtil.prototype = {
 				.replace("format", this.format) 
 				+ this.urlencode(query_string);
 	},
-	tw_search_gadget : function(jsondata) {
+	tw_search_gadget : function(jsondata, naxt_page_handler) {
         var html = "";
         var next_page = jsondata['next_page'];
         var html_next = "";
         if (next_page) {
-            html_next = "<a href='javascript:search_twitter(\"" + next_page + "\");'>&gt;&gt;&nbsp;next page</a>"
+            html_next = "<a href='javascript:" + naxt_page_handler.name + "(\"" + next_page + "\");'>&gt;&gt;&nbsp;next page</a>"
                       + "<br/>";
             html += html_next
         }
