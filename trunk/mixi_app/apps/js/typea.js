@@ -57,7 +57,11 @@ TwitterUtil.prototype = {
 	tw_search_gadget : function(jsondata, callback) {
 		var html = "";
         var next_page = jsondata['next_page'];
+        var query     = jsondata['query'];
         var html_next = "";
+        
+        
+        html_next = "<div id='search_query'>" + query + " ‚ÌŒŸõŒ‹‰Ê</div>";
         if (next_page) {
             html_next = "<a href='javascript:" + callback.name + "(\"" + this.search_url(next_page, true) + "\");'>&gt;&gt;&nbsp;next page</a>"
                       + "<br/>";
