@@ -86,7 +86,10 @@ TwitterUtil.prototype = {
         return html;
 	},
 	markup_links : function (text) {
-        return this.markup_tw_user(this.markup_fuzzy_url(text + ' '));
+		text = this.markup_fuzzy_url(text + ' ');
+		text = this.markup_tw_user(text);
+		text = this.markup_tag(text);
+		return text;
     },
     markup_tw_user : function (text) {
         var ret = text;
@@ -94,6 +97,17 @@ TwitterUtil.prototype = {
         var ary = ptn.exec(text);
         while(ary) {
             ret = ret.replace(ary[0], "<a href='http://twitter.com/" + RegExp.$1 + "' target='_blank'>" + ary[0] + "</a>");
+            ary = ptn.exec(text);
+        }
+        return ret;
+    },
+    markup_tag : function (text) {
+        var ret = text;
+        var ptn = /#(.*?)[ ]/g;
+        var ary = ptn.exec(text);
+        while(ary) {
+        	var url = this.search_url(RegExp.$1)
+            ret = ret.replace(ary[0], "<a href='" + url + "' target='_blank'>" + ary[0] + "</a>");
             ary = ptn.exec(text);
         }
         return ret;
