@@ -5,17 +5,19 @@
 <title>Insert title here</title>
 <script type="text/javascript" src="http://typea-mixi01.appspot.com/js/jquery-1.3.2.js"></script>
 <script type="text/javascript" src="../js/typea.js"></script>
+<script type="text/javascript" src="../html/testdata/json_testdata.js"></script>
 <script type="text/javascript">
-	var b = new TwitterUtil();
-	function twitter_test(f) {
-		alert(f.name);
-		var p = [];
-		p['q'] = 'java';
+	var tw = new TwitterUtil();
+	function twitter_test() {
+		$('#content').html(tw.tw_search_gadget(json_search_testdata, response));
 	}
-	function test() {
-	}
+    function response(dataResponse) {
+    	var jsondata = dataResponse.data;
+    	$('#content').html(tw.tw_search_gadget(json_search_testdata, request));
+    }
 </script>
 </head>
-<body onload="twitter_test(test);">
+<body onload="twitter_test();">
+	<div id="content"></div>
 </body>
 </html>

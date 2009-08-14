@@ -55,7 +55,7 @@ TwitterUtil.prototype = {
 				+ ((is_query_encoded)?query_string:this.urlencode(query_string));
 	},
 	tw_search_gadget : function(jsondata, next_page_handler) {
-        var html = "";
+		var html = "";
         var next_page = jsondata['next_page'];
         var html_next = "";
         if (next_page) {
@@ -103,10 +103,10 @@ TwitterUtil.prototype = {
     },
     markup_tag : function (text) {
         var ret = text;
-        var ptn = /#(.*?)[ ]/g;
+        var ptn = /#(.*?)[ ,\.$]/g;
         var ary = ptn.exec(text);
         while(ary) {
-        	var url = this.search_url(RegExp.$1)
+        	var url = this.search_url("q=" + RegExp.$1)
             ret = ret.replace(ary[0], "<a href='" + url + "' target='_blank'>" + ary[0] + "</a>");
             ary = ptn.exec(text);
         }
