@@ -9,6 +9,8 @@
 <script type="text/javascript">
 	var tw = new TwitterUtil();
 	function twitter_test() {
+		$('#q').attr('value', 'test');
+		$('#q').value = "test";
 		$('#content').html(tw.tw_search_gadget(json_search_testdata, response));
 	}
     function response(dataResponse) {
@@ -18,6 +20,8 @@
 </script>
 </head>
 <body onload="twitter_test();">
+    <input type="text" size="16" id="q" /><!--
+    --><input type="submit" value="search" onclick="javascript:search_twitter();"/>
 	<div id="content"></div>
 </body>
 </html>
