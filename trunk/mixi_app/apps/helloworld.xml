@@ -16,7 +16,6 @@
      	<script type="text/javascript">
      		var tw = new TwitterUtil();
      		function request(url) {
-     			$(#q).value = "";
      			var params = {};
 				if (url == null) {
 	     			var p = [];
