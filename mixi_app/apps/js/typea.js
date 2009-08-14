@@ -54,12 +54,12 @@ TwitterUtil.prototype = {
 				.replace("format", this.format) 
 				+ ((is_query_encoded)?query_string:this.urlencode(query_string));
 	},
-	tw_search_gadget : function(jsondata, next_page_handler) {
+	tw_search_gadget : function(jsondata, callback) {
 		var html = "";
         var next_page = jsondata['next_page'];
         var html_next = "";
         if (next_page) {
-            html_next = "<a href='javascript:" + next_page_handler.name + "(\"" + this.search_url(next_page, true) + "\");'>&gt;&gt;&nbsp;next page</a>"
+            html_next = "<a href='javascript:" + callback.name + "(\"" + this.search_url(next_page, true) + "\");'>&gt;&gt;&nbsp;next page</a>"
                       + "<br/>";
             html += html_next
         }
@@ -77,7 +77,7 @@ TwitterUtil.prototype = {
             html +=     "<a href='http://twitter.com/" + result['from_user'] + "' target='_blank'>";
             html +=       "<span style='color:#2FC2EF;font-weight:bold;'>" + result['from_user'] + ":</span>"
             html +=     "</a>";
-            html +=     this.markup_links(result['text']) + "</br>";
+            html +=     this.markup_links(result['text'], callback) + "</br>";
             html +=   "</td>";
             html += "</tr>";
         }
@@ -85,10 +85,10 @@ TwitterUtil.prototype = {
         html += html_next;
         return html;
 	},
-	markup_links : function (text) {
+	markup_links : function (text, callback) {
 		text = this.markup_fuzzy_url(text + ' ');
 		text = this.markup_tw_user(text);
-		text = this.markup_tag(text);
+		text = this.markup_tag(text, callback);
 		return text;
     },
     markup_tw_user : function (text) {
@@ -101,13 +101,13 @@ TwitterUtil.prototype = {
         }
         return ret;
     },
-    markup_tag : function (text) {
+    markup_tag : function (text, callback) {
         var ret = text;
         var ptn = /#(.*?)[ ,\.$]/g;
         var ary = ptn.exec(text);
         while(ary) {
-        	var url = this.search_url("q=" + RegExp.$1)
-            ret = ret.replace(ary[0], "<a href='" + url + "' target='_blank'>" + ary[0] + "</a>");
+        	var url = "<a href='javascript:" + callback.name + "(\"" + this.search_url("q=" + RegExp.$1) + "\");'>" + ary[0] + "</a>";
+            ret = ret.replace(ary[0], url);
             ary = ptn.exec(text);
         }
         return ret;
