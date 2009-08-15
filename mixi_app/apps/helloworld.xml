@@ -22,12 +22,12 @@
 	        function init_app() {
 	        	tabs.alignTabs('left');
 				tabs.addTab("検索", { 
-				     contentContainer: document.getElementById("twitter_top"), 
+				     contentContainer: document.getElementById("twitter_search"), 
 				     callback: search_tab, 
 				     tooltip: "Twitter 検索" 
 				});
 				tabs.addTab("TEST", { 
-				     contentContainer: document.getElementById("twitter_top"), 
+				     contentContainer: document.getElementById("twitter_test"), 
 				     callback: test_tab, 
 				     tooltip: "TEST" 
 				});
@@ -36,10 +36,6 @@
 	        }
 
 		    function search_tab(tabId) {
-		    	var html = "";
-				html += '<input type="text" size="16" id="q"/><input type="submit" value="検索" onclick="javascript:search($(\'#q\').attr(\'value\'));"/>';
-				html += '<div id="twitter_content"></div>';
-				document.getElementById(tabId).innerHTML = html;
 		    }
 		    function test_tab(tabId) {
 		    }
@@ -87,7 +83,11 @@
 	        gadgets.util.registerOnLoadHandler(init_app);
        	</script>
         <div id="amazon_content"></div>
-        <div id="twitter_top"></div>
+        <div id="twitter_search">
+          <input type="text" size="16" id="q"/><input type="submit" value="検索" onclick="javascript:search($(\'#q\').attr(\'value\'));"/>
+          <div id="twitter_content"></div>
+        </div>
+        <div id="twitter_test"></div>
      ]]>
   </Content> 
 </Module>
