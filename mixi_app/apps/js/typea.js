@@ -30,7 +30,7 @@ TypeA.prototype = {
 	},
     markup_fuzzy_url :function (text) {
         var ret = text;
-        var ptn = /(http:\/\/.*?)[ $]/g; // s––‚Éƒ}ƒbƒ`‚µ‚È‚¢HHH
+        var ptn = /(http:\/\/.*?)[ $]/g; // è¡Œæœ«ã«ãƒãƒƒãƒã—ãªã„ï¼Ÿï¼Ÿï¼Ÿ
         var ary = ptn.exec(text);
         while(ary) {
             ret = ret.replace(ary[0], "<a href='" + RegExp.$1 + "' target='_blank'>" + ary[0] + "</a>");
