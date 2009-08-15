@@ -1,176 +1,72 @@
 <?xml version="1.0" encoding="UTF-8" ?> 
 <Module>
-  <ModulePrefs title="twitter search sample">
-    <Require feature="opensocial-0.8"/>
-     <!-- 
-        OpenSocialコンテナにスクリプトをキャッシュさせない
-     	http://www.ark-web.jp/sandbox/wiki/3250.html
-     	http://orkutdeveloper.blogspot.com/2008/06/rewriting-returns-to-sandbox.html
-      -->
+  <ModulePrefs title="skeleton">
+  	<Require feature="opensocial-0.8"/>
     <Optional feature="content-rewrite">  
-      <Param name="expires">0</Param>  
       <Param name="include-urls"></Param>  
       <Param name="exclude-urls">.*</Param>  
       <Param name="include-tags"></Param>
     </Optional> 
-    <Require feature="minimessage" />
   </ModulePrefs> 
   <Content type="html">
-     <![CDATA[
-        <script type="text/javascript" src="http://typea-mixi01.appspot.com/js/jquery-1.3.2.js"></script>
-        <style type="text/css">
-        	a:active, a:hover, .b:active, .link:active {
-                color:#aaaaaa;
-                text-decoration:underline;
-            }
-            a, .link {
-                color:#2694E8;
-                cursor:pointer;
-                text-decoration:none;
-            }       
-        </style> 
-        <script type="text/javascript">
-        	var msg = new gadgets.MiniMessage(__MODULE_ID__);
-        	var staticMsg = null;
-        	
-		    /**
-             * Amazon Web Services 検索処理
-             */
-            function search_amazon() {
-                var url = "http://typea-mixi01.appspot.com/am_is"
-                            +  makeHttpParam('q', true);
-                document.getElementById('amazon').innerHTML = url;
-    
+     <![CDATA[ 
+     	<script type="text/javascript" src="http://typea-mixi01.appspot.com/js/jquery-1.3.2.js"></script>
+     	<script type="text/javascript" src="http://typea-info-apps.googlecode.com/svn/trunk/mixi_app/apps/js/typea.js"></script>
+     	
+     	<script type="text/javascript">
+     		var tw = new TwitterUtil();
+			var am = new AmazonUtil();
+			
+	        function initial_search() {
+				search('mixi');
+	        }
+	        
+	        function search(search_word) {
+                var query = "q=" + search_word;
+				$('#q').attr('value', search_word);
+				
+                twitter_request(tw.search_url(query));
+                amazon_request(am.search_url(query));
+	        }
+     		
+     		function twitter_request(url) {
+     			var params = {};
+                params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
+                params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+                gadgets.io.makeRequest(url, twitter_response, params);
+	        }
+	        
+            function amazon_request(url) {
                 var params = {};
                 params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
                 params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.TEXT;
-                gadgets.io.makeRequest(url, amazonResponse, params);
-            }
-            /**
-             * Amazon Web Services 検索結果処理
-             */
-            function amazonResponse(responseObj) {
-                var html = "";
-                if (responseObj.data != null) {
-                    html = responseObj.data;
-                }
-                document.getElementById('amazon').innerHTML = html;
+                gadgets.io.makeRequest(url, amazon_response, params);
             }
 
-            /**
-             * Twitter 検索処理
-             * @see http://apiwiki.twitter.com/Twitter-Search-API-Method%3A-search
-             * @see http://code.google.com/intl/ja/apis/gadgets/docs/remote-content.html#Fetch_JSON
-             */
-            function search_twitter(url) {
-                staticMsg = msg.createStaticMessage("now searching...");
-                
-                var baseurl = "http://search.twitter.com/search.json";
-                if (url) {
-                    url = baseurl + url;
-                } else {
-                    url = baseurl + makeHttpParam('q', true);
-                }
-                var params = {};
-                params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
-                params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
-                gadgets.io.makeRequest(url, searchResponse, params);
-            }
+	        function twitter_response(dataResponse) {
+	        	var jsondata = dataResponse.data;
+	        	
+	        	// make result
+	        	$('#twitter_content').html(tw.tw_search_gadget(jsondata, twitter_request, search));
+	        	$('table#twitter_list tr:odd').css('background-color', '#dfffff');
+	        	$('#twitter_search_word').css('color', 'blue');
+	        	$('#twitter_page').css('color', 'blue')
+	        	$('#search_query').css('background-color', 'gold');
+	        }
 
-            /**
-             * Twitter 検索結果処理
-             */
-            function searchResponse(responseObj) {
+            function amazon_response(dataResponse) {
                 var html = "";
-                var jsondata = responseObj.data
-                
-                var next_page = jsondata['next_page'];
-                var html_next = "";
-                if (next_page) {
-                    html_next = "<a href='javascript:search_twitter(\"" + next_page + "\");'>&gt;&gt;&nbsp;next page</a>"
-                              + "<br/>";
-                    html += html_next
+                if (dataResponse.data != null) {
+                    html = dataResponse.data;
                 }
-                var results = jsondata['results'];
-                html +="<table border='0' id='twitter'>";
-                for (var i=0; i<results.length; i++) {
-                    var result = results[i];
-                    html += "<tr style='font-size:small;'>";
-                    html +=   "<td>";
-                    html +=     "<a href='http://twitter.com/" + result['from_user'] + "' target='_blank'>";
-                    html +=         "<img src='" + result['profile_image_url'] + "' border='none'/>";
-                    html +=     "</a>";
-                    html +=   "</td>";
-                    html +=   "<td>";
-                    html +=     "<a href='http://twitter.com/" + result['from_user'] + "' target='_blank'>";
-                    html +=       "<span style='color:#2FC2EF;font-weight:bold;'>" + result['from_user'] + ":</span>"
-                    html +=     "</a>";
-                    html +=     createLink(result['text']) + "</br>";
-                    html +=   "</td>";
-                    html += "</tr>";
-                }
-                html += "</table>";
-                html += html_next;
-                
-                document.getElementById('content_div').innerHTML = html;
-        		$('table#twitter tr:odd').css('background-color', '#dfffff');
-				
-				msg.dismissMessage(staticMsg);
+                $('#amazon_content').html(html);
             }
-            function createLink(text) {
-                return toUserUrlText(toFuzzyUrlText(text + ' '));
-            }
-            /** ちょっといい加減にURLをリンクに変更する関数 */
-            function toFuzzyUrlText(text) {
-                var ret = text;
-                var ptn = /(http:\/\/.*?)[ $]/g; // 行末にマッチしない？？？
-                var ary = ptn.exec(text);
-                while(ary) {
-                    ret = ret.replace(ary[0], "<a href='" + RegExp.$1 + "' target='_blank'>" + ary[0] + "</a>");
-                    ary = ptn.exec(text);
-                }
-                return ret;
-            }
-            /** ちょっといい加減にTwitter ID をリンクに変更する関数 */
-            function toUserUrlText(text) {
-                var ret = text;
-                var ptn = /@([A-Za-z0-9_-]{1,})/g;
-                var ary = ptn.exec(text);
-                while(ary) {
-                    ret = ret.replace(ary[0], "<a href='http://twitter.com/" + RegExp.$1 + "' target='_blank'>" + ary[0] + "</a>");
-                    ary = ptn.exec(text);
-                }
-                return ret;
-            }
-            
-            /**
-             * HTTP GETリクエストパラメータを生成
-             */
-            function makeHttpParam(param_id, isFirstParam) {
-                isFirstParam = !(isFirstParam == undefined);
-                var paramObj = document.getElementById(param_id);
-                var ret = "";
-                if (paramObj != null) {
-                    ret = ((isFirstParam)?"?":"&") + param_id + "="
-                         + encodeURIComponent(paramObj.value);
-                }
-                return ret;
-            }
-            
-            /* 初期検索 */
-            function initialSearch() {
-                keyword = 'mixi';
-                document.getElementById('q').value = keyword;
-                search_amazon();
-                search_twitter();
-            }
-            gadgets.util.registerOnLoadHandler(initialSearch);
-        </script>
+	        gadgets.util.registerOnLoadHandler(initial_search);
+       	</script>
         <input type="text" size="16" id="q" /><!--
-        --><input type="submit" name="search" value="twitter search" onclick="javascript:search_amazon();javascript:search_twitter();"/>
-        <div id="amazon"></div>
-        <div id="content_div"></div>
-        
+        --><input type="submit" value="search" onclick="javascript:search($('#q').attr('value'));"/>
+        <div id="amazon_content"></div>
+       	<div id="twitter_content"></div>
      ]]>
   </Content> 
 </Module>
