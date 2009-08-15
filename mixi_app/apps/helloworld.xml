@@ -78,6 +78,7 @@
 				alert("unique:" + words);
 				html = "";
 				for (var i=0; i<words.length; i++){
+					alert(i + ":" + words[i]);
 					html += words[i];
 					search_words += (words[i] + ",")
 					if (i > 10) {
