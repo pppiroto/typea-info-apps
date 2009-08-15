@@ -24,7 +24,6 @@
 			
 	        function init_app() {
 				create_tabs();
-	        	// search('mixi');
 	        	load_data_request(KEY_SEARCHED_WORD);
 	        }
 	        
@@ -68,6 +67,7 @@
 		        	}
 		        	var dataAry = viewer_data.getData()[viewer.getId()];
 		        	make_searched_word_link(dataAry[key]);
+		        	search('mixi');
 				});
 	        }
 	        
@@ -99,7 +99,6 @@
                 amazon_request(am.search_url(query));
                 
                 search_words = (search_word + "," + search_words);
-                alert(search_words);
                 regist_data_request(KEY_SEARCHED_WORD, search_words);
 	        }
      		
