@@ -74,13 +74,14 @@ TwitterUtil.prototype = {
         var html_next = "";
         
         
-        html += "<div id='search_query'> search word : <span id='twitter_search_word'>" + decodeURIComponent(query) + "</span>"
-                                           + ", page : <span id='twitter_page'>" + page + "</span></div>";
+        html += "<div id='search_query'>";
+        html += "search word : <span id='twitter_search_word'>" + decodeURIComponent(query) + "</span>"
+                   + ", page : <span id='twitter_page'>" + page + "</span>";
         if (next_page) {
-            html_next = "<a href='javascript:" + nextpage_callback.name + "(\"" + this.search_url(next_page, true) + "\");'>&gt;&gt;&nbsp;next page</a>"
-                      + "<br/>";
-            html += html_next
+        	html += "<a href='javascript:" + nextpage_callback.name + "(\"" + this.search_url(next_page, true) + "\");'>&gt;&gt;&nbsp;next page</a>";
         }
+        html += "</div>";
+        	
         var results = jsondata['results'];
         html +="<table border='0' id='twitter_list'>";
         for (var i=0; i<results.length; i++) {
