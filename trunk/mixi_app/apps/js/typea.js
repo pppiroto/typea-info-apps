@@ -66,7 +66,7 @@ TwitterUtil.prototype = {
 				.replace("format", this.format) 
 				+ ((is_query_encoded)?query_string:this.urlencode(query_string));
 	},
-	tw_search_gadget : function(jsondata, callback) {
+	tw_search_gadget : function(jsondata, nextpage_callback, search_callback) {
 		var html = "";
         var next_page = jsondata['next_page'];
         var query     = jsondata['query'];
@@ -77,7 +77,7 @@ TwitterUtil.prototype = {
         html += "<div id='search_query'> search word : <span id='twitter_search_word'>" + decodeURIComponent(query) + "</span>"
                                            + ", page : <span id='twitter_page'>" + page + "</span></div>";
         if (next_page) {
-            html_next = "<a href='javascript:" + callback.name + "(\"" + this.search_url(next_page, true) + "\");'>&gt;&gt;&nbsp;next page</a>"
+            html_next = "<a href='javascript:" + nextpage_callback.name + "(\"" + this.search_url(next_page, true) + "\");'>&gt;&gt;&nbsp;next page</a>"
                       + "<br/>";
             html += html_next
         }
@@ -95,7 +95,7 @@ TwitterUtil.prototype = {
             html +=     "<a href='http://twitter.com/" + result['from_user'] + "' target='_blank'>";
             html +=       "<span style='color:#2FC2EF;font-weight:bold;'>" + result['from_user'] + ":</span>"
             html +=     "</a>";
-            html +=     this.markup_links(result['text'], callback) + "</br>";
+            html +=     this.markup_links(result['text'], search_callback) + "</br>";
             html +=   "</td>";
             html += "</tr>";
         }
@@ -103,10 +103,10 @@ TwitterUtil.prototype = {
         html += html_next;
         return html;
 	},
-	markup_links : function (text, callback) {
+	markup_links : function (text, search_callback) {
 		text = this.markup_fuzzy_url(text + ' ');
 		text = this.markup_tw_user(text);
-		text = this.markup_tag(text, callback);
+		text = this.markup_tag(text, search_callback);
 		return text;
     },
     markup_tw_user : function (text) {
@@ -119,12 +119,12 @@ TwitterUtil.prototype = {
         }
         return ret;
     },
-    markup_tag : function (text, callback) {
+    markup_tag : function (text, search_callback) {
         var ret = text;
         var ptn = /#(.*?)[ ,\.$]/g;
         var ary = ptn.exec(text);
         while(ary) {
-        	var url = "<a href='javascript:" + callback.name + "(\"" + this.search_url("q=" + RegExp.$1) + "\");'>" + ary[0] + "</a>";
+        	var url = "<a href='javascript:" + search_callback.name + "(\"" + RegExp.$1 + "\");'>" + ary[0] + "</a>";
             ret = ret.replace(ary[0], url);
             ary = ptn.exec(text);
         }
