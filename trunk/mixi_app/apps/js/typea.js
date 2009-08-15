@@ -39,6 +39,18 @@ TypeA.prototype = {
         return ret;
     }
 };
+var AmazonUtil = function(format) {
+	return AmazonUtil.prototype.init();
+};
+AmazonUtil.prototype = {
+	init : function(format) {
+		return jQuery.extend(new TypeA(), this);
+	},
+	search_url : function(query_string, is_query_encoded) {
+		return "http://typea-mixi01.appspot.com/am_is"
+				+ ((is_query_encoded)?query_string:this.urlencode(query_string));
+	}
+};
 
 var TwitterUtil = function(format) {
 	return TwitterUtil.prototype.init();
