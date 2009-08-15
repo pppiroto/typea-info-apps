@@ -48,7 +48,7 @@
 
 			function regist_data_request(key, value) {
 				var req = opensocial.newDataRequest();
-	        	req.add(req.newUpdatePersonAppDataRequest("VIEWER", key, value));
+	        	req.add(req.newUpdatePersonAppDataRequest("VIEWER", key, encodeURIComponent(value)));
 	        	req.send(function(data){
 	        		load_data_request(key);
 	        	});
@@ -67,7 +67,7 @@
 		        	if (viewer_data.hadError()) {
 		        		return;
 		        	}
-		        	var dataAry = viewer_data.getData()[viewer.getId()];
+		        	var dataAry = decodeURIComponent(viewer_data.getData()[viewer.getId()]);
 		        	make_searched_word_link(dataAry[key]);
 		        	if (isInitial) {
 		        		var sw = search_words.split(",")[0];
