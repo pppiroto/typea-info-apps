@@ -15,12 +15,16 @@
      	<script type="text/javascript" src="http://typea-info-apps.googlecode.com/svn/trunk/mixi_app/apps/js/typea_debug.js"></script>
      	
      	<script type="text/javascript">
-     		var tabs = new gadgets.TabSet();
      		var tw   = new TwitterUtil();
 			var am   = new AmazonUtil();
 			
-	        function initialize() {
-				alert(tabs);				
+	        function init_app() {
+	        	try {
+					var tabs = new gadgets.TabSet();
+					alert(tabs);
+				} catch(e) {
+					alert(e);
+				}				
 				search('mixi');
 	        }
 	        
@@ -64,7 +68,7 @@
                 }
                 $('#amazon_content').html(html);
             }
-	        gadgets.util.registerOnLoadHandler(initialize);
+	        gadgets.util.registerOnLoadHandler(init_app);
        	</script>
         <input type="text" size="16" id="q" /><!--
         --><input type="submit" value="検索" onclick="javascript:search($('#q').attr('value'));"/>
