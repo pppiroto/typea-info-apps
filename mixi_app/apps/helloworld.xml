@@ -15,9 +15,9 @@
      	<script type="text/javascript" src="http://typea-info-apps.googlecode.com/svn/trunk/mixi_app/apps/js/typea_debug.js"></script>
      	
      	<script type="text/javascript">
-     		var tabs = new gadgets.TabSet(__MODULE_ID__, "Two");
-     		var tw = new TwitterUtil();
-			var am = new AmazonUtil();
+     		var tabs = new gadgets.TabSet();
+     		var tw   = new TwitterUtil();
+			var am   = new AmazonUtil();
 			
 	        function initialize() {
 	        	var one_Id = tabs.addTab('<div id="twitter_content"></div>');
