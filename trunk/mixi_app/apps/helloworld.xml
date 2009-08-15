@@ -24,7 +24,7 @@
 			
 	        function init_app() {
 				create_tabs();
-	        	load_data_request(KEY_SEARCHED_WORD);
+	        	load_data_request(KEY_SEARCHED_WORD, true);
 	        }
 	        
 	        function create_tabs() {
@@ -86,11 +86,12 @@
 				var j = 0;
 				var pre_word = "";
 				search_words = "";
+				
 				html = "";
 				for (var i=0; i<words.length; i++){
 					if (words[i] != "" && pre_word != words[i]) {
 						j++;
-						html += "<a href='javascript:search(\"" + words[i] +"\");'>" + words[i] + "</a> ";
+						html += " <a href='javascript:search(\"" + words[i] +"\");'>" + words[i] + "</a>";
 						search_words += (words[i] + ",")
 						if (j > 10) {
 							break;
@@ -98,7 +99,9 @@
 						pre_word = words[i];
 					}
 				}
+				$('#twitter_searched_words').css('padding-left', '10px');
 				$('#twitter_searched_words').html(html);
+				
 			}
 
 	        function search(search_word, isInitial) {
