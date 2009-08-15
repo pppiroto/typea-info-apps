@@ -75,10 +75,10 @@ TwitterUtil.prototype = {
         
         
         html += "<div id='search_query'>";
-        html += "search word : <span id='twitter_search_word'>" + decodeURIComponent(query) + "</span>"
-                   + ", page : <span id='twitter_page'>" + page + "</span>";
+        html += "<span id='twitter_search_word'>" + decodeURIComponent(query) + "</span> で検索";
+        html += "&nbsp<span id='twitter_page'>" + page + "</span>ページ目";
         if (next_page) {
-        	html += "<a href='javascript:" + nextpage_callback.name + "(\"" + this.search_url(next_page, true) + "\");'>&gt;&gt;&nbsp;next page</a>";
+        	html += "&nbsp<a href='javascript:" + nextpage_callback.name + "(\"" + this.search_url(next_page, true) + "\");'>次頁</a>";
         }
         html += "</div>";
         	
