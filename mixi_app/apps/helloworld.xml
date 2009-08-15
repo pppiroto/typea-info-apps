@@ -98,9 +98,7 @@
                 twitter_request(tw.search_url(query));
                 amazon_request(am.search_url(query));
                 
-                if (!jQuery.inArray(search_word, search_words.split(","))) {
-                	search_words = (search_word + "," + search_words);
-                }
+                search_words = (search_word + "," + search_words);
                 alert(search_words);
                 regist_data_request(KEY_SEARCHED_WORD, search_words);
 	        }
