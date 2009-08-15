@@ -17,21 +17,20 @@
      		var tw = new TwitterUtil();
 			var am = new AmazonUtil();
 			
-	        function search() {
-                var query = "q=" + $('#q').attr('value');
-                
+	        function initial_search() {
+				search('mixi');
+	        }
+	        
+	        function search(search_word) {
+                var query = "q=" + search_word;
+				$('#q').attr('value', search_word);
+				
                 twitter_request(tw.search_url(query));
                 amazon_request(am.search_url(query));
 	        }
      		
      		function twitter_request(url) {
-     			$('#q').attr('value', '');
      			var params = {};
-				if (url == null) {
-	     			var p = [];
-	     			p['q'] = 'mixi';
-	            	url = tw.search_url(p);
-                } 
                 params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
                 params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
                 gadgets.io.makeRequest(url, twitter_response, params);
@@ -44,14 +43,6 @@
                 gadgets.io.makeRequest(url, amazon_response, params);
             }
 
-            function amazon_response(dataResponse) {
-                var html = "";
-                if (dataResponse.data != null) {
-                    html = dataResponse.data;
-                }
-                $('#amazon_content').html(html);
-            }
-            	        
 	        function twitter_response(dataResponse) {
 	        	var jsondata = dataResponse.data;
 	        	
@@ -61,10 +52,18 @@
 	        	$('#twitter_search_word').css('color', 'blue');
 	        	$('#twitter_page').css('color', 'blue')
 	        }
-	        gadgets.util.registerOnLoadHandler(twitter_request);
+
+            function amazon_response(dataResponse) {
+                var html = "";
+                if (dataResponse.data != null) {
+                    html = dataResponse.data;
+                }
+                $('#amazon_content').html(html);
+            }
+	        gadgets.util.registerOnLoadHandler(initial_search);
        	</script>
         <input type="text" size="16" id="q" /><!--
-        --><input type="submit" value="search" onclick="javascript:search();"/>
+        --><input type="submit" value="search" onclick="javascript:search($('#q').attr('value'));"/>
         <div id="amazon_content"></div>
        	<div id="twitter_content"></div>
      ]]>
