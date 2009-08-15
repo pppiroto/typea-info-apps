@@ -24,6 +24,7 @@
 	        function init_app() {
 				create_tabs();
 	        	search('mixi');
+	        	load_data_request(KEY_SEARCHED_WORD);
 	        }
 	        
 	        function create_tabs() {
@@ -45,19 +46,33 @@
 		    function test_tab(tabId) {
 		    }
 
-	        function regist_request(key, value) {
+			function regist_data_request(key, value) {
 				var req = opensocial.newDataRequest();
 	        	req.add(req.newUpdatePersonAppDataRequest("VIEWER", key, value));
-	        	req.send(registResponse);
+	        	req.send(function(data){
+	        		alert(key);
+	        		load_data_request(key);
+	        	});
 	        }
-	        
+
+	        function load_data_request(key) {
+	        	var req = opensocial.newDataRequest();
+	        	req.add(req.newFetchPersonRequest("VIEWER"), "viewer");
+	        	var fields = [key];
+				req.add(req.newFetchPersonAppDataRequest("VIEWER", fields), "viewer_data");
+				req.send(function(data) {
+					alert(data);
+				});
+	        }
+
+
 	        function search(search_word) {
                 var query = "q=" + search_word;
 				$('#q').attr('value', search_word);
 				
                 twitter_request(tw.search_url(query));
                 amazon_request(am.search_url(query));
-                regist_request(KEY_SEARCHED_WORD, search_word);
+                regist_data_request(KEY_SEARCHED_WORD, search_word);
 	        }
      		
      		function twitter_request(url) {
