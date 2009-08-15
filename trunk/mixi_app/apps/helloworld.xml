@@ -87,7 +87,7 @@
             <input type="text" size="16" id="q"/><input type="submit" value="検索" onclick="javascript:search($('#q').attr('value'));"/>
             <div id="amazon_content" style="margin-top : 4px;"></div>
           </div>
-          <div id="twitter_content"></div>
+          <div id="twitter_content" style="border : 1px solid gold;"></div>
         </div>
         <div id="twitter_test_panel"></div>
      ]]>
