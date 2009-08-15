@@ -58,10 +58,11 @@ TwitterUtil.prototype = {
 		var html = "";
         var next_page = jsondata['next_page'];
         var query     = jsondata['query'];
+        var page      = jsondata['page'];
         var html_next = "";
         
         
-        html += "<div id='search_query'> Search word : " + query + "</div>";
+        html += "<div id='search_query'> Search word : " + query + ", page : " + page + "</div>";
         if (next_page) {
             html_next = "<a href='javascript:" + callback.name + "(\"" + this.search_url(next_page, true) + "\");'>&gt;&gt;&nbsp;next page</a>"
                       + "<br/>";
