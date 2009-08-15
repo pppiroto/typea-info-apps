@@ -67,8 +67,8 @@
 		        	if (viewer_data.hadError()) {
 		        		return;
 		        	}
-		        	var dataAry = decodeURIComponent(viewer_data.getData()[viewer.getId()]);
-		        	make_searched_word_link(dataAry[key]);
+		        	var dataAry = viewer_data.getData()[viewer.getId()];
+		        	make_searched_word_link(decodeURIComponent(dataAry[key]));
 		        	if (isInitial) {
 		        		var sw = search_words.split(",")[0];
 		        		if (sw == "") {
