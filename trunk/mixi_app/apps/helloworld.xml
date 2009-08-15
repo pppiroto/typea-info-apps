@@ -83,7 +83,7 @@
 	        gadgets.util.registerOnLoadHandler(init_app);
        	</script>
         <div id="twitter_search_panel">
-          <div id="twitter_search_cond" style="background-color : #fafad2; border : 1px solid lightgrey; padding : 6px;">
+          <div id="twitter_search_cond" style="background-color : #eee8aa; border : 1px solid lightgrey; padding : 6px;">
             <input type="text" size="16" id="q"/><input type="submit" value="検索" onclick="javascript:search($('#q').attr('value'));"/>
             <div id="amazon_content"></div>
           </div>
