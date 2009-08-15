@@ -7,6 +7,7 @@
       <Param name="exclude-urls">.*</Param>  
       <Param name="include-tags"></Param>
     </Optional> 
+    <Require feature="setprefs"/>
   </ModulePrefs> 
   <Content type="html">
      <![CDATA[ 
@@ -14,10 +15,14 @@
      	<script type="text/javascript" src="http://typea-info-apps.googlecode.com/svn/trunk/mixi_app/apps/js/typea_debug.js"></script>
      	
      	<script type="text/javascript">
+     		var tabs = new gadgets.TabSet(__MODULE_ID__, "Two");
      		var tw = new TwitterUtil();
 			var am = new AmazonUtil();
 			
-	        function initial_search() {
+	        function initialize() {
+	        	var one_Id = tabs.addTab('<div id="twitter_content"></div>');
+				var two_Id = tabs.addTab('<div">TAB2</div>');
+				
 				search('mixi');
 	        }
 	        
@@ -61,12 +66,11 @@
                 }
                 $('#amazon_content').html(html);
             }
-	        gadgets.util.registerOnLoadHandler(initial_search);
+	        gadgets.util.registerOnLoadHandler(initialize);
        	</script>
         <input type="text" size="16" id="q" /><!--
         --><input type="submit" value="検索" onclick="javascript:search($('#q').attr('value'));"/>
-        <div id="amazon_content"></div>
-       	<div id="twitter_content"></div>
+        <div id="amazon_content">
      ]]>
   </Content> 
 </Module>
