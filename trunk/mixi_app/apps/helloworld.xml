@@ -48,6 +48,7 @@
 
             function amazon_response(dataResponse) {
                 var html = "";
+                alert(dataResponse.data);
                 if (dataResponse.data != null) {
                     html = dataResponse.data;
                 }
