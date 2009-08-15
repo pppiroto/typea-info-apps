@@ -15,11 +15,18 @@
      	<script type="text/javascript" src="http://typea-info-apps.googlecode.com/svn/trunk/mixi_app/apps/js/typea_debug.js"></script>
      	
      	<script type="text/javascript">
+			var KEY_SEARCHED_WORD = "searched_word";
+			     	 
      		var tabs = new gadgets.TabSet();
      		var tw   = new TwitterUtil();
 			var am   = new AmazonUtil();
 			
 	        function init_app() {
+				create_tabs();
+	        	search('mixi');
+	        }
+	        
+	        function create_tabs() {
 	        	tabs.alignTabs('left');
 				tabs.addTab("検索", { 
 				     contentContainer: document.getElementById("twitter_search_panel"), 
@@ -31,14 +38,18 @@
 				     callback: test_tab, 
 				     tooltip: "Blank page." 
 				});
-
-	        	search('mixi');
 	        }
-
+	        
 		    function search_tab(tabId) {
 		    }
 		    function test_tab(tabId) {
 		    }
+
+	        function regist_request(key, value) {
+				var req = opensocial.newDataRequest();
+	        	req.add(req.newUpdatePersonAppDataRequest("VIEWER", key, value));
+	        	req.send(registResponse);
+	        }
 	        
 	        function search(search_word) {
                 var query = "q=" + search_word;
@@ -46,6 +57,7 @@
 				
                 twitter_request(tw.search_url(query));
                 amazon_request(am.search_url(query));
+                regist_request(KEY_SEARCHED_WORD, search_word);
 	        }
      		
      		function twitter_request(url) {
