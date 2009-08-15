@@ -73,15 +73,14 @@
 	        
 			function make_searched_word_link(searched_words_strings) {
 				var words = searched_words_strings.split(',');
-				alert(words);
 				words = jQuery.unique(words);
-				alert(words);
+				
 				html = "";
 				for (var i=0; i<words.length; i++){
 					html += words[i];
 					search_words += (words + ",")
 				}
-				$('#twitter_searched_words').html = html;
+				$('#twitter_searched_words').html(html);
 			}
 
 	        function search(search_word) {
