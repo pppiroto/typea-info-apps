@@ -73,8 +73,9 @@
 	        
 			function make_searched_word_link(searched_words_strings) {
 				var words = searched_words_strings.split(',');
+				alert("splited:" + words);
 				words = jQuery.unique(words);
-				alert(words);
+				alert("unique:" + words);
 				html = "";
 				for (var i=0; i<words.length; i++){
 					html += words[i];
@@ -93,7 +94,7 @@
                 twitter_request(tw.search_url(query));
                 amazon_request(am.search_url(query));
                 
-                search_words = search_word + "," + search_words;
+                search_words = (search_word + "," + search_words);
                 alert("search_words:" + search_words);
                 regist_data_request(KEY_SEARCHED_WORD, search_words);
 	        }
