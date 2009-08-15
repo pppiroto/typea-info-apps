@@ -131,7 +131,7 @@ TwitterUtil.prototype = {
     },
     markup_tag : function (text, search_callback) {
         var ret = text;
-        var ptn = /#(.*?)[ ,\.$]/g;
+        var ptn = /[#](.*?)[ ,\.$]/g;
         var ary = ptn.exec(text);
         while(ary) {
         	var url = "<a href='javascript:" + this.to_func_name(search_callback) + "(\"" + RegExp.$1 + "\");'>" + ary[0] + "</a>";
