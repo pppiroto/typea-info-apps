@@ -42,7 +42,7 @@ TypeA.prototype = {
 		if (func.name) {
 			return func.name;
 		} else {
-			var ptn = /function\s*(.*)\s*[(]/;
+			var ptn = /function\s*(.*)\s*dd[(]/;
 	        var ret = ptn.exec(func.toString());
 	        return (ret)?RegExp.$1:"alert";
 		}
