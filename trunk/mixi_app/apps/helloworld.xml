@@ -93,7 +93,7 @@
 						j++;
 						html += " <a href='javascript:search(\"" + words[i] +"\");'>" + words[i] + "</a>";
 						search_words += (words[i] + ",")
-						if (j > 10) {
+						if (j > 15) {
 							break;
 						}
 						pre_word = words[i];
