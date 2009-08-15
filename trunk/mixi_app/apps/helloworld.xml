@@ -54,7 +54,9 @@
 	        	});
 	        }
 
-	        function load_data_request(key) {
+	        function load_data_request(key, isInitial) {
+	        	if (isInitial == null) isInitial = false;
+	        	
 	        	var req = opensocial.newDataRequest();
 	        	req.add(req.newFetchPersonRequest("VIEWER"), "viewer");
 	        	var fields = [key];
@@ -67,6 +69,13 @@
 		        	}
 		        	var dataAry = viewer_data.getData()[viewer.getId()];
 		        	make_searched_word_link(dataAry[key]);
+		        	if (isInitial) {
+		        		var sw = search_words.split(",")[0];
+		        		if (sw == "") {
+		        			sw = "mixi";
+		        		}
+		        		search(sw, isInitial);
+		        	}
 				});
 	        }
 	        
@@ -92,15 +101,19 @@
 				$('#twitter_searched_words').html(html);
 			}
 
-	        function search(search_word) {
+	        function search(search_word, isInitial) {
+	        	if (isInitial == null) isInitial = false;
+	        	
                 var query = "q=" + search_word;
 				$('#q').attr('value', search_word);
 				
                 twitter_request(tw.search_url(query));
                 amazon_request(am.search_url(query));
                 
-                search_words = (search_word + "," + search_words);
-                regist_data_request(KEY_SEARCHED_WORD, search_words);
+                if (!isInitial) {
+	                search_words = (search_word + "," + search_words);
+	                regist_data_request(KEY_SEARCHED_WORD, search_words);
+                }
 	        }
      		
      		function twitter_request(url) {
