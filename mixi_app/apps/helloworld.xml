@@ -72,6 +72,7 @@
 	        }
 	        
 			function make_searched_word_link(searched_words_strings) {
+				alert(searched_words_strings);
 				var words = jQuery.unique(searched_words_strings(","));
 				html = "";
 				for (var i=0; i<words.length; i++){
