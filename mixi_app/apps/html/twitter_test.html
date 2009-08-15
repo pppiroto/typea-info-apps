@@ -4,29 +4,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Insert title here</title>
 <script type="text/javascript" src="http://typea-mixi01.appspot.com/js/jquery-1.3.2.js"></script>
-<script type="text/javascript" src="../js/typea.js"></script>
+<script type="text/javascript" src="../js/typea_debug.js"></script>
 <script type="text/javascript" src="../html/testdata/json_testdata.js"></script>
 <script type="text/javascript">
 	var tw = new TwitterUtil();
 	function twitter_test() {
-		$('#q').attr('value', 'test');
-		alert(to_func_name(response));
-		//response
-		//$('#q').value = "test";
-		//$('#content').html(tw.tw_search_gadget(json_search_testdata, response));
+		$('#content').html(tw.tw_search_gadget(json_search_testdata, response, request ));
 	}
     function response(dataResponse) {
     	var jsondata = dataResponse.data;
-    	//$('#content').html(tw.tw_search_gadget(json_search_testdata, request));
+    	$('#content').html(tw.tw_search_gadget(json_search_testdata, request, request));
     }
-    function to_func_name(func) {
-		if (func.name) {
-			return func.name;
-		} else {
-			var ptn = /function\s*(.*)\s*[(]/;
-	        var ret = ptn.exec(func.toString());
-	        return (ret)?RegExp.$1:"alert";
-		}
+    function request(url) {
+        alert(url);
     }
 </script>
 </head>
