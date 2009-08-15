@@ -32,7 +32,7 @@
 				     tooltip: "TEST" 
 				});
 
-	        	// search('mixi');
+	        	search('mixi');
 	        }
 
 		    function search_tab(tabId) {
@@ -83,8 +83,8 @@
 	        gadgets.util.registerOnLoadHandler(init_app);
        	</script>
         <div id="twitter_search_panel">
-          <div id="amazon_content"></div> 
           <input type="text" size="16" id="q"/><input type="submit" value="検索" onclick="javascript:search($('#q').attr('value'));"/>
+          <div id="amazon_content"></div>
           <div id="twitter_content"></div>
         </div>
         <div id="twitter_test_panel"></div>
