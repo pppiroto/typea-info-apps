@@ -26,10 +26,10 @@
 				     callback: search_tab, 
 				     tooltip: "Twitter 検索" 
 				});
-				tabs.addTab("TEST", { 
+				tabs.addTab("Blank", { 
 				     contentContainer: document.getElementById("twitter_test_panel"), 
 				     callback: test_tab, 
-				     tooltip: "TEST" 
+				     tooltip: "Blank page." 
 				});
 
 	        	search('mixi');
@@ -89,7 +89,9 @@
           </div>
           <div id="twitter_content" style="border : 1px solid gold;"></div>
         </div>
-        <div id="twitter_test_panel"></div>
+        <div id="twitter_test_panel">
+          now under construction ...
+        </div>
      ]]>
   </Content> 
 </Module>
