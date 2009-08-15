@@ -140,6 +140,8 @@
 	        	// make result
 	        	$('#twitter_content').html(tw.tw_search_gadget(jsondata, twitter_request, search));
 	        	$('table#twitter_list tr:odd').css('background-color', '#dfffff');
+	        	$('#twitter_list img').css('height', '48px');
+	        	$('#twitter_list img').css('width', '48px');
 	        	$('#twitter_search_word').css('color', 'blue');
 	        	$('#twitter_page').css('color', 'blue')
 	        	$('#search_query').css('background-color', 'gold');
