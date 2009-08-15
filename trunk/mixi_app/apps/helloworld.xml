@@ -35,10 +35,14 @@
 	        }
 
 		    function search_tab(tabId) {
+		    	var html = "";
+				html += '<input type="text" size="16" id="q"/><input type="submit" value="検索" onclick="javascript:search($(\'#q\').attr(\'value\'));"/>';;
+				html += '<div id='twitter_content'></div>';
+				
 				var div = document.createElement("div");
 				var selectedTab = tabs.getSelectedTab();
-				div.innerHTML = '<input type="text" size="16" id="q" /><input type="submit" value="検索" onclick="javascript:search($(\'#q\').attr(\'value\'));"/>';
-				document.getElementById(tabId).appendChild(div);
+				
+				document.getElementById(tabId).innerHTML = html;
 		    }
 		    function test_tab(tabId) {
 				var div = document.createElement("div");
