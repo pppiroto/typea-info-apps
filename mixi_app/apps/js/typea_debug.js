@@ -28,7 +28,7 @@ TypeA.prototype = {
 		}
 		return query_string;
 	},
-    markup_fuzzy_url :function (text) {
+    markup_fuzzy_url : function (text) {
         var ret = text;
         var ptn = /(http:\/\/.*?)[ $]/g; // 行末にマッチしない？？？
         var ary = ptn.exec(text);
@@ -37,6 +37,15 @@ TypeA.prototype = {
             ary = ptn.exec(text);
         }
         return ret;
+    },
+    to_func_name : function(func) {
+		if (func.name) {
+			return func.name;
+		} else {
+			var ptn = /function\s*(.*)\s*[(]/;
+	        var ret = ptn.exec(func.toString());
+	        return (ret)?RegExp.$1:"alert";
+		}
     }
 };
 var AmazonUtil = function(format) {
@@ -78,7 +87,7 @@ TwitterUtil.prototype = {
         html += "<span id='twitter_search_word'>" + decodeURIComponent(query) + "</span> で検索";
         html += "&nbsp<span id='twitter_page'>" + page + "</span>ページ目";
         if (next_page) {
-        	html += "&nbsp<a href='javascript:" + nextpage_callback.name + "(\"" + this.search_url(next_page, true) + "\");'>次頁</a>";
+        	html += "&nbsp<a href='javascript:" + this.to_func_name(nextpage_callback) + "(\"" + this.search_url(next_page, true) + "\");'>次頁</a>";
         }
         html += "</div>";
         	
@@ -125,7 +134,7 @@ TwitterUtil.prototype = {
         var ptn = /#(.*?)[ ,\.$]/g;
         var ary = ptn.exec(text);
         while(ary) {
-        	var url = "<a href='javascript:" + search_callback.name + "(\"" + RegExp.$1 + "\");'>" + ary[0] + "</a>";
+        	var url = "<a href='javascript:" + this.to_func_name(search_callback) + "(\"" + RegExp.$1 + "\");'>" + ary[0] + "</a>";
             ret = ret.replace(ary[0], url);
             ary = ptn.exec(text);
         }
