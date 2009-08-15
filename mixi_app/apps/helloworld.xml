@@ -20,6 +20,7 @@
 			var am   = new AmazonUtil();
 			
 	        function init_app() {
+	        	tabs.alignTabs('left');
 				tabs.addTab("検索", { 
 				     contentContainer: document.getElementById("twitter_top"), 
 				     callback: search_tab, 
@@ -28,7 +29,7 @@
 				tabs.addTab("TEST", { 
 				     contentContainer: document.getElementById("twitter_top"), 
 				     callback: test_tab, 
-				     tooltip: "Twitter 検索" 
+				     tooltip: "TEST" 
 				});
 
 	        	search('mixi');
@@ -45,10 +46,6 @@
 				document.getElementById(tabId).innerHTML = html;
 		    }
 		    function test_tab(tabId) {
-				var div = document.createElement("div");
-				var selectedTab = tabs.getSelectedTab();
-				div.innerHTML = 'test';
-				document.getElementById(tabId).appendChild(div);
 		    }
 	        
 	        function search(search_word) {
@@ -93,7 +90,7 @@
             }
 	        gadgets.util.registerOnLoadHandler(init_app);
        	</script>
-        <div id="amazon_content">
+        <div id="amazon_content"></div>
         <div id="twitter_top"></div>
      ]]>
   </Content> 
