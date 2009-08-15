@@ -67,7 +67,6 @@
 		        	}
 		        	var dataAry = viewer_data.getData()[viewer.getId()];
 		        	make_searched_word_link(dataAry[key]);
-		        	
 				});
 	        }
 	        
@@ -81,7 +80,7 @@
 				for (var i=0; i<words.length; i++){
 					if (words[i] != "") {
 						j++;
-						html += words[i];
+						html += "<a href='javascript:search(\"" + words[i] +"\");'>" + words[i] + "</a> ";
 						search_words += (words[i] + ",")
 						if (j > 10) {
 							break;
