@@ -30,6 +30,7 @@
 	        function response(dataResponse) {
 	        	var jsondata = dataResponse.data;
 	        	$('#content').html(tw.tw_search_gadget(jsondata, request));
+	        	$('table#twitter_list tr:odd').css('background-color', '#dfffff');
 	        }
 	        function search_twitter() {
                 var paramObj = document.getElementById('q');
