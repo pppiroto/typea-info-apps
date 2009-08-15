@@ -69,7 +69,7 @@ TwitterUtil.prototype = {
             html += html_next
         }
         var results = jsondata['results'];
-        html +="<table border='0' id='twitter'>";
+        html +="<table border='0' id='twitter_list'>";
         for (var i=0; i<results.length; i++) {
             var result = results[i];
             html += "<tr style='font-size:small;'>";
