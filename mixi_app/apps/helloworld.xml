@@ -20,7 +20,7 @@
 			
 	        function init_app() {
 	        	try {
-					var tabs = new gadgets.TabSet();
+					var tabs = gadgets.TabSet();
 					alert(tabs);
 				} catch(e) {
 					alert(e);
