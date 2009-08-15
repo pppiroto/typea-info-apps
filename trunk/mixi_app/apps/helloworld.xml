@@ -100,6 +100,7 @@
 					}
 				}
 				$('#twitter_searched_words').css('padding-left', '10px');
+				$('#twitter_searched_words').css('font-size', 'x-small');
 				$('#twitter_searched_words').html(html);
 				
 			}
