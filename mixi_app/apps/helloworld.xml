@@ -15,16 +15,14 @@
      	<script type="text/javascript" src="http://typea-info-apps.googlecode.com/svn/trunk/mixi_app/apps/js/typea_debug.js"></script>
      	
      	<script type="text/javascript">
+     		var tabs = new gadgets.TabSet();
      		var tw   = new TwitterUtil();
 			var am   = new AmazonUtil();
 			
 	        function init_app() {
-	        	try {
-					alert(gadgets.TabSet);
-				} catch(e) {
-					alert(e);
-				}				
-				search('mixi');
+	        	var one_Id = tabs.addTab('<div id="twitter_content"></div>');  
+	        	
+	        	search('mixi');
 	        }
 	        
 	        function search(search_word) {
@@ -72,7 +70,7 @@
         <input type="text" size="16" id="q" /><!--
         --><input type="submit" value="検索" onclick="javascript:search($('#q').attr('value'));"/>
         <div id="amazon_content">
-        <div id="twitter_content"></div>
+        
      ]]>
   </Content> 
 </Module>
