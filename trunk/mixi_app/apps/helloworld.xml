@@ -83,8 +83,10 @@
 	        gadgets.util.registerOnLoadHandler(init_app);
        	</script>
         <div id="twitter_search_panel">
-          <input type="text" size="16" id="q"/><input type="submit" value="検索" onclick="javascript:search($('#q').attr('value'));"/>
-          <div id="amazon_content"></div>
+          <fieldset>
+            <input type="text" size="16" id="q"/><input type="submit" value="検索" onclick="javascript:search($('#q').attr('value'));"/>
+            <div id="amazon_content"></div>
+          </fieldset>
           <div id="twitter_content"></div>
         </div>
         <div id="twitter_test_panel"></div>
