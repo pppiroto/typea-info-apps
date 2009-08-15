@@ -47,7 +47,7 @@
 	        	var jsondata = dataResponse.data;
 	        	
 	        	// make result
-	        	$('#twitter_content').html(tw.tw_search_gadget(jsondata, twitter_request));
+	        	$('#twitter_content').html(tw.tw_search_gadget(jsondata, twitter_request, search));
 	        	$('table#twitter_list tr:odd').css('background-color', '#dfffff');
 	        	$('#twitter_search_word').css('color', 'blue');
 	        	$('#twitter_page').css('color', 'blue')
