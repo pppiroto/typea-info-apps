@@ -24,7 +24,7 @@
 			
 	        function init_app() {
 				create_tabs();
-	        	search('mixi');
+	        	// search('mixi');
 	        	load_data_request(KEY_SEARCHED_WORD);
 	        }
 	        
