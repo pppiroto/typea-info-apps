@@ -15,7 +15,19 @@
      	
      	<script type="text/javascript">
      		var tw = new TwitterUtil();
-     		function request(url) {
+			var am = new AmazonUtil();
+			
+	        function search() {
+                var paramObj = document.getElementById('q');
+                var p = "";
+                if (paramObj != null) {
+                    p = "q=" + paramObj.value;
+                }
+                twitter_request(tw.search_url(p));
+                amazon_request(am.search_url(p));
+	        }
+     		
+     		function twitter_request(url) {
      			$('#q').attr('value', '');
      			var params = {};
 				if (url == null) {
@@ -25,28 +37,40 @@
                 } 
                 params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
                 params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
-                gadgets.io.makeRequest(url, response, params);
+                gadgets.io.makeRequest(url, twitter_response, params);
 	        }
-	        function response(dataResponse) {
+	        
+            function amazon_request(url) {
+                
+                var params = {};
+                params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
+                params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.TEXT;
+                gadgets.io.makeRequest(url, amazon_response, params);
+            }
+
+            function amazon_response(dataResponse) {
+                var html = "";
+                if (dataResponse.data != null) {
+                    html = dataResponse.data;
+                }
+                $('#amazon_content').html = html;
+            }
+            	        
+	        function twitter_response(dataResponse) {
 	        	var jsondata = dataResponse.data;
-	        	$('#content').html(tw.tw_search_gadget(jsondata, request));
+	        	
+	        	// make result
+	        	$('#twitter_content').html(tw.tw_search_gadget(jsondata, twitter_request));
 	        	$('table#twitter_list tr:odd').css('background-color', '#dfffff');
 	        	$('#twitter_search_word').css('color', 'blue');
 	        	$('#twitter_page').css('color', 'blue')
 	        }
-	        function search_twitter() {
-                var paramObj = document.getElementById('q');
-                var p = "";
-                if (paramObj != null) {
-                    p = "q=" + paramObj.value;
-                }
-                request(tw.search_url(p));
-	        }
-	        gadgets.util.registerOnLoadHandler(request);
+	        gadgets.util.registerOnLoadHandler(twitter_request);
        	</script>
         <input type="text" size="16" id="q" /><!--
-        --><input type="submit" value="search" onclick="javascript:search_twitter();"/>
-       	<div id="content"></div>
+        --><input type="submit" value="search" onclick="javascript:search();"/>
+        <div id="amazon_content"></div>
+       	<div id="twitter_content"></div>
      ]]>
   </Content> 
 </Module>
