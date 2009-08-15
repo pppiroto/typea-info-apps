@@ -51,7 +51,7 @@
 	        	$('table#twitter_list tr:odd').css('background-color', '#dfffff');
 	        	$('#twitter_search_word').css('color', 'blue');
 	        	$('#twitter_page').css('color', 'blue')
-	        	$('#search_query').css('background-color', 'light-yellow');
+	        	$('#search_query').css('background-color', 'lightskyblue');
 	        }
 
             function amazon_response(dataResponse) {
