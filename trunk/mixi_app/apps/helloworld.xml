@@ -85,7 +85,7 @@
         <div id="twitter_search_panel">
           <div id="twitter_search_cond" style="background-color : #eee8aa; border : 1px solid gold; padding : 6px;">
             <input type="text" size="16" id="q"/><input type="submit" value="検索" onclick="javascript:search($('#q').attr('value'));"/>
-            <div id="amazon_content"></div>
+            <div id="amazon_content" style="margin-top : 4px;"></div>
           </div>
           <div id="twitter_content"></div>
         </div>
