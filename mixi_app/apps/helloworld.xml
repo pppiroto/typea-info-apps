@@ -20,9 +20,7 @@
 			var am   = new AmazonUtil();
 			
 	        function initialize() {
-	        	var one_Id = tabs.addTab('<div id="twitter_content"></div>');
-				var two_Id = tabs.addTab('<div">TAB2</div>');
-				
+				alert(tabs);				
 				search('mixi');
 	        }
 	        
@@ -71,6 +69,7 @@
         <input type="text" size="16" id="q" /><!--
         --><input type="submit" value="検索" onclick="javascript:search($('#q').attr('value'));"/>
         <div id="amazon_content">
+        <div id="twitter_content"></div>
      ]]>
   </Content> 
 </Module>
