@@ -67,7 +67,7 @@
 		        	}
 		        	var dataAry = viewer_data.getData()[viewer.getId()];
 		        	make_searched_word_link(dataAry[key]);
-		        	search('mixi');
+		        	
 				});
 	        }
 	        
