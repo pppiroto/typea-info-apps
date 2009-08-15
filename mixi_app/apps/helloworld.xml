@@ -64,7 +64,7 @@
 	        gadgets.util.registerOnLoadHandler(initial_search);
        	</script>
         <input type="text" size="16" id="q" /><!--
-        --><input type="submit" value="search" onclick="javascript:search($('#q').attr('value'));"/>
+        --><input type="submit" value="検索" onclick="javascript:search($('#q').attr('value'));"/>
         <div id="amazon_content"></div>
        	<div id="twitter_content"></div>
      ]]>

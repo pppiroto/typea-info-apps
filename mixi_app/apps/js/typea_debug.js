@@ -74,8 +74,8 @@ TwitterUtil.prototype = {
         var html_next = "";
         
         
-        html += "<div id='search_query'> search word : <span id='twitter_search_word'>" + decodeURIComponent(query) + "</span>"
-                                           + ", page : <span id='twitter_page'>" + page + "</span></div>";
+        html += "<div id='search_query'><span id='twitter_search_word'>" + decodeURIComponent(query) + "</span> を検索しました。"
+                                           + "<span id='twitter_page'>" + page + "</span> ページ</div>";
         if (next_page) {
             html_next = "<a href='javascript:" + nextpage_callback.name + "(\"" + this.search_url(next_page, true) + "\");'>&gt;&gt;&nbsp;next page</a>"
                       + "<br/>";
