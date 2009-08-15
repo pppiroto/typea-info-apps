@@ -50,7 +50,6 @@
 				var req = opensocial.newDataRequest();
 	        	req.add(req.newUpdatePersonAppDataRequest("VIEWER", key, value));
 	        	req.send(function(data){
-	        		alert(key);
 	        		load_data_request(key);
 	        	});
 	        }
@@ -61,10 +60,15 @@
 	        	var fields = [key];
 				req.add(req.newFetchPersonAppDataRequest("VIEWER", fields), "viewer_data");
 				req.send(function(data) {
-					alert(data);
+		        	var viewer      = data.get("viewer").getData();
+		        	var viewer_data = data.get("viewer_data");
+		        	if (viewer_data.hadError()) {
+		        		return;
+		        	}
+		        	var dataAry = viewer_data.getData()[viewer.getId()];
+		        	alert(dataAry[key]);
 				});
 	        }
-
 
 	        function search(search_word) {
                 var query = "q=" + search_word;
