@@ -75,16 +75,18 @@
 				words = jQuery.unique(words);
 				
 				var j = 0;
+				var pre_word = "";
 				search_words = "";
 				html = "";
 				for (var i=0; i<words.length; i++){
-					if (words[i] != "") {
+					if (words[i] != "" && pre_word != words[i]) {
 						j++;
 						html += "<a href='javascript:search(\"" + words[i] +"\");'>" + words[i] + "</a> ";
 						search_words += (words[i] + ",")
 						if (j > 10) {
 							break;
 						}
+						pre_word = words[i];
 					}
 				}
 				$('#twitter_searched_words').html(html);
