@@ -73,16 +73,18 @@
 	        
 			function make_searched_word_link(searched_words_strings) {
 				var words = searched_words_strings.split(',');
-				alert("splited:" + words);
 				words = jQuery.unique(words);
-				alert("unique:" + words);
+				
+				var j = 0;
 				html = "";
 				for (var i=0; i<words.length; i++){
-					alert(i + ":" + words[i]);
-					html += words[i];
-					search_words += (words[i] + ",")
-					if (i > 10) {
-						break;
+					if (words[i] != "") {
+						j++;
+						html += words[i];
+						search_words += (words[i] + ",")
+						if (j > 10) {
+							break;
+						}
 					}
 				}
 				$('#twitter_searched_words').html(html);
