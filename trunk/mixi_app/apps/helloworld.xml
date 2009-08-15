@@ -7,7 +7,7 @@
       <Param name="exclude-urls">.*</Param>  
       <Param name="include-tags"></Param>
     </Optional> 
-    <Require feature="setprefs"/>
+    <Require feature="tabs" /> 
   </ModulePrefs> 
   <Content type="html">
      <![CDATA[ 
