@@ -62,7 +62,7 @@ TwitterUtil.prototype = {
         var html_next = "";
         
         
-        html += "<div id='search_query'> Search word : " + query + ", page : " + page + "</div>";
+        html += "<div id='search_query'> Search word : " + decodeURIComponent(query) + ", page : " + page + "</div>";
         if (next_page) {
             html_next = "<a href='javascript:" + callback.name + "(\"" + this.search_url(next_page, true) + "\");'>&gt;&gt;&nbsp;next page</a>"
                       + "<br/>";
