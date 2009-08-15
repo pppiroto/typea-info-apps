@@ -18,13 +18,10 @@
 			var am = new AmazonUtil();
 			
 	        function search() {
-                var paramObj = document.getElementById('q');
-                var p = "";
-                if (paramObj != null) {
-                    p = "q=" + paramObj.value;
-                }
-                twitter_request(tw.search_url(p));
-                amazon_request(am.search_url(p));
+                var query = "q=" + $('#q').attr('value');
+                
+                twitter_request(tw.search_url(query));
+                amazon_request(am.search_url(query));
 	        }
      		
      		function twitter_request(url) {
@@ -41,6 +38,7 @@
 	        }
 	        
             function amazon_request(url) {
+                alert(url);
                 
                 var params = {};
                 params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
