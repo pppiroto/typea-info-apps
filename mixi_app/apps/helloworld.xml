@@ -38,8 +38,6 @@
 	        }
 	        
             function amazon_request(url) {
-                alert(url);
-                
                 var params = {};
                 params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
                 params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.TEXT;
@@ -48,11 +46,10 @@
 
             function amazon_response(dataResponse) {
                 var html = "";
-                alert(dataResponse.data);
                 if (dataResponse.data != null) {
                     html = dataResponse.data;
                 }
-                $('#amazon_content').html = html;
+                $('#amazon_content').html(html);
             }
             	        
 	        function twitter_response(dataResponse) {
