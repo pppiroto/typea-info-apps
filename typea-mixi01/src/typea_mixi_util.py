@@ -10,9 +10,10 @@ import xml.parsers.expat
 
 class SearchedItem:
     ''' Amazon ItemSearch Operation の結果格納  '''
-    asin = ''
-    detailPageURL = ''
-    smallImageURL = ''
+    def __init__(self):
+        self.asin = ''
+        self.detailPageURL = ''
+        self.smallImageURL = ''
 
 class SAXTagHandler:
     def __init__(self):
