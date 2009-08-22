@@ -7,7 +7,6 @@ import base64
 
 #@see: http://d.hatena.ne.jp/niiyan/20090509/1241884365
 class Operation:
-    __param_map = {}
     __safe_chars = '-._~' 
     __ecs_url = 'http://ecs.amazonaws.jp/onca/xml'
     __service = 'AWSECommerceService'
@@ -19,6 +18,9 @@ class Operation:
     __value_of_host_header_in_lowercase = '/onca/xml'
     __http_request_uri = 'ecs.amazonaws.jp'
     
+    def __init__(self):
+        self.__param_map = {}
+        
     def operation_name(self):
         return ''
 
