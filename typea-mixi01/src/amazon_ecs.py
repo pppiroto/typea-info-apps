@@ -6,24 +6,22 @@ import hashlib, hmac
 import base64 
 
 #@see: http://d.hatena.ne.jp/niiyan/20090509/1241884365
-class Operation:
-    __safe_chars = '-._~' 
-    __ecs_url = 'http://ecs.amazonaws.jp/onca/xml'
-    __service = 'AWSECommerceService'
-    __access_key_id = '1498TGK1YPN1JATPXXG2'
-    __associate_tag = 'typea09-22' 
+class Operation(object):
+    __param_map         = {}
+    __safe_chars        = '-._~' 
+    __ecs_url           = 'http://ecs.amazonaws.jp/onca/xml'
+    __service           = 'AWSECommerceService'
+    __access_key_id     = '1498TGK1YPN1JATPXXG2'
+    __associate_tag     = 'typea09-22' 
     __secret_access_key = 'DiHCermoiVMaJZtByxDeJac4M18+gnMTD7igJH8Z'
-    
-    __http_verb = 'GET'
+    __http_verb         = 'GET'
     __value_of_host_header_in_lowercase = '/onca/xml'
-    __http_request_uri = 'ecs.amazonaws.jp'
-    
+    __http_request_uri  = 'ecs.amazonaws.jp'
+
     def __init__(self):
-        self.__param_map = {}
-        
+        pass
     def operation_name(self):
         return ''
-
     def request(self):
         self.set_parameter('Service', self.__service)
         self.set_parameter('AWSAccessKeyId', self.__access_key_id)
@@ -56,13 +54,11 @@ class Operation:
         else:
             self.__param_map[key] = value 
             
-    def response_group(self, value='', remove=False):
-        self.set_parameter('ResponseGroup', value='Medium', remove=False)
+    def response_group(self, value='Medium', remove=False):
+        self.set_parameter('ResponseGroup', value, remove=False)
 
 class ItemSearch(Operation):
-    '''
-    @see: http://docs.amazonwebservices.com/AWSECommerceService/latest/DG/index.html?ItemSearch.html
-    '''
+    '''@see: http://docs.amazonwebservices.com/AWSECommerceService/latest/DG/index.html?ItemSearch.html'''
     def operation_name(self):
         return 'ItemSearch'
     def keywords(self, value, remove=False):
