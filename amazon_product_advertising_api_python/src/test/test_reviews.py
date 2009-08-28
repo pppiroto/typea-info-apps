@@ -14,7 +14,11 @@ request = operation.request()
 print 'REQUEST : %s' % request 
 f = urllib2.urlopen(request)
 
-etree = ElementTree.parse(f)
+dom = ElementTree.parse(f)
 
-items = etree.findall('/ItemSearchResponse/Items')
-items.write(r'c:test.xml')
+root = dom.getroot()
+items =  root.findall('.//{http://webservices.amazon.com/AWSECommerceService/2005-10-05}Item')
+
+for item in items:
+    print item.tag
+    
