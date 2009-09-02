@@ -40,7 +40,11 @@ class Operation(object):
         request_parm_str = '&'.join(n_v_pair_list)
         
         #String-To-Sign
-        sing_part_list = [self.__http_verb, self.__http_request_uri, self.__value_of_host_header_in_lowercase, request_parm_str]
+        sing_part_list = [self.__http_verb, 
+                          self.__http_request_uri, 
+                          self.__value_of_host_header_in_lowercase, 
+                          request_parm_str]
+        
         str_to_sign = '\n'.join(sing_part_list) 
         
         hmac_digest = hmac.new(self.__secret_access_key, str_to_sign, hashlib.sha256).digest()
