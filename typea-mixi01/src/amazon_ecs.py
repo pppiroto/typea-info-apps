@@ -6,6 +6,8 @@ import hashlib, hmac
 import base64 
 
 #@see: http://d.hatena.ne.jp/niiyan/20090509/1241884365
+#@see: http://typea.info/blg/glob/2009/07/amazon_product_advertising_api.html
+#@see: http://typea.info/blg/glob/2009/07/google_app_engine.html
 class Operation(object):
     __safe_chars        = '-._~' 
     __ecs_url           = 'http://ecs.amazonaws.jp/onca/xml'
@@ -25,13 +27,13 @@ class Operation(object):
         self.set_parameter('Service', self.__service)
         self.set_parameter('AWSAccessKeyId', self.__access_key_id)
         self.set_parameter('AssociateTag', self.__associate_tag)
-        self.set_parameter('Operation', self.operation_name())
+        self.set_parameter('Operation', self.operation_name)
         self.set_parameter('Timestamp', datetime.utcnow().isoformat() + 'Z')
         
         #Name-Value Pairs
-        n_v_pair_list = []
-        for key in self.__param_map.keys():
-            n_v_pair_list.append(urllib.quote(key, self.__safe_chars) + '=' + urllib.quote(self.__param_map[key], self.__safe_chars))
+        n_v_pair_list = [urllib.quote(key, self.__safe_chars) + '=' + 
+                         urllib.quote(self.__param_map[key], self.__safe_chars)
+                         for key in self.__param_map.keys()]
 
         #Sorted Pairs
         n_v_pair_list.sort()
@@ -47,23 +49,42 @@ class Operation(object):
         
         return '%s?%s&Signature=%s' % (self.__ecs_url, request_parm_str, signature)
     
-    def set_parameter(self, key, value='', remove=False):
-        if remove:
-            del self.__param_map[key]
-        else:
-            self.__param_map[key] = value 
-            
-    def response_group(self, value='Medium', remove=False):
-        self.set_parameter('ResponseGroup', value, remove=False)
+    def get_parameter(self, key):
+        return self.__param_map[key]
+    
+    def set_parameter(self, key, value=''):
+        self.__param_map[key] = value 
+
+    def del_parameter(self, key):
+        del self.__param_map[key]
+    
+    @property
+    def response_group(self):
+        return self.get_parameter('ResponseGroup')
+    @response_group.setter        
+    def response_group(self, value='Medium'):
+        self.set_parameter('ResponseGroup', value)
 
 class ItemSearch(Operation):
     '''@see: http://docs.amazonwebservices.com/AWSECommerceService/latest/DG/index.html?ItemSearch.html'''
+    @property
     def operation_name(self):
         return 'ItemSearch'
-    def keywords(self, value, remove=False):
-        self.set_parameter('Keywords', value, remove)
-    def search_index(self, value='Books', remove=False):
-        self.set_parameter('SearchIndex', value, remove)
+    @property
+    def keywords(self):
+        self.get_parameter('keywords')
+    @keywords.setter
+    def keywords(self, value):
+        self.set_parameter('Keywords', value)
+    @keywords.deleter
+    def keywords(self):
+        self.del_parameter('keywords')
+    @property    
+    def search_index(self):
+        return self.get_parameter('SearchIndex')
+    @search_index.setter
+    def search_index(self, value='Books'):
+        self.set_parameter('SearchIndex', value)
 
 
     

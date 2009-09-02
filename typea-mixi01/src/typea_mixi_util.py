@@ -93,11 +93,11 @@ class AmazonItemSearch(webapp.RequestHandler):
             keyword = 'amazon'
     
         operation = amazon_ecs.ItemSearch()
-        operation.keywords(keyword)
-        operation.search_index('Books')
-        operation.response_group('Small')
+        operation.keywords = keyword
+        operation.search_index = 'Books'
+        operation.response_group = 'Medium'
         request = operation.request()
-
+        
         # XMLParserの生成とハンドラのセット
         h = SAXTagHandler()
         p = xml.parsers.expat.ParserCreate()
