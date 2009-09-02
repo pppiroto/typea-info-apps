@@ -57,34 +57,30 @@ class Operation(object):
 
     def del_parameter(self, key):
         del self.__param_map[key]
-    
-    @property
-    def response_group(self):
+   
+    def get_response_group(self):
         return self.get_parameter('ResponseGroup')
-    @response_group.setter        
-    def response_group(self, value='Medium'):
+    def set_response_group(self, value='Medium'):
         self.set_parameter('ResponseGroup', value)
+    response_group = property(get_response_group, set_response_group)
+        
 
 class ItemSearch(Operation):
     '''@see: http://docs.amazonwebservices.com/AWSECommerceService/latest/DG/index.html?ItemSearch.html'''
     @property
     def operation_name(self):
         return 'ItemSearch'
-    @property
-    def keywords(self):
+    
+    def get_keywords(self):
         self.get_parameter('keywords')
-    @keywords.setter
-    def keywords(self, value):
+    def set_keywords(self, value):
         self.set_parameter('Keywords', value)
-    @keywords.deleter
-    def keywords(self):
-        self.del_parameter('keywords')
-    @property    
-    def search_index(self):
+    keywords = property(get_keywords, set_keywords)
+    
+    def get_search_index(self):
         return self.get_parameter('SearchIndex')
-    @search_index.setter
-    def search_index(self, value='Books'):
+    def set_search_index(self, value='Books'):
         self.set_parameter('SearchIndex', value)
-
+    search_index = property(get_search_index, set_search_index)
 
     
