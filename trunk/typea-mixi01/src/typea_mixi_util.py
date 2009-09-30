@@ -80,20 +80,35 @@ class AmazonItemSearch(webapp.RequestHandler):
                 image : image list
                 text  : text only
                 ul    : unnumbered list
+            c : keyword encoding
     '''
     def get(self):
-        keyword = self.request.GET['q']  # query keyword
+        # エンコードした値を request.GET で取得すると　KEYError ？
+        keyword = ''
+        queries = self.request.query_string.split('&')
+        for query in queries:
+            pair = query.split('=')
+            if pair[0] == 'q':
+                keyword = pair[1]
+                break;
         try:
             style = self.request.GET['s']  # style
         except KeyError:
             style = 'images'  
         
+        try:
+            coding = self.request.GET['c']  # style
+        except KeyError:
+            coding = None 
+
         #パラメータのデコード
         #@see http://www.findxfine.com/default/495.html
         #FireFox のアドレスバーに漢字を打つとUTF-8でないコードにエンコードされてしまう？
         keyword = urllib2.unquote(keyword) #.encode('utf-8')
         if keyword == '':
             keyword = 'amazon'
+        if coding:
+            keyword = unicode(keyword, coding).encode('utf-8')
     
         operation = amazon_ecs.ItemSearch()
         operation.keywords = keyword
