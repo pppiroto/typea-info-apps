@@ -14,7 +14,8 @@ class SearchedItem:
         self.asin = ''
         self.detailPageURL = ''
         self.smallImageURL = ''
-
+        self.title = ''
+        
 class SAXTagHandler:
     def __init__(self):
         # XMLParser(SAX)の状態制御
@@ -63,6 +64,8 @@ class SAXTagHandler:
                     self.item_list[idx].detailPageURL = data
                 if self.img_start and self.now_key == 'URL':
                     self.item_list[idx].smallImageURL = data
+                if self.now_key == 'Title':
+                    self.item_list[idx].title = data    
 
 class MainPage(webapp.RequestHandler):
     def get(self):
@@ -71,20 +74,20 @@ class MainPage(webapp.RequestHandler):
 class AmazonItemSearch(webapp.RequestHandler):
     ''' Amazon Product Advertising API を利用し、キーワード検索を行う
         example http://typea-mixi01.appspot.com/am_is?q=book
+        parameters 
+            q : query keyword
+            s : view style 
+                image : image list
+                text  : text only
+                ul    : unnumbered list
     '''
-    
     def get(self):
+        keyword = self.request.GET['q']  # query keyword
+        try:
+            style = self.request.GET['s']  # style
+        except KeyError:
+            style = 'images'  
         
-        #パラメータの切り出し request.getが機能しない
-        #keyword = self.request.get('q')
-        keyword = ''
-        queries = self.request.query_string.split('&')
-        for query in queries:
-            pair = query.split('=')
-            if pair[0] == 'q':
-                keyword = pair[1]
-                break;
-
         #パラメータのデコード
         #@see http://www.findxfine.com/default/495.html
         #FireFox のアドレスバーに漢字を打つとUTF-8でないコードにエンコードされてしまう？
@@ -109,9 +112,21 @@ class AmazonItemSearch(webapp.RequestHandler):
         f = urllib2.urlopen(request)
         p.Parse(f.read())
         
-        for itm in h.item_list:
-            self.response.out.write('<a href="%s" style="padding-left:2px" target="_blank"><img src="%s" border="0"/></a>' 
-                                    % (itm.detailPageURL, itm.smallImageURL))
+        if style == 'images':
+            for itm in h.item_list:
+                self.response.out.write('<a href="%s" style="padding-left:2px" target="_blank" title="%s"><img src="%s" border="0"/></a>' 
+                                        % (itm.detailPageURL, itm.title, itm.smallImageURL))
+        if style == 'text':
+            for itm in h.item_list:
+                self.response.out.write('<a href="%s" style="padding-left:4px" target="_blank">%s</a>' 
+                                        % (itm.detailPageURL, itm.title))
+        if style == 'ul':
+            self.response.out.write('<ul>')
+            for itm in h.item_list:
+                self.response.out.write('<li><a href="%s" style="padding-left:4px" target="_blank">%s</a>' 
+                                        % (itm.detailPageURL, itm.title))
+            self.response.out.write('</ul>')
+        
         
 application = webapp.WSGIApplication([
                                       ('/', MainPage),
