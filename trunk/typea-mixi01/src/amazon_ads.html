@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Recommended Books({{keyword}})</title>
+<meta name="description" content="Recommended Books for {{keyword}}.">
+<meta name="keywords" content="{{keyword}}">
+</head>
+<body>
+{% ifequal style 'image' %}
+	{% for itm in item_list %}
+        <a href="{{itm.detailPageURL}}" style="padding-left:2px" target="_blank" title="{{itm.title}}"><img src="{{itm.smallImageURL}}" border="0"/></a> 
+	{% endfor %}
+{% endifequal %}
+                                
+{% ifequal style 'text' %}
+	<div style="font-size:small;">
+	{% for itm in item_list %}
+	    <a href="{{itm.detailPageURL}}" style="padding-left:4px" target="_blank">{{itm.title}}</a>&nbsp;/&nbsp; 
+	{% endfor %}
+	</div>
+{% endifequal %}
+
+{% ifequal style 'ul' %}
+ 	<ul style="font-size:small;">
+	{% for itm in item_list %}
+        <li><a href="{{itm.detailPageURL}}" style="padding-left:4px" target="_blank">{{itm.title}}</a> 
+	{% endfor %}
+	</ul>
+{% endifequal %}
+</body>
+</html>
