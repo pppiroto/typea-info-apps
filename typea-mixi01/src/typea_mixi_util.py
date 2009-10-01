@@ -110,8 +110,9 @@ class AmazonItemSearch(webapp.RequestHandler):
         if keyword == '':
             keyword = 'amazon'
         if coding:
-            keyword = unicode(keyword, coding).encode('utf-8')
-    
+            keyword = unicode(keyword, coding)
+        keyword = keyword.split(' ')[0]
+
         operation = amazon_ecs.ItemSearch()
         operation.keywords = keyword
         operation.search_index = 'Books'
