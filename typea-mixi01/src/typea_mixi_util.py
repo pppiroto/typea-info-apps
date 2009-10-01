@@ -1,8 +1,10 @@
 #!Python2.6
-# -*- coding: utf-8 -*-
+# -*- encoding: utf-8 -*-
 
+import os
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
+from google.appengine.ext.webapp import template
 
 import amazon_ecs
 import urllib2
@@ -94,7 +96,7 @@ class AmazonItemSearch(webapp.RequestHandler):
         try:
             style = self.request.GET['s']  # style
         except KeyError:
-            style = 'images'  
+            style = 'image'  
         
         try:
             coding = self.request.GET['c']  # style
@@ -126,22 +128,16 @@ class AmazonItemSearch(webapp.RequestHandler):
         # リクエストの実行と解析
         f = urllib2.urlopen(request)
         p.Parse(f.read())
+
+        template_values = {
+            'style':style,
+            'keyword':keyword,
+            'item_list':h.item_list
+        }
         
-        if style == 'images':
-            for itm in h.item_list:
-                self.response.out.write('<a href="%s" style="padding-left:2px" target="_blank" title="%s"><img src="%s" border="0"/></a>' 
-                                        % (itm.detailPageURL, itm.title, itm.smallImageURL))
-        if style == 'text':
-            for itm in h.item_list:
-                self.response.out.write('<a href="%s" style="padding-left:4px" target="_blank">%s</a>' 
-                                        % (itm.detailPageURL, itm.title))
-        if style == 'ul':
-            self.response.out.write('<ul>')
-            for itm in h.item_list:
-                self.response.out.write('<li><a href="%s" style="padding-left:4px" target="_blank">%s</a>' 
-                                        % (itm.detailPageURL, itm.title))
-            self.response.out.write('</ul>')
-        
+        path = os.path.join(os.path.dirname(__file__), 'amazon_ads.html')
+        self.response.out.write(template.render(path,template_values))
+
         
 application = webapp.WSGIApplication([
                                       ('/', MainPage),
