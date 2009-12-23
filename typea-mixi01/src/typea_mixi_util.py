@@ -2,6 +2,7 @@
 # -*- encoding: utf-8 -*-
 
 import os
+import re
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext.webapp import template
@@ -9,6 +10,7 @@ from google.appengine.ext.webapp import template
 import amazon_ecs
 import urllib2
 import xml.parsers.expat
+
 
 class SearchedItem:
     ''' Amazon ItemSearch Operation の結果格納  '''
@@ -111,8 +113,30 @@ class AmazonItemSearch(webapp.RequestHandler):
             keyword = 'amazon'
         if coding:
             keyword = unicode(keyword, coding)
-        keyword = keyword.split(' ')[0]
+       
+        item_list = self.amazon_request(keyword)
 
+        # retry 
+        if len(item_list) == 0:
+            keyword = keyword.split(' ')[0]
+            item_list = self.amazon_request(keyword)
+
+        if len(item_list) == 0:
+            m = re.match(r'(?P<kw>\w+)', keyword)
+            keyword = m.group('kw')
+            item_list = self.amazon_request(keyword)
+
+        template_values = {
+            'style':style,
+            'keyword':keyword,
+            'item_list':item_list
+        }
+        
+        path = os.path.join(os.path.dirname(__file__), 'amazon_ads.html')
+        self.response.out.write(template.render(path,template_values))
+
+        
+    def amazon_request(self, keyword):
         operation = amazon_ecs.ItemSearch()
         operation.keywords = keyword
         operation.search_index = 'Books'
@@ -130,16 +154,8 @@ class AmazonItemSearch(webapp.RequestHandler):
         f = urllib2.urlopen(request)
         p.Parse(f.read())
 
-        template_values = {
-            'style':style,
-            'keyword':keyword,
-            'item_list':h.item_list
-        }
-        
-        path = os.path.join(os.path.dirname(__file__), 'amazon_ads.html')
-        self.response.out.write(template.render(path,template_values))
-
-        
+        return h.item_list
+    
 application = webapp.WSGIApplication([
                                       ('/', MainPage),
                                       ('/am_is', AmazonItemSearch)
