@@ -123,9 +123,14 @@ class AmazonItemSearch(webapp.RequestHandler):
 
         if len(item_list) == 0:
             m = re.match(r'(?P<kw>\w+)', keyword)
-            keyword = m.group('kw')
-            item_list = self.amazon_request(keyword)
+            if m:
+                keyword = m.group('kw')
+                item_list = self.amazon_request(keyword)
 
+        if len(item_list) == 0:
+            keyword = 'Computer'
+            item_list = self.amazon_request(keyword)
+            
         template_values = {
             'style':style,
             'keyword':keyword,
