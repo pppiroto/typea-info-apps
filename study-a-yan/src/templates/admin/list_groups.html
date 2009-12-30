@@ -1,7 +1,7 @@
 {% extends "admin/base.html" %}
 
 {% block content %}
-<h1>Groups:</h1>
+<h1>グループ:</h1>
 
 <ul>
 {% for group in groups %}
@@ -15,7 +15,7 @@
 </ul>
 
 <p>
-  <a href="{% url views.admin.new_group %}">Create a new group</a>
+  <a href="{% url views.admin.new_group %}">新規グループの作成</a>
 </p>
 
 {% endblock %}

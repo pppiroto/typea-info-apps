@@ -37,12 +37,12 @@
     <ul>
       {% block user_header %}
 		{% if user %}
-		  {% if is_superuser %}<li><a href="{% url views.admin.index %}">Edit site</a></li>{% endif %}
-		  {% if is_admin %}<li><a href="{% url views.admin.display_memcache_info %}">Memcache</a></li>{% endif %}
+		  {% if is_superuser %}<li><a href="{% url views.admin.index %}">サイトの編集</a></li>{% endif %}
+		  {% if is_admin %}<li><a href="{% url views.admin.display_memcache_info %}">メモリキャッシュ</a></li>{% endif %}
 		  <li><a href="{% if is_superuser %}/admin/edit/user/{{ user.email }}{% endif %}">{{ user.email }}</a></li>
-		  {% if sign_out %}<li><a href="{{sign_out}}">Sign out</a></li>{% endif %}
+		  {% if sign_out %}<li><a href="{{sign_out}}">サインアウト</a></li>{% endif %}
 		{% else %}
-		  {% if sign_in %}<li><a href="{{sign_in}}">Sign in</a></li>{%endif%}
+		  {% if sign_in %}<li><a href="{{sign_in}}">サインイン</a></li>{%endif%}
 		{% endif %}
 	  {% endblock %}
     </ul>

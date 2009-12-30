@@ -38,35 +38,34 @@
 <ul dojoType="dijit.Menu" id="tree_menu" style="display: none;">
   <li dojoType="dijit.MenuItem"
       onClick="window.location.href = '/' + selected_node.item.path;">
-    View
+          表示
   </li>
   <li dojoType="dijit.MenuItem"
       onClick="window.location.href = selected_node.item.edit_url;">
-    Edit
+          編集
   </li>
   <li dojoType="dijit.MenuItem"
       onClick="window.location.href = selected_node.item.child_url;">
-      Add child
+          子要素を追加
   </li>
   <li dojoType="dijit.MenuItem"
       onClick="dijit.byId('delete_dialog').show()">
-    Delete
+          削除
   </li>
 </ul>
 
-<div dojoType="dijit.Dialog" id="delete_dialog" title="Delete Page"
+<div dojoType="dijit.Dialog" id="delete_dialog" title="ページの削除"
      execute="window.location.href = selected_node.item.delete_url;"
      style="display: none;">
   <div>
-    Are you sure you want to delete
     &quot;<span id="delete_dialog_page_name"></span>&quot;
-    and all its children?
+     および、そのすべての子要素を、本当に削除してもよろしいですか？
   </div>
   <div style="text-align: center; margin-top: 10px">
-    <button dojoType="dijit.form.Button" type="submit">Delete</button>
+    <button dojoType="dijit.form.Button" type="submit">削除</button>
     <button dojoType="dijit.form.Button"
             onClick="dijit.byId('delete_dialog').hide()">
-      Cancel
+      キャンセル
     </button>
   </div>
 </div>
@@ -85,7 +84,7 @@
 </div>
 
 <div style="font-size:small; margin-top:40px; float:left;">
-  <i>Right click on a page for options.</i>
+  <i>右クリックでページへの操作を表示します。</i>
 </div>
 
 {% endblock %}

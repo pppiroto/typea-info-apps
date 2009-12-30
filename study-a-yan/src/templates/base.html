@@ -29,11 +29,11 @@
         {% block user_header %}
         {% if user %}
           <b>{{ user.email }}</b>
-          {% if is_superuser %} | <a href="{% url views.admin.index %}">Edit site</a>{% endif %}
-          {% if is_admin %} | <a href="{% url views.admin.display_memcache_info %}">Memcache</a>{% endif %}
-          {% if sign_out %} | <a href="{{sign_out}}">Sign out</a>{% endif %}
+          {% if is_superuser %} | <a href="{% url views.admin.index %}">サイトの編集</a>{% endif %}
+          {% if is_admin %} | <a href="{% url views.admin.display_memcache_info %}">メモリキャッシュ</a>{% endif %}
+          {% if sign_out %} | <a href="{{sign_out}}">サインアウト</a>{% endif %}
         {% else %}
-          {% if sign_in %}<a href="{{sign_in}}">Sign in</a>{%endif%}
+          {% if sign_in %}<a href="{{sign_in}}">サインイン</a>{%endif%}
         {% endif %}
         {% endblock %}
       </div>
