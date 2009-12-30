@@ -1,0 +1,26 @@
+#Wed Dec 30 23:51:43 JST 2009
+eclipse.preferences.version=1
+encoding//src/static/css/default.css=UTF-8
+encoding//src/templates/403.html=UTF-8
+encoding//src/templates/404.html=UTF-8
+encoding//src/templates/500.html=UTF-8
+encoding//src/templates/admin/base.html=UTF-8
+encoding//src/templates/admin/bulk_edit_users.html=UTF-8
+encoding//src/templates/admin/edit_group.html=UTF-8
+encoding//src/templates/admin/edit_page.html=UTF-8
+encoding//src/templates/admin/edit_sidebar.html=UTF-8
+encoding//src/templates/admin/edit_user.html=UTF-8
+encoding//src/templates/admin/filter_users.html=UTF-8
+encoding//src/templates/admin/help.html=UTF-8
+encoding//src/templates/admin/index.html=UTF-8
+encoding//src/templates/admin/list_groups.html=UTF-8
+encoding//src/templates/admin/memcache_info.html=UTF-8
+encoding//src/templates/admin/recently_modified.html=UTF-8
+encoding//src/templates/admin/view_group.html=UTF-8
+encoding//src/templates/base.html=UTF-8
+encoding//src/templates/sitemap.html=UTF-8
+encoding//src/templates/themes/ecobusiness/base.html=UTF-8
+encoding//src/templates/themes/ecobusiness/page.html=UTF-8
+encoding//src/templates/themes/nautica05/base.html=UTF-8
+encoding//src/templates/themes/nautica05/page.html=UTF-8
+encoding/src=UTF-8

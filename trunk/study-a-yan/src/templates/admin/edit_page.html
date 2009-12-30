@@ -115,17 +115,17 @@
 </script>
 
 {% if page %}
-  <a href="{% url views.main.get_url page.path %}">View page</a> |
-  <a href="{% url views.admin.delete_page page.key.id %}">Delete page</a>
+  <a href="{% url views.main.get_url page.path %}">ページの表示</a> |
+  <a href="{% url views.admin.delete_page page.key.id %}">ページの削除</a>
   {% if is_superuser %}
     {% if not page.in_sidebar %}
-  | <a href=" {% url views.admin.add_to_sidebar page.key.id %}">Add page to sidebar</a>
+  | <a href=" {% url views.admin.add_to_sidebar page.key.id %}">ページをサイドバーに追加</a>
     {% endif %}
   {% endif %}
 {% endif %}
 
 <div id="mainTabs" dojoType="dijit.layout.TabContainer" style="margin-top:15px; width:100%; height:530px;">
-<div dojoType="dijit.layout.ContentPane" title="Page Contents" style="padding:5px;">
+<div dojoType="dijit.layout.ContentPane" title="ページの内容" style="padding:5px;">
   <form action="{% url views.admin.edit_page page.key.id %}"
         method="post"
         enctype="multipart/form-data"
@@ -138,7 +138,7 @@
           {{ field }}
           {% ifequal field.name "name" %}
             &nbsp; <span class="small"><a href="javascript:generate_name();">
-              Complete from title</a></span>
+                                タイトルから生成</a></span>
           {% endifequal %}
           {% if field.help_text %}<br>{{ field.help_text }}{% endif %}
           {% if field.errors %}
@@ -159,14 +159,14 @@
     </script>
     <button dojoType="dijit.form.Button"
             onclick="javascript:submitContents();">
-      Save Page
+                ページの保存
     </button>
   </form>
 </div><!-- closing content pane -->
 
 
 {% if page %}
-<div id="filesTab" dojoType="dijit.layout.ContentPane" title="Attachments" style="padding:5px;">
+<div id="filesTab" dojoType="dijit.layout.ContentPane" title="添付" style="padding:5px;">
 
   {% if files %}
   <div class="securityGroup">
@@ -208,18 +208,18 @@
         id="fileForm">
     <input type="hidden" name="page_id" value="{{ page.key.id }}" />
     <div class="securityGroup">
-      Upload a file: <br>
+      ファイルのアップロード: <br>
       <div style="padding-left: 40px; padding-top: 20px;">
         <input type="file" name="attachment"/ > <p>
-        <input type="checkbox" name="hidden" /> &nbsp; Don't show file in attachments <br><br>
-        <input type="submit" value="Upload" />
+        <input type="checkbox" name="hidden" /> &nbsp; 「添付」にファイルを表示しない <br><br>
+        <input type="submit" value="アップロード" />
       </div>
     </div>
     <div class="securityGroup">
-      Add a URL: <br>
+      URL を追加: <br>
       <div style="padding-left:40px; padding-top:20px;">
         <input type="text" id="urlInput" name="url" /> &nbsp;
-        <input type="button" onclick="attachUrl();" value="Attach" />
+        <input type="button" onclick="attachUrl();" value="添付" />
       </div>
     </div>
   </form>
@@ -227,7 +227,7 @@
 {% endif %}
 
 {% if page %}
-<div id="securityTab" dojoType="dijit.layout.ContentPane" title="Security" style="padding:5px;">
+<div id="securityTab" dojoType="dijit.layout.ContentPane" title="セキュリティ" style="padding:5px;">
 <form action="{% url views.admin.edit_acl %}" method="post" id="securityForm">
   <input type="hidden" name="page_id" value="{{ page.key.id }}" />
 <div id="pageSecurity">
@@ -236,18 +236,18 @@
   {% endif %}
   <div class="securityGroup">
     <div>
-      Anyone can edit: <input type="checkbox"{% if page.acl.global_write %}
+      誰でも編集可: <input type="checkbox"{% if page.acl.global_write %}
                               checked="checked"{% endif %} name="global_write"/>
     </div>
     <div>
-      Anyone can read: <input type="checkbox"{% if page.acl.global_read %}
+      誰でも閲覧可: <input type="checkbox"{% if page.acl.global_read %}
                               checked="checked"{% endif %} name="global_read"/>
     </div>
   </div>
   <div>
     <div class="securityGroup">
       <div class="aclExisting">
-      Groups that can edit:
+      編集可能なグループ:
       <ul>
       {% for group in acl_data.group_write %}
         <li>{{ group }} - Remove <input type="checkbox" name="group_write_remove_{{ group.key.id }}" /></li>
@@ -255,7 +255,7 @@
       </ul>
       </div>
       <div class="aclAdd">
-        Add a group:
+        グループの追加:
         <select name="group_write">
           <option value=""></option>
           {% for group in acl_data.groups_without_write %}
@@ -266,7 +266,7 @@
     </div>
     <div class="securityGroup">
       <div class="aclExisting">
-      Groups that can read:
+      閲覧可能なグループ
       <ul>
       {% for group in acl_data.group_read %}
         <li>{{ group }} - Remove <input type="checkbox" name="group_read_remove_{{ group.key.id }}" /></li>
@@ -274,7 +274,7 @@
       </ul>
       </div>
       <div class="aclAdd">
-        Add a group:
+        グループの追加:
         <select name="group_read">
           <option value=""></option>
           {% for group in acl_data.groups_without_read %}
@@ -287,7 +287,7 @@
   <div>
     <div class="securityGroup">
       <div class="aclExisting">
-        Users that can edit:
+        編集可能なユーザー:
         <ul>
         {% for user_profile in acl_data.user_write %}
           <li>{{ user_profile }} - Remove <input type="checkbox" name="user_write_remove_{{ user_profile.key.id }}" /></li>
@@ -295,13 +295,13 @@
         </ul>
       </div>
       <div class="aclAdd">
-        Add a user:
+        ユーザーの追加:
         <input type="text" name="user_write" />
       </div>
     </div>
     <div class="securityGroup">
       <div class="aclExisting">
-        Users that can read:
+        閲覧可能なユーザー:
         <ul>
         {% for user_profile in acl_data.user_read %}
           <li>{{ user_profile }} - Remove <input type="checkbox" name="user_read_remove_{{ user_profile.key.id }}" /></li>
@@ -309,7 +309,7 @@
         </ul>
       </div>
       <div class="aclAdd">
-        Add a user:
+        ユーザーの追加:
         <input type="text" name="user_read" />
       </div>
     </div>
@@ -318,7 +318,7 @@
 <button dojoType="dijit.form.Button"
         onclick="javascript:saveSecurity();"
         style="margin-top:15px;">
-  Save Security Settings
+  セキュリティ設定の保存
 </button>
 </form>
 <script type="text/javascript">

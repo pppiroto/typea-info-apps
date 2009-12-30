@@ -3,15 +3,15 @@
 
 {% block content %}
 
-<h1>Recently Modified Pages:</h1>
+<h1>最近の編集されたページ:</h1>
 
 <ul style="list-style-type:none; padding-left:20px">
   {% for page in pages %}
   <li style="padding-bottom:10px;">
     <b>{{page.title|escape}}</b> -
-    <a href="{% url views.main.get_url page.path %}">view</a> -
-    <a href="{% url views.admin.edit_page page.key.id %}">edit</a> -
-    <a href="{% url views.admin.new_page page.key.id %}">add child</a>
+    <a href="{% url views.main.get_url page.path %}">表示</a> -
+    <a href="{% url views.admin.edit_page page.key.id %}">編集</a> -
+    <a href="{% url views.admin.new_page page.key.id %}">子要素の追加</a>
     <br>
     <span style="font-size:10pt">
       <span style="color:green;">
@@ -22,7 +22,7 @@
         {% endif %}
       </span> -
       id: {{ page.key.id }} -
-      last modified: {{ page.modified|date:"m/d/Y" }}
+      最終更新日: {{ page.modified|date:"m/d/Y" }}
     </span>
   {% endfor %}
 </ul>
