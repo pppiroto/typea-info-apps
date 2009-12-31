@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Create Amazon Link</title>
+<script type="text/javascript">
+function init() {
+	var sel_search_index = document.getElementsByName("search_index")[0];
+	sel_search_index.value = "{{search_index}}";
+
+	var sel_style = document.getElementsByName("style")[0];
+	sel_style.value = "{{style}}";
+}
+function show_preview() {
+	var links = document.getElementById('link_html').value;	
+	var win = window.open();
+	win.document.write(links);
+}
+</script>
+</head>
+<body onload="init()">
+<h1>Create Amazon Link</h1>
+<hr>
+<form action="/create_links" method="POST">
+	<table>
+		<tr>
+			<td>
+				keyword:<input type="text" name="q" value="{{keyword}}">
+				style:
+				<select name="style">
+					<option value="ul">UnOrderd List</option>
+				 	<option value="text">Text Only</option>
+				 	<option value="image">Image Only</option>
+				 	<option value="image_text">Image and Text</option>
+				</select>
+				search index:
+				<select name="search_index">
+					<option value="All">All</option>
+					<option value="Apparel">Apparel</option>
+					<option value="Automotive">Automotive</option>
+					<option value="Baby">Baby</option>
+					<option value="Beauty">Beauty</option>
+					<option value="Blended">Blended</option>
+					<option value="Books">Books</option>
+					<option value="Classical">Classical</option>
+					<option value="DVD">DVD</option>
+					<option value="Electronics">Electronics</option>
+					<option value="ForeignBooks">ForeignBooks</option>
+					<option value="Grocery">Grocery</option>
+					<option value="HealthPersonalCare">HealthPersonalCare</option>
+					<option value="Hobbies">Hobbies</option>
+					<option value="HomeImprovement">HomeImprovement</option>
+					<option value="Jewelry">Jewelry</option>
+					<option value="Kitchen">Kitchen</option>
+					<option value="Music">Music</option>
+					<option value="MusicTracks">MusicTracks</option>
+					<option value="OfficeProducts">OfficeProducts</option>
+					<option value="Shoes">Shoes</option>
+					<option value="Software">Software</option>
+					<option value="SportingGoods">SportingGoods</option>
+					<option value="Toys">Toys</option>
+					<option value="VHS">VHS</option>
+					<option value="Video">Video</option>
+					<option value="VideoGames">VideoGames</option>
+					<option value="Watches ">Watches </option>
+				</select><!--  http://docs.amazonwebservices.com/AWSECommerceService/latest/DG/index.html -->
+				<input type="submit" value="create">
+				<a href="javascript:show_preview();">Preview</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<textarea id="link_html" rows="30" cols="80">{{links}}</textarea>
+			</td>
+		</tr>
+	</table>
+</form>
+</body>
+</html>
