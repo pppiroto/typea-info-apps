@@ -6,6 +6,8 @@
 <meta name="keywords" content="{{keyword}}">
 </head>
 <body>
+
+<!-- Amazon Link From Here. -->
 {% ifequal style 'image' %}
 	{% for itm in item_list %}
         <a href="{{itm.detailPageURL}}" style="padding-left:2px" target="_blank" title="{{itm.title}}"><img src="{{itm.smallImageURL}}" border="0"/></a> 
@@ -27,5 +29,22 @@
 	{% endfor %}
 	</ul>
 {% endifequal %}
+
+{% ifequal style 'image_text' %}
+ 	<table border="0" style="font-size:small;" cellspacing="0" cellpadding="0">
+	{% for itm in item_list %}
+        <tr>
+          <td><a href="{{itm.detailPageURL}}" style="padding-left:2px" target="_blank" title="{{itm.title}}"><img src="{{itm.smallImageURL}}" border="1"  height="26px" /></a></td>
+          <td><a href="{{itm.detailPageURL}}" style="padding-left:4px" target="_blank">{{itm.title}}</a></td>
+        </tr> 
+	{% endfor %}
+	</table>
+{% endifequal %}
+
+
+<!-- Amazon Link To Here. -->
+
+<br>
+<a href="/create_links" style="font-size:small;color:lightgrey;" target="_blank">create link.</a>
 </body>
 </html>
