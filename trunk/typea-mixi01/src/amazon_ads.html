@@ -9,38 +9,43 @@
 
 <!-- Amazon Link From Here. -->
 {% ifequal style 'image' %}
-	{% for itm in item_list %}
+  {% for itm in item_list %}
         <a href="{{itm.detailPageURL}}" style="padding-left:2px" target="_blank" title="{{itm.title}}"><img src="{{itm.smallImageURL}}" border="0"/></a> 
-	{% endfor %}
+  {% endfor %}
 {% endifequal %}
                                 
 {% ifequal style 'text' %}
-	<div style="font-size:small;">
-	{% for itm in item_list %}
-	    <a href="{{itm.detailPageURL}}" style="padding-left:4px" target="_blank">{{itm.title}}</a>&nbsp;/&nbsp; 
-	{% endfor %}
-	</div>
+  <div style="font-size:small;">
+  {% for itm in item_list %}
+      <a href="{{itm.detailPageURL}}" style="padding-left:4px" target="_blank">{{itm.title}}</a>&nbsp;/&nbsp; 
+  {% endfor %}
+  </div>
 {% endifequal %}
 
 {% ifequal style 'ul' %}
- 	<ul style="font-size:small;">
-	{% for itm in item_list %}
+   <ul style="font-size:small;">
+  {% for itm in item_list %}
         <li><a href="{{itm.detailPageURL}}" style="padding-left:4px" target="_blank">{{itm.title}}</a> 
-	{% endfor %}
-	</ul>
+  {% endfor %}
+  </ul>
 {% endifequal %}
 
 {% ifequal style 'image_text' %}
- 	<table border="0" style="font-size:small;" cellspacing="0" cellpadding="0">
-	{% for itm in item_list %}
+  {% for itm in item_list %}
+  <a href="{{itm.detailPageURL}}" style="padding-left:2px" target="_blank" title="{{itm.title}}"><img src="{{itm.smallImageURL}}" border="1"  height="26px" /></a><a href="{{itm.detailPageURL}}" style="padding-left:4px;font-size:small;" target="_blank">{{itm.title}}</a>
+  {% endfor %}
+{% endifequal %}
+
+{% ifequal style 'image_text_table' %}
+   <table border="0" style="font-size:small;" cellspacing="0" cellpadding="0">
+  {% for itm in item_list %}
         <tr>
           <td><a href="{{itm.detailPageURL}}" style="padding-left:2px" target="_blank" title="{{itm.title}}"><img src="{{itm.smallImageURL}}" border="1"  height="26px" /></a></td>
           <td><a href="{{itm.detailPageURL}}" style="padding-left:4px" target="_blank">{{itm.title}}</a></td>
         </tr> 
-	{% endfor %}
-	</table>
+  {% endfor %}
+  </table>
 {% endifequal %}
-
 
 <!-- Amazon Link To Here. -->
 

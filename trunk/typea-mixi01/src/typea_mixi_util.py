@@ -107,6 +107,7 @@ class AmazonItemSearch(webapp.RequestHandler):
                 text  : text only
                 ul    : unnumbered list
                 image_text : image and text
+                image_text_table : image and text table layout
             c : keyword encoding
     '''
     def get(self):
