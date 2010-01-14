@@ -1,7 +1,7 @@
-#Thu Dec 31 20:32:26 JST 2009
+#Thu Jan 14 22:35:05 JST 2010
 eclipse.preferences.version=1
-encoding//src/amazon_ads.html=UTF-8
-encoding//src/amazon_ecs.py=utf-8
-encoding//src/create_links.html=UTF-8
+encoding//src/amazon/amazon_ecs.py=utf-8
+encoding//src/amazon/amazon_utils.py=utf-8
 encoding//src/typea_mixi_util.py=utf-8
+encoding//src/yahoo/yahoo_utils.py=utf-8
 encoding/src=UTF-8
