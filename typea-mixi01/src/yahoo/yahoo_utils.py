@@ -2,6 +2,7 @@
 # -*- encoding: utf-8 -*-
 
 import os
+import urllib
 import urllib2
 
 from google.appengine.ext import webapp
@@ -27,15 +28,20 @@ class Search(webapp.RequestHandler):
     __base_url = r'http://search.yahooapis.jp/WebSearchService/V1/webSearch'
     __aid = r'8I71w2axg65DK0hVG7YvNoX21E_RuSIGIcQgIe0pndm2hC.ARV7AvM2Mw3M8UWE-'
     __ns  = r'urn:yahoo:jp:srch'
+    __safe_chars  = '-._~'
     def qn(self, tag):
         '''' xmlns を付加したタグ名を返す '''
         return ElementTree.QName(self.__ns, tag).text
     
     def get(self):
         query = ''
+        plain_query = ''
+        encode = 'utf-8'
+
         try:
             query = self.request.GET['q']
-            query = query.encode('utf-8')
+            plain_query = query.encode(encode)
+            query = urllib.quote(plain_query, self.__safe_chars)
         except:
             pass
         
@@ -48,14 +54,14 @@ class Search(webapp.RequestHandler):
                       for key in param_map.keys()
                       ]
         
-        q_results   = r'.//{0}'.format(self.qn('Result'))
-        q_title     = r'./{0}'.format(self.qn('Title'))
-        q_summary   = r'./{0}'.format(self.qn('Summary'))
-        q_url       = r'./{0}'.format(self.qn('Url'))
-        q_click_url = r'./{0}'.format(self.qn('ClickUrl'))
-        q_mime_type = r'./{0}'.format(self.qn('MimeType'))
-        q_mod_date  = r'./{0}'.format(self.qn('ModificationDate'))
-        q_cache     = r'./{0}/{1}'.format(self.qn('Cache'),self.qn('Url'))
+        q_results   = r'.//%s' % (self.qn('Result'))
+        q_title     = r'./%s'  % (self.qn('Title'))
+        q_summary   = r'./%s' % (self.qn('Summary'))
+        q_url       = r'./%s' % (self.qn('Url'))
+        q_click_url = r'./%s' % (self.qn('ClickUrl'))
+        q_mime_type = r'./%s' % (self.qn('MimeType'))
+        q_mod_date  = r'./%s' % (self.qn('ModificationDate'))
+        q_cache     = r'./%s/%s' % (self.qn('Cache'),self.qn('Url'))
         
         url = self.__base_url + '?' + ('&'.join(param_list))
         f = urllib2.urlopen(url)
@@ -75,7 +81,7 @@ class Search(webapp.RequestHandler):
             search_list.append(itm)
         
         context = {
-                   'query':query,
+                   'query':plain_query,
                    'items':search_list,
         }
         path = os.path.join(os.path.dirname(__file__), 'yahoo_search.html')
