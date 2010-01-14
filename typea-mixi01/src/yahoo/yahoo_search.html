@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Search(powered by yahoo api)</title>
+</head>
+<body>
+    <form action="/yh_s">
+        <input type="text" name="q" value="{{query}}">
+        <input type="submit" >
+        <br>
+        <ol>
+        {% for item in items %}
+            <li><a href="{{item.click_url}}">{{item.title}}</a>
+                <ul>
+                    <li>{{item.summary}}</li>
+                </ul>
+            </li>
+                
+        {% endfor %}
+        </ol>
+    </form>
+</body>
+</html>
