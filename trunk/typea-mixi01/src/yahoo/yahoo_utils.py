@@ -3,6 +3,7 @@
 
 import os
 import urllib
+import urllib2
 
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
@@ -10,9 +11,15 @@ from google.appengine.ext.webapp import template
 from yahoo_search import YahooSearch
 from yahoo_related_search import YahooRelatedWordSearch
 from yahoo_text_parse import YahooTextParser
-
+from amazon.amazon_search import AmazonRequest
 import logging
 
+
+class AmazonResults(object):
+    def __init__(self):
+        self.word = ''
+        self.item_list = []
+        
 class Search(webapp.RequestHandler):
     ''' example http://typea-mixi01.appspot.com/yh_s?q=book
         parameters 
@@ -57,6 +64,16 @@ class Search(webapp.RequestHandler):
         summaries = [s.summary for s in search_result.item_list]
         parse_result = text_parser.search({'sentence':' '.join(summaries)})
         
+        # Amazon
+        amazon_request = AmazonRequest()
+        search_index = 'Books'
+        amazon_results = []
+        for itm in parse_result.most_refer:
+            amazon_result = AmazonResults()
+            amazon_result.item_list = amazon_request.request(urllib2.unquote(itm.word.encode('utf-8')), search_index)
+            amazon_result.word = itm.word
+            amazon_results.append(amazon_result)
+        
         context = {
                    # Base Search
                    'query':query,
@@ -71,7 +88,7 @@ class Search(webapp.RequestHandler):
                    # 'word_items':word_result.item_list,
                    # Text Parse
                    'parsed_items':parse_result.item_list,
-                   'most_refer':parse_result.most_refer,
+                   'amazon_results':amazon_results,
         }
         
         path = os.path.join(os.path.dirname(__file__), 'yahoo_search.html')

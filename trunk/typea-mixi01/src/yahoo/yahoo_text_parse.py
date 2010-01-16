@@ -90,7 +90,8 @@ class YahooTextParser(yahoo_dev_api_settings.YahooDevApiBase):
 
         times_list = [itm.times for itm in search_result.item_list]
         times_list.sort(reverse=True)
-        times_list = times_list[0:8]
+        how_meny_list = 6
+        times_list = times_list[0:how_meny_list]
             
         logging.warn(times_list)
         most_refer = []

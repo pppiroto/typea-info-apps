@@ -48,8 +48,7 @@ class YahooSearch(yahoo_dev_api_settings.YahooDevApiBase):
 
         try:
             query = query_map['q']
-            plain_query = query.encode(encode)
-            query = urllib.quote(plain_query, self.safe_chars)
+            query = query.encode(encode)
         except:
             pass
         
@@ -63,10 +62,12 @@ class YahooSearch(yahoo_dev_api_settings.YahooDevApiBase):
                      'start':str(start),
                      'results':'50',
                      }
-        
-        param_list = [key + '=' + param_map[key] 
-                      for key in param_map.keys()
-                      ]
+      
+        url = self.base_url
+        data =  urllib.urlencode(param_map)
+        f = urllib2.urlopen(url, data)
+
+        root = ElementTree.parse(f).getroot()
         
         q_results    = r'.//%s' % (self.qn('Result'))
         q_title      = r'./%s'  % (self.qn('Title'))
@@ -77,10 +78,7 @@ class YahooSearch(yahoo_dev_api_settings.YahooDevApiBase):
         q_mod_date   = r'./%s' % (self.qn('ModificationDate'))
         q_cache      = r'./%s/%s' % (self.qn('Cache'),self.qn('Url'))
         
-        url = self.base_url + '?' + ('&'.join(param_list))
-        f = urllib2.urlopen(url)
-        root = ElementTree.parse(f).getroot()
-      
+        
         search_result = YahooSearchResult()
         
         search_result.total_results_available = int(root.get('totalResultsAvailable'))
