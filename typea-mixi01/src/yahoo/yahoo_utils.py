@@ -25,8 +25,7 @@ class Search(webapp.RequestHandler):
         encode = 'utf-8'
         try:
             query = self.request.GET['q']
-            plain_query = query.encode(encode)
-            query = urllib.quote(plain_query, self.__safe_chars)
+            query = query.encode(encode)
         except:
             pass
         
@@ -60,7 +59,7 @@ class Search(webapp.RequestHandler):
         
         context = {
                    # Base Search
-                   'query':plain_query,
+                   'query':query,
                    'total_results_available':search_result.total_results_available,
                    'total_results_returned':search_result.total_results_returned,
                    'first_result_position':search_result.first_result_position,
