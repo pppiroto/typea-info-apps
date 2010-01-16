@@ -28,12 +28,19 @@ frame_height = '90';
 --></script>
 <script type='text/javascript' src='http://cache.microad.jp/send0100.js'></script>
 <!-- MicroAd TO -->
-    <form action="/yh_s">
-        keyword:<input type="text" name="q" value="{{query}}">
+    <hr>
+	<form action="/yh_s">
+        search keyword:<input type="text" name="q" value="{{query}}">
         <input type="submit" value="検索">
-	</form>
+		<a href='{{prev_page_url}}'>&lt;</a>
+		{{first_result_position}}-{{end_position}}/{{total_results_available}}
+		<a href='{{next_page_url}}'>&gt;</a>
+    </form>
 	<hr>
-    <table class="table_layout">
+	<table class="table_layout">
+		<col width='15%'>
+		<col width='*'>
+		<col width='25%'>
       	<tr class="table_layout">
       	<td class="table_layout" valign="top">
       	  <h2><a href='http://typea.info'>Home</a></h2>
@@ -41,6 +48,10 @@ frame_height = '90';
       	  	<li><a href='http://typea.info/tips/'>MyMemoWiki</a></li>
       	  	<li><a href='http://typea.info/blg/glob/'>グロブ</a></li>
       	  </ul>
+	        {% for most_item in most_refer %}
+	            	{{most_item.word}}
+	        {% endfor %}
+      	  
       	</td>
       	<td class="table_layout">      
         {% for item in items %}
@@ -50,8 +61,30 @@ frame_height = '90';
             </ul>
         {% endfor %}
 		</td>
-      	<td class="table_layout"></td>
+      	<td class="table_layout" valign="top" style="font-size:small;">
+      		<h3>関連語</h3>
+	      	{% for item in parsed_items %}
+	        	<a href='/yh_s?q={{item.encoded_word}}' style='{{item.font_style}}'>{{item.word}}</a> 
+	        {% endfor %}
+      	</td>
 		</tr>
 	</table>
+<!-- MicroAd From -->
+<script type="text/javascript"><!--
+in_uid = '217910';
+in_templateid = '12014';
+in_charset = 'UTF-8';
+in_group = 'DefaultGroup';
+in_matchurl = '';
+in_HBgColor = 'FFFFFF';
+in_HBorderColor = 'FFFFFF';
+in_HTitleColor = '663399';
+in_HTextColor = '000000';
+in_HUrlColor = '336600';
+frame_width = '728';
+frame_height = '90';
+--></script>
+<script type='text/javascript' src='http://cache.microad.jp/send0100.js'></script>
+<!-- MicroAd TO -->
 </body>
 </html>
