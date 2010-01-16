@@ -49,12 +49,19 @@ frame_height = '90';
       	  	<li><a href='http://typea.info/tips/'>MyMemoWiki</a></li>
       	  	<li><a href='http://typea.info/blg/glob/'>グロブ</a></li>
       	  </ul>
-	        {% for most_item in most_refer %}
-	            	{{most_item.word}}
+      	  <hr>
+      	  <h2>関連書籍</h2>
+      	  	{% for amazon_result in amazon_results %}
+	        	<h3>{{amazon_result.word}}</h3>
+	        	{% for itm in amazon_result.item_list %}
+	        		<div>
+	          		<a href="{{itm.detailPageURL}}" style="padding-left:2px" target="_blank" title="{{itm.title}}"><img src="{{itm.smallImageURL}}" border="1"  height="40px" /></a>
+	          		<a href="{{itm.detailPageURL}}" style="padding-left:4px;font-size:x-small;" target="_blank">{{itm.title}}</a>
+	          		</div>
+	        	{% endfor %}
 	        {% endfor %}
-      	  
       	</td>
-      	<td class="table_layout">      
+      	<td class="table_layout" valign="top">      
         {% for item in items %}
         	<h3><a href="{{item.click_url}}">{{item.title}}</a></h3>
             <ul>
