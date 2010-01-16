@@ -2,23 +2,56 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Search(powered by yahoo api)</title>
+<link href="http://typea.info/tips/theme/dark/dark.css" type="text/css" rel="stylesheet">
+<style type="text/css">
+.table_layout {
+	border:none
+}
+</style>
+<title>Searching About '{{query}}' (powered by yahoo API)</title>
 </head>
 <body>
+<!-- MicroAd From -->
+<script type="text/javascript"><!--
+in_uid = '217910';
+in_templateid = '12014';
+in_charset = 'UTF-8';
+in_group = 'DefaultGroup';
+in_matchurl = '';
+in_HBgColor = 'FFFFFF';
+in_HBorderColor = 'FFFFFF';
+in_HTitleColor = '663399';
+in_HTextColor = '000000';
+in_HUrlColor = '336600';
+frame_width = '728';
+frame_height = '90';
+--></script>
+<script type='text/javascript' src='http://cache.microad.jp/send0100.js'></script>
+<!-- MicroAd TO -->
     <form action="/yh_s">
-        <input type="text" name="q" value="{{query}}">
-        <input type="submit" >
-        <br>
-        <ol>
+        keyword:<input type="text" name="q" value="{{query}}">
+        <input type="submit" value="検索">
+	</form>
+	<hr>
+    <table class="table_layout">
+      	<tr class="table_layout">
+      	<td class="table_layout" valign="top">
+      	  <h2><a href='http://typea.info'>Home</a></h2>
+      	  <ul>
+      	  	<li><a href='http://typea.info/tips/'>MyMemoWiki</a></li>
+      	  	<li><a href='http://typea.info/blg/glob/'>グロブ</a></li>
+      	  </ul>
+      	</td>
+      	<td class="table_layout">      
         {% for item in items %}
-            <li><a href="{{item.click_url}}">{{item.title}}</a>
-                <ul>
-                    <li>{{item.summary}}</li>
-                </ul>
-            </li>
-                
+        	<h3><a href="{{item.click_url}}">{{item.title}}</a></h3>
+            <ul>
+            	<li>{{item.summary}}
+            </ul>
         {% endfor %}
-        </ol>
-    </form>
+		</td>
+      	<td class="table_layout"></td>
+		</tr>
+	</table>
 </body>
 </html>
