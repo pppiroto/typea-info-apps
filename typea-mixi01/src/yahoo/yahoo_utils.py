@@ -66,7 +66,7 @@ class Search(webapp.RequestHandler):
         
         # Amazon
         amazon_request = AmazonRequest()
-        search_index = 'Books'
+        search_index = 'All'
         amazon_results = []
         for itm in parse_result.most_refer:
             amazon_result = AmazonResults()
