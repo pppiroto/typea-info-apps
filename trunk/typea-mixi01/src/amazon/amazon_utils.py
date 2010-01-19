@@ -4,8 +4,6 @@
 import os
 import re
 import urllib2
-import amazon_ecs
-import xml.parsers.expat
 
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
