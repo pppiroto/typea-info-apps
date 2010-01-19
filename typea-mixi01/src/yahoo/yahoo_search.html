@@ -54,9 +54,9 @@ frame_height = '90';
       	  	{% for amazon_result in amazon_results %}
 	        	<h3>{{amazon_result.word}}</h3>
 	        	{% for itm in amazon_result.item_list %}
-	        		<div>
-	          		<a href="{{itm.detailPageURL}}" style="padding-left:2px" target="_blank" title="{{itm.title}}"><img src="{{itm.smallImageURL}}" border="1"  height="40px" /></a>
-	          		<a href="{{itm.detailPageURL}}" style="padding-left:4px;font-size:x-small;" target="_blank">{{itm.title}}</a>
+	        		<div style="padding:5px;border-bottom:dashed 1px;">
+	          		<a href="{{itm.detailPageURL}}" style="padding-left:2px" target="_blank" title="{{itm.title}}"><img src="{{itm.smallImageURL}}" style="border:none;"  height="36px" align="left"/></a>
+	          		<a href="{{itm.detailPageURL}}" style="padding-left:4px;font-size:small;" target="_blank">{{itm.title}}</a><br clear="left">
 	          		</div>
 	        	{% endfor %}
 	        {% endfor %}
