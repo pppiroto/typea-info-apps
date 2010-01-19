@@ -43,7 +43,6 @@ class YahooSearch(yahoo_dev_api_settings.YahooDevApiBase):
     
     def search(self, query_map):
         query = ''
-        plain_query = ''
         encode = 'utf-8'
 
         try:
