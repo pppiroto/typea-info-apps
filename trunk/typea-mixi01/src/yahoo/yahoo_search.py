@@ -78,7 +78,6 @@ class YahooSearch(yahoo_dev_api_settings.YahooDevApiBase):
         q_mod_date   = r'./%s' % (self.qn('ModificationDate'))
         q_cache      = r'./%s/%s' % (self.qn('Cache'),self.qn('Url'))
         
-        
         search_result = YahooSearchResult()
         
         search_result.total_results_available = int(root.get('totalResultsAvailable'))
