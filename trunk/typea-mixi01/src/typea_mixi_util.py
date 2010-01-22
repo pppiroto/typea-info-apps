@@ -6,7 +6,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 
 from amazon import amazon_utils
 from yahoo import yahoo_utils
-
+from job import exec_job
 class MainPage(webapp.RequestHandler):
     def get(self):
         self.redirect('/am_is?q=amazon')
@@ -16,6 +16,7 @@ application = webapp.WSGIApplication([
                                       ('/am_is',        amazon_utils.AmazonItemSearch),
                                       ('/create_links', amazon_utils.CreateLinks),
                                       ('/yh_s',         yahoo_utils.Search),
+                                      ('/yh_amdel',     exec_job.DeleteAmazonEntity),
                                       ], debug=True)
 
 def main():
