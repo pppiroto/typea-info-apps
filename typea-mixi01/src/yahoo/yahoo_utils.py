@@ -2,18 +2,27 @@
 # -*- encoding: utf-8 -*-
 
 import os
-import urllib
 import urllib2
 
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 
 from yahoo_search import YahooSearch
-from yahoo_related_search import YahooRelatedWordSearch
 from yahoo_text_parse import YahooTextParser
 from amazon.amazon_search import AmazonRequest
+from datetime import date
 import logging
 
+from google.appengine.ext import db
+
+class AmazonItemEntity(db.Model):
+    #Text 値と Blob 値はインデックスされない ->クエリが効かない
+    group_key = db.StringProperty()
+    entry_date = db.DateProperty()
+    asin = db.StringProperty()
+    detailPageURL = db.TextProperty()
+    smallImageURL = db.TextProperty()
+    title = db.StringProperty()
 
 class AmazonResults(object):
     def __init__(self):
@@ -28,7 +37,6 @@ class Search(webapp.RequestHandler):
     '''
     def get(self):
         query = ''
-        plain_query = ''
         encode = 'utf-8'
         try:
             query = self.request.GET['q']
@@ -65,13 +73,43 @@ class Search(webapp.RequestHandler):
         parse_result = text_parser.search({'sentence':' '.join(summaries)})
         
         # Amazon
+        #*** Delete All Entities ***
+        is_delete_all = False
+        del_entry = AmazonItemEntity.all()
+        if is_delete_all:
+            for de in del_entry:
+                de.delete()
+
         amazon_request = AmazonRequest()
         search_index = 'All'
         amazon_results = []
         for itm in parse_result.most_refer:
             amazon_result = AmazonResults()
-            amazon_result.item_list = amazon_request.request(urllib2.unquote(itm.word.encode('utf-8')), search_index)
+           
+            group_key = itm.word
+            
+            gql_q = db.GqlQuery("SELECT * FROM AmazonItemEntity WHERE group_key=:1", group_key)
+            amaitms = gql_q.fetch(20)    
+            if not amaitms:
+                tmp_ama_list = amazon_request.request(urllib2.unquote(itm.word.encode('utf-8')), search_index)
+            
+                today = date.today()
+                amaitms = []
+                for amaitm in tmp_ama_list:
+                    entity = AmazonItemEntity(
+                                              group_key = group_key,
+                                              entry_date = today,
+                                              asin = amaitm.asin,
+                                              detailPageURL = amaitm.detailPageURL,
+                                              smallImageURL = amaitm.smallImageURL,
+                                              title = amaitm.title,
+                                              )
+                    if not is_delete_all:
+                        entity.put()
+                    amaitms.append(entity)
+            
             amazon_result.word = itm.word
+            amazon_result.item_list = amaitms
             amazon_results.append(amazon_result)
         
         context = {

@@ -4,7 +4,7 @@ import urllib2
 import amazon_ecs
 import xml.parsers.expat
 
-class SearchedItem(object):
+class AmazonSearchItem(object):
     ''' Amazon ItemSearch Operation の結果格納  '''
     def __init__(self):
         self.asin = ''
@@ -31,7 +31,7 @@ class SAXTagHandler(object):
             self.img_start = True
         if self.proc_start:
             if name == 'Item':
-                self.item_list.append(SearchedItem())
+                self.item_list.append(AmazonSearchItem())
             else:
                 self.now_key = name
     
