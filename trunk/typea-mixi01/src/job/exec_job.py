@@ -1,15 +1,9 @@
 #!Python2.6
 # -*- encoding: utf-8 -*-
 
-import os
-
 from google.appengine.ext import webapp
-from google.appengine.ext.webapp import template
-from google.appengine.ext import db
 
-from datetime import date
 from yahoo.yahoo_utils import AmazonItemEntity
-
 import logging
         
 class DeleteAmazonEntity(webapp.RequestHandler):
@@ -19,6 +13,7 @@ class DeleteAmazonEntity(webapp.RequestHandler):
     '''
     def get(self):
         template = "<html><head></head><body>%s</body></html>"
+
         del_range = 'all'
         try:
             del_range = self.request.GET['range']
@@ -31,4 +26,7 @@ class DeleteAmazonEntity(webapp.RequestHandler):
                 item.delete()
          
             return self.response.out.write(template % ('all amazon items were deleted.'))    
+        
+        
+        
         
