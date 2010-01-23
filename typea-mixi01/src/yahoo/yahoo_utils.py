@@ -71,15 +71,8 @@ class Search(webapp.RequestHandler):
         text_parser = YahooTextParser()
         summaries = [s.summary for s in search_result.item_list]
         parse_result = text_parser.search({'sentence':' '.join(summaries)})
-        
-        # Amazon
-        #*** Delete All Entities ***
-        is_delete_all = False
-        del_entry = AmazonItemEntity.all()
-        if is_delete_all:
-            for de in del_entry:
-                de.delete()
 
+        # Create Amazon Links
         amazon_request = AmazonRequest()
         search_index = 'All'
         amazon_results = []
@@ -104,8 +97,7 @@ class Search(webapp.RequestHandler):
                                               smallImageURL = amaitm.smallImageURL,
                                               title = amaitm.title,
                                               )
-                    if not is_delete_all:
-                        entity.put()
+                    entity.put()
                     amaitms.append(entity)
             
             amazon_result.word = itm.word

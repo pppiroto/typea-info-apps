@@ -1,6 +1,8 @@
 cron:
 - description: daily amazon cache delete job
   url: /yh_amdel?range=all
-  schedule: every 24 hours
+- UTC  
+  schedule: every sunday of month 15:00
+
 
 
