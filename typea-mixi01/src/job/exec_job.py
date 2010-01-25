@@ -5,7 +5,17 @@ from google.appengine.ext import webapp
 
 from datetime import datetime, timedelta
 from google.appengine.ext import db
-from amazon.amazon_search import AmazonItemEntity
+#from amazon.amazon_search import AmazonItemEntity
+
+class AmazonItemEntity(db.Model):
+    #Text 値と Blob 値はインデックスされない ->クエリが効かない
+    group_key = db.StringProperty()
+    entry_date = db.DateProperty()
+    asin = db.StringProperty()
+    detailPageURL = db.TextProperty()
+    smallImageURL = db.TextProperty()
+    title = db.StringProperty()
+
 
 import logging
         
@@ -40,7 +50,7 @@ class DeleteAmazonEntity(webapp.RequestHandler):
             for item in items:
                 item.delete()
                 cnt += 1
-                if cnt > 500:
+                if cnt > 100:
                     break
                 
         msg = '%d amazon items were deleted.' % cnt 

@@ -93,7 +93,7 @@ class YahooTextParser(yahoo_dev_api_settings.YahooDevApiBase):
         how_meny_list = 6
         times_list = times_list[0:how_meny_list]
             
-        logging.warn(times_list)
+        #logging.warn(times_list)
         most_refer = []
         for itm in search_result.item_list:
             for t in times_list:
