@@ -16,7 +16,7 @@ application = webapp.WSGIApplication([
                                       ('/am_is',        amazon_utils.AmazonItemSearch),
                                       ('/create_links', amazon_utils.CreateLinks),
                                       ('/yh_s',         yahoo_utils.Search),
-                                      ('/yh_amdel',     exec_job.DeleteAmazonEntity),
+                                      ('/am_del',       exec_job.DeleteAmazonEntity),
                                       ], debug=True)
 
 def main():

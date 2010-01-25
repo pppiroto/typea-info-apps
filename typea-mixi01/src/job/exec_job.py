@@ -3,7 +3,10 @@
 
 from google.appengine.ext import webapp
 
-from yahoo.yahoo_utils import AmazonItemEntity
+from datetime import datetime, timedelta
+from google.appengine.ext import db
+from amazon.amazon_search import AmazonItemEntity
+
 import logging
         
 class DeleteAmazonEntity(webapp.RequestHandler):
@@ -13,8 +16,8 @@ class DeleteAmazonEntity(webapp.RequestHandler):
     '''
     def get(self):
         template = "<html><head></head><body>%s</body></html>"
-
-        del_range = 'all'
+        items = None
+        
         try:
             del_range = self.request.GET['range']
         except:
@@ -22,10 +25,26 @@ class DeleteAmazonEntity(webapp.RequestHandler):
         
         if del_range == 'all':
             items = AmazonItemEntity.all()
+        else:
+            try:
+                days = int(del_range)
+                del_base_datetime = datetime.today() - timedelta(days=days)
+    
+                items = db.GqlQuery("SELECT * FROM AmazonItemEntity WHERE entry_date <= :1", 
+                            del_base_datetime)
+            except:
+                items = None
+        
+        cnt = 0
+        if items:
             for item in items:
                 item.delete()
-         
-            return self.response.out.write(template % ('all amazon items were deleted.'))    
+                cnt += 1
+                if cnt > 500:
+                    break
+                
+        msg = '%d amazon items were deleted.' % cnt 
+        return self.response.out.write(template % msg)    
         
         
         
