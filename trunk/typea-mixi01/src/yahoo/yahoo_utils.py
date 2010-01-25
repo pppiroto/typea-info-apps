@@ -69,7 +69,7 @@ class Search(webapp.RequestHandler):
         for itm in parse_result.most_refer:
             amazon_result = AmazonResults()
             amazon_result.word = itm.word
-            amazon_result.item_list = amazon_request.request(urllib2.unquote(itm.word.encode('utf-8')),search_index)
+            amazon_result.item_list = amazon_request.request(itm.word,search_index)
             amazon_results.append(amazon_result)
         
         context = {

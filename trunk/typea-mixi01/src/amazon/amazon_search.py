@@ -111,7 +111,7 @@ class AmazonRequest(object):
         
         if not items:
             operation = amazon_ecs.ItemSearch()
-            operation.keywords = keyword
+            operation.keywords = urllib2.unquote(keyword.encode('utf-8'))
             operation.search_index = search_index
             operation.response_group = 'Medium'
             request = operation.request()
