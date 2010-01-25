@@ -9,20 +9,10 @@ from google.appengine.ext.webapp import template
 
 from yahoo_search import YahooSearch
 from yahoo_text_parse import YahooTextParser
-from amazon.amazon_search import AmazonRequest
-from datetime import date
+from amazon.amazon_search import AmazonRequest, AmazonItemEntity
+
 import logging
 
-from google.appengine.ext import db
-
-class AmazonItemEntity(db.Model):
-    #Text 値と Blob 値はインデックスされない ->クエリが効かない
-    group_key = db.StringProperty()
-    entry_date = db.DateProperty()
-    asin = db.StringProperty()
-    detailPageURL = db.TextProperty()
-    smallImageURL = db.TextProperty()
-    title = db.StringProperty()
 
 class AmazonResults(object):
     def __init__(self):
@@ -78,30 +68,9 @@ class Search(webapp.RequestHandler):
         amazon_results = []
         for itm in parse_result.most_refer:
             amazon_result = AmazonResults()
-           
-            group_key = itm.word
-            
-            gql_q = db.GqlQuery("SELECT * FROM AmazonItemEntity WHERE group_key=:1", group_key)
-            amaitms = gql_q.fetch(20)    
-            if not amaitms:
-                tmp_ama_list = amazon_request.request(urllib2.unquote(itm.word.encode('utf-8')), search_index)
-            
-                today = date.today()
-                amaitms = []
-                for amaitm in tmp_ama_list:
-                    entity = AmazonItemEntity(
-                                              group_key = group_key,
-                                              entry_date = today,
-                                              asin = amaitm.asin,
-                                              detailPageURL = amaitm.detailPageURL,
-                                              smallImageURL = amaitm.smallImageURL,
-                                              title = amaitm.title,
-                                              )
-                    entity.put()
-                    amaitms.append(entity)
-            
             amazon_result.word = itm.word
-            amazon_result.item_list = amaitms
+            amazon_result.item_list = amazon_request.request(urllib2.unquote(itm.word.encode('utf-8')), 
+                                                             search_index)
             amazon_results.append(amazon_result)
         
         context = {
