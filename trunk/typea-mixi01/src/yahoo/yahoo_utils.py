@@ -9,7 +9,7 @@ from google.appengine.ext.webapp import template
 
 from yahoo_search import YahooSearch
 from yahoo_text_parse import YahooTextParser
-from amazon.amazon_search import AmazonRequest, AmazonItemEntity
+from amazon.amazon_search import AmazonRequest, AmazonSearchedItemEntity
 
 import logging
 
@@ -69,8 +69,7 @@ class Search(webapp.RequestHandler):
         for itm in parse_result.most_refer:
             amazon_result = AmazonResults()
             amazon_result.word = itm.word
-            amazon_result.item_list = amazon_request.request(urllib2.unquote(itm.word.encode('utf-8')), 
-                                                             search_index)
+            amazon_result.item_list = amazon_request.request(urllib2.unquote(itm.word.encode('utf-8')),search_index)
             amazon_results.append(amazon_result)
         
         context = {

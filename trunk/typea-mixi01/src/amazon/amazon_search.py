@@ -12,7 +12,7 @@ class AmazonItemCacheInfo(db.Model):
     hit_count = db.IntegerProperty()
     total_count = db.IntegerProperty()
     
-class AmazonItemEntity(db.Model):
+class AmazonSearchedItemEntity(db.Model):
     #Text 値と Blob 値はインデックスされない ->クエリが効かない
     group_key = db.StringProperty()
     search_index = db.StringProperty()
@@ -95,12 +95,21 @@ class AmazonRequest(object):
                     
         cache_inf.total_count = cache_inf.total_count + 1
          
-        gql_q = db.GqlQuery("SELECT * FROM AmazonItemEntity WHERE group_key=:1 and search_index=:2", 
+        gql_q = db.GqlQuery("SELECT * FROM AmazonSearchedItemEntity WHERE group_key=:1 and search_index=:2", 
                             keyword,
                             search_index)
 
-        items = gql_q.fetch(100)
-        if items:
+        items = []
+        stored_items = gql_q.fetch(100)
+        for stored_item in stored_items:
+            item = AmazonSearchItem()
+            item.asin = stored_item.asin
+            item.detailPageURL = stored_item.detailPageURL
+            item.smallImageURL = stored_item.smallImageURL
+            item.title = stored_item.title
+            items.append(item)
+        
+        if not items:
             operation = amazon_ecs.ItemSearch()
             operation.keywords = keyword
             operation.search_index = search_index
@@ -119,9 +128,8 @@ class AmazonRequest(object):
             p.Parse(f.read())
 
             today = datetime.today()
-            items = []
             for tmp_item in h.item_list:
-                entity = AmazonItemEntity(
+                entity = AmazonSearchedItemEntity(
                                           group_key = keyword,
                                           search_index = search_index, 
                                           entry_date = today,
@@ -131,7 +139,13 @@ class AmazonRequest(object):
                                           title = tmp_item.title,
                                           )
                 entity.put()
-                items.append(entity)
+
+                item = AmazonSearchItem()
+                item.asin = entity.asin
+                item.detailPageURL = entity.detailPageURL
+                item.smallImageURL = entity.smallImageURL
+                item.title = entity.title
+                items.append(item)
         else:
             cache_inf.hit_count = cache_inf.hit_count + 1
             
