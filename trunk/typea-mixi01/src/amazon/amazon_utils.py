@@ -25,7 +25,7 @@ class AmazonItemSearch(webapp.RequestHandler):
     def get(self):
         try:
             keyword = self.request.GET['q']
-            keyword = keyword.encode('utf-8')
+            #keyword = keyword.encode('utf-8')
         except:
             keyword = 'Amazon'
         
@@ -42,11 +42,12 @@ class AmazonItemSearch(webapp.RequestHandler):
         #パラメータのデコード
         #@see http://www.findxfine.com/default/495.html
         #FireFox のアドレスバーに漢字を打つとUTF-8でないコードにエンコードされてしまう？
-        keyword = urllib2.unquote(keyword)
+        
+        #keyword = urllib2.unquote(keyword)
         if keyword == '':
             keyword = 'amazon'
-        if coding:
-            keyword = unicode(keyword, coding)
+        #if coding:
+        #    keyword = unicode(keyword, coding)
        
         amazon_request = AmazonRequest() 
         search_index = 'Books'
