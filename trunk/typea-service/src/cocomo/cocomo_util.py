@@ -5,7 +5,7 @@ import os
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from cocomo import Cocomo 
-import json
+from json_util import json
 import cgi
 import logging
 
