@@ -25,7 +25,22 @@ class CalcCocomo(webapp.RequestHandler):
             logging.info(json.write(cocomo.to_dict()))
             return self.response.out.write(json.write(cocomo.to_dict()))
         
-        context = {'cocomo':cocomo}
+        
+        phase_title = ( u'要件分析',
+                        u'製品設計',
+                        u'プログラミング',
+                        u'テスト計画',
+                        u'検証',
+                        u'プロジェクト管理 ',
+                        u'構成管理と品質保障',
+                        u'文書化',
+                        u'合計',
+                       )
+        
+        
+        
+        context = {'phase_title':phase_title}
+        
         path = os.path.join(os.path.dirname(__file__), 'cocomo.html')
         return self.response.out.write(template.render(path, context))
 
