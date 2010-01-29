@@ -1,11 +1,14 @@
 #!Python2.6
 # -*- encoding: utf-8 -*-
+import sys
+sys.path.insert(0, 'gdata.zip')
 
 import os
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
-from cocomo import Cocomo 
-from json_util import json
+from cocomo import Cocomo
+import json
+
 import cgi
 import logging
 
@@ -15,14 +18,13 @@ class CalcCocomo(webapp.RequestHandler):
         return self.post()
     
     def post(self):
-        
         calc_mode = self.request.get('calc_mode')
         num = self.request.get('num')
         
         cocomo = None
         if num.isdigit():
             cocomo = Cocomo(calc_mode,kdsi=int(num),effort=int(num))
-            logging.info(json.write(cocomo.to_dict()))
+            #logging.info(jsonutil.write(cocomo.to_dict()))
             return self.response.out.write(json.write(cocomo.to_dict()))
         
         
@@ -36,8 +38,6 @@ class CalcCocomo(webapp.RequestHandler):
                         u'文書化',
                         u'合計',
                        )
-        
-        
         
         context = {'phase_title':phase_title}
         
