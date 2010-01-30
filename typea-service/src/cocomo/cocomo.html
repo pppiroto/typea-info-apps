@@ -6,6 +6,7 @@
 <style type="text/css">
 </style>
 <script type="text/javascript" src="/js/jquery-1.4.1.min.js"></script>
+<script type="text/javascript" src="/js/jquery.numberformatter-1.1.2.min.js"></script>
 <script type="text/javascript"><!-- 
 	function calc_cocomo() {
 		var url = "/cocomo"
@@ -13,25 +14,29 @@
 			    + "&num=" + $("#num").val()
 		$.getJSON(url, reload_date);
 	}
+	function numfield_format(key, num_data) {
+		$(key).text(num_data).format({format:"#,###.00",locale:"jp"});
+	}
 	function reload_date(json) {
-		$("#kdsi").text(json.kdsi)
-		$("#effort").text(json.effort);
-		$("#tdev").text(json.tdev);
-		$("#fsp").text(json.fsp);
-		$("#prod").text(json.prod);
-		$("#plan_requirements").text(json.plan_requirements);
-		$("#product_design").text(json.product_design);
-		$("#detailed_design").text(json.detailed_design);
-		$("#code_unit_test").text(json.code_unit_test);
-		$("#integration_test").text(json.integration_test);
-		$("#total").text(json.total);
+		numfield_format("#kdsi",json.kdsi);
+		numfield_format("#kdsi",json.kdsi);
+		numfield_format("#effort",json.effort);
+		numfield_format("#tdev",json.tdev);
+		numfield_format("#fsp",json.fsp);
+		numfield_format("#prod",json.prod);
+		numfield_format("#plan_requirements",json.plan_requirements);
+		numfield_format("#product_design",json.product_design);
+		numfield_format("#detailed_design",json.detailed_design);
+		numfield_format("#code_unit_test",json.code_unit_test);
+		numfield_format("#integration_test",json.integration_test);
+		numfield_format("#total",json.total);
 
 		for (var i=0; i< json.phase_plan_requirements.length; i++) {
-			$("#phase_plan_requirements_" + i).text(json.phase_plan_requirements[i]);
-			$("#phase_product_design_" + i).text(json.phase_product_design[i]);
-			$("#phase_programming_" + i).text(json.phase_programming[i]);
-			$("#phase_integration_test_" + i).text(json.phase_integration_test[i]);
-			$("#phase_total_" + i).text(json.phase_total[i]);
+			numfield_format("#phase_plan_requirements_" + i,json.phase_plan_requirements[i]);
+			numfield_format("#phase_product_design_" + i,json.phase_product_design[i]);
+			numfield_format("#phase_programming_" + i,json.phase_programming[i]);
+			numfield_format("#phase_integration_test_" + i,json.phase_integration_test[i]);
+			numfield_format("#phase_total_" + i,json.phase_total[i]);
 		}
 	}
 
@@ -77,23 +82,23 @@
 		</tr>
 		<tr>
 			<th>製品設計</th>
-			<td> <span id="product_design"></span></td>
+			<td><span id="product_design"></span></td>
 		</tr>
 		<tr>
 			<th>詳細設計</th>
-			<td>  <span id="detailed_design"></span></td>
+			<td><span id="detailed_design"></span></td>
 		</tr>
 		<tr>
 			<th>プログラミングと単体テスト</th>
-			<td>  <span id="code_unit_test"></span></td>
+			<td><span id="code_unit_test"></span></td>
 		</tr>
 		<tr>
 			<th>統合とテスト</th>
-			<td>  <span id="integration_test"></span></td>
+			<td><span id="integration_test"></span></td>
 		</tr>
 		<tr>
 			<th>合計</th>
-			<td> <span id="total"></span></td>
+			<td><span id="total"></span></td>
 		</tr>
 	</table>
 	

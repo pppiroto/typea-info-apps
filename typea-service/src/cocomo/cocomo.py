@@ -84,7 +84,7 @@ class Cocomo(object):
         ttl = sum(lst)
         lst.append(ttl)
         return lst
-    
+
     def to_dict(self):
         return {
                 'calc_mode'                 :self.calc_mode,
