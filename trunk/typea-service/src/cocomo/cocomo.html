@@ -1,132 +1,182 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link href="http://typea.info/tips/theme/dark/dark.css" type="text/css" rel="stylesheet">
-<style type="text/css">
-</style>
-<script type="text/javascript" src="/js/jquery-1.4.1.min.js"></script>
-<script type="text/javascript" src="/js/jquery.numberformatter-1.1.2.min.js"></script>
-<script type="text/javascript"><!-- 
-	function calc_cocomo() {
-		var url = "/cocomo"
-			    + "?calc_mode=" + $("input:radio[@name='calc_mode']:checked").val()
-			    + "&num=" + $("#num").val()
-		$.getJSON(url, reload_date);
-	}
-	function numfield_format(key, num_data) {
-		$(key).text(num_data).format({format:"#,###.00",locale:"jp"});
-	}
-	function reload_date(json) {
-		numfield_format("#kdsi",json.kdsi);
-		numfield_format("#kdsi",json.kdsi);
-		numfield_format("#effort",json.effort);
-		numfield_format("#tdev",json.tdev);
-		numfield_format("#fsp",json.fsp);
-		numfield_format("#prod",json.prod);
-		numfield_format("#plan_requirements",json.plan_requirements);
-		numfield_format("#product_design",json.product_design);
-		numfield_format("#detailed_design",json.detailed_design);
-		numfield_format("#code_unit_test",json.code_unit_test);
-		numfield_format("#integration_test",json.integration_test);
-		numfield_format("#total",json.total);
-
-		for (var i=0; i< json.phase_plan_requirements.length; i++) {
-			numfield_format("#phase_plan_requirements_" + i,json.phase_plan_requirements[i]);
-			numfield_format("#phase_product_design_" + i,json.phase_product_design[i]);
-			numfield_format("#phase_programming_" + i,json.phase_programming[i]);
-			numfield_format("#phase_integration_test_" + i,json.phase_integration_test[i]);
-			numfield_format("#phase_total_" + i,json.phase_total[i]);
+	<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link href="http://typea.info/tips/theme/dark/dark.css" type="text/css" rel="stylesheet">
+	<style type="text/css">
+		.num-field {
+			text-align:right;
+			color:darkgreen;
 		}
-	}
+		#loading {
+			position: absolute;
+			top:200px;
+			left:200px;
+			padding: 8px;
+			background-color:lightyellow;
+			color: steelblue;
+			font-size:small;
+			text-align:center;
+			width:100px;
+		}
+		#message {
+			position: absolute;
+			top:200px;
+			left:200px;
+			padding: 8px;
+			background-color:lightyellow;
+			color: red;
+			font-size:small;
+		}
+	</style>
+	<script type="text/javascript" src="/js/jquery-1.4.1.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.numberformatter-1.1.2.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.corner.js"></script>
+	<script type="text/javascript"><!-- 
+		function calc_cocomo() {
+			var url = "/calccocomo"
+				    + "?calc_mode=" + $("input:radio[@name='calc_mode']:checked").val()
+				    + "&num=" + encodeURIComponent(jQuery.trim($("#num").val()))
+			
+			$("#loading").corner()
+			$("#message").hide("normal");
+			$("#loading").show("normal");
+			
+			$.getJSON(url, reload_date);
+		}
+		function numfield_format(key, num_data) {
+			$(key).text(num_data).format({format:"#,###.00",locale:"jp"}).addClass("num-field");
+		}
+		function reload_date(json) {
+			if (json.error) {
+				$("#message").text(json.error);
+				$("#message").corner()
+				$("#message").show("normal");
+			} else {
+				numfield_format("#kdsi",json.kdsi);
+				numfield_format("#kdsi",json.kdsi);
+				numfield_format("#effort",json.effort);
+				numfield_format("#tdev",json.tdev);
+				numfield_format("#fsp",json.fsp);
+				numfield_format("#prod",json.prod);
+				numfield_format("#plan_requirements",json.plan_requirements);
+				numfield_format("#product_design",json.product_design);
+				numfield_format("#detailed_design",json.detailed_design);
+				numfield_format("#code_unit_test",json.code_unit_test);
+				numfield_format("#integration_test",json.integration_test);
+				numfield_format("#total",json.total);
+	
+				for (var i=0; i< json.phase_plan_requirements.length; i++) {
+					numfield_format("#phase_plan_requirements_" + i,json.phase_plan_requirements[i]);
+					numfield_format("#phase_product_design_" + i,json.phase_product_design[i]);
+					numfield_format("#phase_programming_" + i,json.phase_programming[i]);
+					numfield_format("#phase_integration_test_" + i,json.phase_integration_test[i]);
+					numfield_format("#phase_total_" + i,json.phase_total[i]);
+				}
+			}
+			$("#loading").hide("normal");
+		}
 
-//--></script>
-<title></title>
-</head>
-<body>
-	<h1>COCOMO による工数計算</h1>
-	<input type="radio" name="calc_mode" value="kdsi">プログラムサイズ(KLOC)
-	<input type="radio" name="calc_mode" value="effort">工数(PM)
-	<input type="text" id="num">
-	<input type="button" value="計算" onclick="calc_cocomo()">
-
-	<table>
-		<caption>COCOMO計算式</caption>
-		<tr>
-			<th>プログラムサイズ(KLOC)</th>
-			<td><span id='kdsi'></span></td>
-		</tr>  
-		<tr>
-			<th>工数(PM)</th>
-			<td><span id='effort'></span></td>
-		</tr>
-		<tr>
-			<th>開発期間(M)</th>
-			<td><span id='tdev'></span></td>
-		</tr>
-		<tr>
-			<th>開発要員(P)</th>
-			<td><span id='fsp'></span></td>
-		</tr>
-		<tr>
-			<th>生産性(KLOC/PM)</th>
-			<td><span id='prod'></span></td>
-		</tr>
-	</table>	
-	
-	<table>
-		<caption>工数の局面への分布 </caption>
-		<tr>
-			<th>計画と要件定義 </th>
-			<td><span id="plan_requirements"></span>  </td>
-		</tr>
-		<tr>
-			<th>製品設計</th>
-			<td><span id="product_design"></span></td>
-		</tr>
-		<tr>
-			<th>詳細設計</th>
-			<td><span id="detailed_design"></span></td>
-		</tr>
-		<tr>
-			<th>プログラミングと単体テスト</th>
-			<td><span id="code_unit_test"></span></td>
-		</tr>
-		<tr>
-			<th>統合とテスト</th>
-			<td><span id="integration_test"></span></td>
-		</tr>
-		<tr>
-			<th>合計</th>
-			<td><span id="total"></span></td>
-		</tr>
-	</table>
-	
-	<table>
-		<caption>活動の局面ごとの分布</caption>    
-	   	<tr>
-	    	<th rowspan="2">局面</th>
-	    	<th rowspan="2">計画と要件定義</th>
-			<th rowspan="2">製品設計</th>
-			<th colspan="2">プログラミング</th>
-			<th rowspan="2">統合とテスト</th>
-			<th rowspan="2">合計</th>
-		</tr>
-		<tr>
-			<th>詳細設計</th>
-			<th>プログラミングと単体テスト</th>
-		</tr>
-		{% for title in phase_title %}
-		<tr>
-			<th>{{title}}</th>
-			<td><span id="phase_plan_requirements_{{forloop.counter0}}"></span></td>
-			<td><span id="phase_product_design_{{forloop.counter0}}"></span></td>
-			<td><span id="phase_programming_{{forloop.counter0}}"></span></td>
-			<td colspan="2"><span id="phase_integration_test_{{forloop.counter0}}"></span></td>
-			<td><span id="phase_total_{{forloop.counter0}}"></span></td>
-		</tr>
-		{% endfor %}
-	</table>
-	
-</body>
-</html>
+	//--></script>
+	<title></title>
+	</head>
+	<body>
+		<h1>COCOMO による工数計算</h1>
+		<p style="color:green">プログラムサイズまたは、工数を選択し値を入力、計算ボタンを押します。</p> 
+		<input type="radio" name="calc_mode" value="kdsi">プログラムサイズ(KLOC)
+		<input type="radio" name="calc_mode" value="effort">工数(PM)
+		<input type="text" id="num">
+		<input type="button" value="計算" onclick="calc_cocomo()">
+		<hr>
+		<div id="loading" style="display:none">計算中・・・</div>
+		<div id="message" style="display:none"></div>
+		<table width="30%">
+			<caption>COCOMO計算式</caption>
+			<col width="*">
+			<col width="40%">
+			<tr>
+				<th>プログラムサイズ(KLOC)</th>
+				<td id='kdsi'></td>
+			</tr>  
+			<tr>
+				<th>工数(PM)</th>
+				<td id='effort'></td>
+			</tr>
+			<tr>
+				<th>開発期間(M)</th>
+				<td id='tdev'></td>
+			</tr>
+			<tr>
+				<th>開発要員(P)</th>
+				<td id='fsp'></td>
+			</tr>
+			<tr>
+				<th>生産性(KLOC/PM)</th>
+				<td id='prod'></td>
+			</tr>
+		</table>	
+		
+		<table width="30%">
+			<caption>工数の局面への分布 </caption>
+			<col width="*">
+			<col width="40%">
+			<tr>
+				<th>計画と要件定義 </th>
+				<td id="plan_requirements">  </td>
+			</tr>
+			<tr>
+				<th>製品設計</th>
+				<td id="product_design"></td>
+			</tr>
+			<tr>
+				<th>詳細設計</th>
+				<td id="detailed_design"></td>
+			</tr>
+			<tr>
+				<th>プログラミングと単体テスト</th>
+				<td id="code_unit_test"></td>
+			</tr>
+			<tr>
+				<th>統合とテスト</th>
+				<td id="integration_test"></td>
+			</tr>
+			<tr>
+				<th>合計</th>
+				<td id="total"></td>
+			</tr>
+		</table>
+		
+		<table width="60%">
+			<caption>活動の局面ごとの分布</caption>  
+			<col width="*">  
+		   	<col width="12%">  
+		   	<col width="12%">
+		   	<col width="10%">
+		   	<col width="10%">
+		   	<col width="12%">
+		   	<col width="12%">
+		   	<tr>
+		    	<th rowspan="2">局面</th>
+		    	<th rowspan="2">計画と要件定義</th>
+				<th rowspan="2">製品設計</th>
+				<th colspan="2">プログラミング</th>
+				<th rowspan="2">統合とテスト</th>
+				<th rowspan="2">合計</th>
+			</tr>
+			<tr>
+				<th>詳細設計</th>
+				<th>プログラミングと単体テスト</th>
+			</tr>
+			{% for title in phase_title %}
+			<tr>
+				<th>{{title}}</th>
+				<td id="phase_plan_requirements_{{forloop.counter0}}"></td>
+				<td id="phase_product_design_{{forloop.counter0}}"></td>
+				<td colspan="2" id="phase_programming_{{forloop.counter0}}"></td>
+				<td id="phase_integration_test_{{forloop.counter0}}"></td>
+				<td id="phase_total_{{forloop.counter0}}"></td>
+			</tr>
+			{% endfor %}
+		</table>
+	</body>
+	</html>

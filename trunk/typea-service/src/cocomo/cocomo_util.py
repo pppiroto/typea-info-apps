@@ -7,27 +7,18 @@ import os
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from cocomo import Cocomo
+import re
 import json
 
 import cgi
 import logging
 
-class CalcCocomo(webapp.RequestHandler):
-    
+class InitialCocomoPage(webapp.RequestHandler):
     def get(self):
-        return self.post()
-    
+        self.post()
+        
     def post(self):
-        calc_mode = self.request.get('calc_mode')
-        num = self.request.get('num')
-        
-        cocomo = None
-        if num.isdigit():
-            cocomo = Cocomo(calc_mode,kdsi=int(num),effort=int(num))
-            #logging.info(jsonutil.write(cocomo.to_dict()))
-            return self.response.out.write(json.write(cocomo.to_dict()))
-        
-        
+
         phase_title = ( u'要件分析',
                         u'製品設計',
                         u'プログラミング',
@@ -38,9 +29,24 @@ class CalcCocomo(webapp.RequestHandler):
                         u'文書化',
                         u'合計',
                        )
-        
         context = {'phase_title':phase_title}
         
         path = os.path.join(os.path.dirname(__file__), 'cocomo.html')
         return self.response.out.write(template.render(path, context))
 
+class CalcCocomoResponse(webapp.RequestHandler):
+    
+    def get(self):
+        self.post()
+        
+    def post(self):
+        calc_mode = self.request.get('calc_mode')
+        num = self.request.get('num')
+        
+        cocomo = None
+        if (calc_mode in ('kdsi','effort')) and re.match(r'^[0-9]+[\.]{0,1}[0-9]*$',num):
+            cocomo = Cocomo(calc_mode,kdsi=float(num),effort=float(num))
+            #logging.warn(json.write(cocomo.to_dict()))
+            return self.response.out.write(json.write(cocomo.to_dict()))
+
+        return self.response.out.write(json.write({'error':u'入力項目に誤りがあります.'}))

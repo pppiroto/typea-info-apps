@@ -12,7 +12,8 @@ class MainPage(webapp.RequestHandler):
     
 application = webapp.WSGIApplication([
                                       ('/',         MainPage),
-                                      ('/cocomo',   cocomo_util.CalcCocomo),
+                                      ('/cocomo',       cocomo_util.InitialCocomoPage),
+                                      ('/calccocomo',   cocomo_util.CalcCocomoResponse),
                                       ], debug=True)
 
 def main():
