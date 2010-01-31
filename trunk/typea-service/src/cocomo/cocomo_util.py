@@ -1,12 +1,13 @@
 #!Python2.6
 # -*- encoding: utf-8 -*-
 import sys
-sys.path.insert(0, 'gdata.zip')
+#sys.path.insert(0, 'gdata.zip')
 
 import os
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from cocomo import Cocomo
+import common
 import re
 import json
 
@@ -29,9 +30,12 @@ class InitialCocomoPage(webapp.RequestHandler):
                         u'文書化',
                         u'合計',
                        )
-        context = {'phase_title':phase_title}
         
-        path = os.path.join(os.path.dirname(__file__), 'cocomo.html')
+        context = common.default_context(self.request.uri)
+        context['phase_title'] = phase_title
+        
+        #path = os.path.join(os.path.dirname(__file__), 'templates/cocomo.html')
+        path = 'templates/cocomo.html'
         return self.response.out.write(template.render(path, context))
 
 class CalcCocomoResponse(webapp.RequestHandler):
