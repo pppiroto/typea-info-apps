@@ -1,0 +1,46 @@
+#headbar {
+	position: absolute;
+	left:0px;
+	top:0px;
+	height:20px;
+	width: 100%;
+	text-align: right;
+}
+
+#sidebar {
+	position: absolute;
+	left:21px;
+	top:21px;
+	width:100px;
+}
+
+#content {
+	position: absolute;
+	left:101px;
+	top:21px;
+}
+
+.num-field {
+	text-align:right;
+	color:darkgreen;
+}
+#loading {
+	position: absolute;
+	top:200px;
+	left:200px;
+	padding: 8px;
+	background-color:lightyellow;
+	color: steelblue;
+	font-size:small;
+	text-align:center;
+	width:100px;
+}
+#message {
+	position: absolute;
+	top:200px;
+	left:200px;
+	padding: 8px;
+	background-color:lightyellow;
+	color: red;
+	font-size:small;
+}
