@@ -2,7 +2,7 @@
 {% block html_header %}
 	<script type="text/javascript"><!-- 
 	$(document).ready(function(){
-
+		
 	});
 	function create_new_project() {
 		var url = "/functionpoint/createproject";
@@ -14,18 +14,22 @@
 		error_msg();
 		processing_msg(PROCESSING_MSG);
 
-		$.getJSON(url, data,
-				function (json) {
-					if (json.error) {
-						error_msg(json.error);
-					} else {
-						error_msg(json.system_name + json.application_name);
-						
-					}
-					processing_msg();
-				}
-		);
+		$.getJSON(url, data, list_projects);
 	}
+
+	function list_projects(json) {
+		if (json.error) {
+			error_msg(json.error);
+		} else {
+			s = ''
+			for (var i=0; i< json.items.length; i++) {
+				s += '&' + json.items[i].system_name;
+			}
+			error_msg(s);
+		}
+		processing_msg();
+	}
+	
 	function show_project_profile(is_display) {
 		if (is_display) {
 			$("#new_project_profile").show("normal");
@@ -44,4 +48,12 @@
 		<input type="button" value="create" onclick="javascript:create_new_project();"/>
 		<input type="button" value="close" onclick="javascript:show_project_profile(false);"/>
 	</div>
+	<div id="project_list">
+		<table id="projects_table">
+		</table>
+	</div>
+	
+	
+	
+	
 {% endblock %}

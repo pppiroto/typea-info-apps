@@ -38,7 +38,14 @@ class CreateFunctionPointProject(webapp.RequestHandler):
             project = FunctionPointProject(system_name=system_name,
                                            application_name=application_name)
             project.put();
-            return self.response.out.write(json.write(project.to_dict()))
+            
+            projects = []
+            q = FunctionPointProject.gql("WHERE owner=:1", user)
+            results = q.fetch(20)
+            for result in results:
+                projects.append(result.to_dict()) 
+            
+            return self.response.out.write(json.write({'items':projects}))
         else:
             err = {'error':'Please login!'}
             return self.response.out.write(json.write(err))

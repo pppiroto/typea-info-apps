@@ -1,3 +1,74 @@
+body {
+    background-color : #F5F5F5;
+    color            : black:;
+    font-size        : small;
+    font-family      : Courier New;
+}
+
+h1 {
+    text-align       : left;
+    font-size        : 140%;
+    color            : black;
+    border-bottom    : silver  1px dotted;
+}
+
+h2 {
+    text-align       : left;
+    font-size        : 120%;
+    font-weight      : normal;
+    color            : black;
+    padding-left     : 1em;
+    border-bottom    : silver  1px dotted;
+}
+
+h3 {
+    text-align       : left;
+    font-size        : 110%;
+    font-weight      : normal;
+    color            : black;
+    padding-left     : 2em;
+    border-bottom    : silver  1px dotted;
+}
+
+table {
+    border          : steelblue 1px solid;
+    border-collapse : collapse;
+    margin-left     : 20px;   
+    font-size       : 90%;
+}
+th {    
+    border           : steelblue 1px solid;
+    background-color : lightsteelblue;
+    font-weight      : normal;
+}
+td {
+    border           : steelblue 1px solid;
+    background-color : white;
+    padding-left     : 5px;
+    padding-right    : 5px;
+}
+
+A:link { 
+    color            : midnightblue;
+    text-decoration  : none;
+}
+
+A:visited {
+    color            : midnightblue;
+    text-decoration  : none;
+}
+
+A:hover {
+    color           : #004284;
+    text-decoration : underline;
+}
+
+.num-field {
+	text-align:right;
+	color:darkgreen;
+}
+
+
 #headbar {
 	position: absolute;
 	left:0px;
@@ -20,10 +91,6 @@
 	top:21px;
 }
 
-.num-field {
-	text-align:right;
-	color:darkgreen;
-}
 #loading {
 	position: absolute;
 	top:200px;
