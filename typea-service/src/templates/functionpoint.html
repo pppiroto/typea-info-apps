@@ -2,14 +2,15 @@
 {% block html_header %}
 	<script type="text/javascript"><!-- 
 	$(document).ready(function(){
-		
+		$.getJSON("/functionpoint/listproject", list_projects);
 	});
 	function create_new_project() {
 		var url = "/functionpoint/createproject";
 
 		var data = new Object();
-		data['create_system_name'] = $("#create_system_name").val();
+		data['create_system_name']      = $("#create_system_name").val();
 		data['create_application_name'] = $("#create_application_name").val();
+		data['create_mesurement_type']  = $("#create_mesurement_type").val();
 		
 		error_msg();
 		processing_msg(PROCESSING_MSG);
@@ -21,11 +22,23 @@
 		if (json.error) {
 			error_msg(json.error);
 		} else {
-			s = ''
-			for (var i=0; i< json.items.length; i++) {
-				s += '&' + json.items[i].system_name;
+
+			var tbody = $("#projects_table tbody");
+			if (tbody.length > 0) {
+				tbody.remove();
 			}
-			error_msg(s);
+			var table = $("#projects_table")
+			table.append("<tbody></tbody>");
+
+			html = "<tr><th>No</th><th>System Name</th><th>Application Name<th>Mesurment Type</th></tr>";
+			for (var i=0; i< json.items.length; i++) {
+				html += "<tr><td><a href='" + json.items[i].id + "'>" + (i+1) + "</td>" +
+					        "<td>" + json.items[i].system_name + "</td>" + 
+				            "<td>" + json.items[i].application_name + "</td>" +
+				            "<td>" + json.items[i].mesurement_type_name + "</td></tr>"
+			}
+			$("#projects_table").append(html);
+			
 		}
 		processing_msg();
 	}
@@ -41,14 +54,23 @@
 	<title></title>
 {% endblock %}
 {% block content %}
-	<a href="javascript:show_project_profile(true);">new project</a>
-	<div id="new_project_profile" style="display:none;width:200px;">
-		system name:<input type="text" id="create_system_name" value="" />
-		application name:<input type="text" id="create_application_name" value="" />
-		<input type="button" value="create" onclick="javascript:create_new_project();"/>
-		<input type="button" value="close" onclick="javascript:show_project_profile(false);"/>
-	</div>
+	<h3>Projects</h3>
 	<div id="project_list">
+		<a href="javascript:show_project_profile(true);">new project</a>
+		<div id="new_project_profile" style="display:none;width:100%;">
+			system name:
+			<input type="text" id="create_system_name" value="test1" maxlength="30"/>
+			application name:
+			<input type="text" id="create_application_name" value="test2" maxlength="30"/>
+			mesurement type:
+			<select id="create_mesurement_type">
+			{% for itm in mesurement_type %}
+				<option value="{{itm.0}}">{{itm.1}}</option>
+			{% endfor %}
+			</select>
+			<input type="button" value="create" onclick="javascript:create_new_project();"/>
+			<input type="button" value="close" onclick="javascript:show_project_profile(false);"/>
+		</div>
 		<table id="projects_table">
 		</table>
 	</div>

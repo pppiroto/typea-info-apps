@@ -52,13 +52,13 @@
 	<p style="color:green">プログラムサイズまたは、工数を選択し値を入力、計算ボタンを押します。</p> 
 	<input type="radio" name="calc_mode" value="kdsi"/>プログラムサイズ(KLOC)
 	<input type="radio" name="calc_mode" value="effort"/>工数(PM)
-	<input type="text" id="num"/>
+	<input type="text" id="num" maxlength="10" size="10"/>
 	<input type="button" value="計算" onclick="calc_cocomo()"/>
 	
 	<h3>COCOMO計算式</h3>
-	<table width="30%">
+	<table width="350px;">
 		<col width="*"/>
-		<col width="40%"/>
+		<col width="50%"/>
 		<tr>
 			<th>プログラムサイズ(KLOC)</th>
 			<td id='kdsi'></td>
@@ -82,9 +82,9 @@
 	</table>	
 	
 	<h3>工数の局面への分布 </h3>
-	<table width="30%">
+	<table width="350px;">
 		<col width="*"/>
-		<col width="40%"/>
+		<col width="50%"/>
 		<tr>
 			<th>計画と要件定義 </th>
 			<td id="plan_requirements">  </td>
@@ -112,14 +112,14 @@
 	</table>
 	
 	<h3>活動の局面ごとの分布</h3>  
-	<table width="60%">
+	<table width="650px;">
 		<col width="*"/>  
-	   	<col width="12%"/>  
-	   	<col width="12%"/>
-	   	<col width="10%"/>
-	   	<col width="10%"/>
+	   	<col width="14%"/>  
+	   	<col width="14%"/>
 	   	<col width="12%"/>
 	   	<col width="12%"/>
+	   	<col width="14%"/>
+	   	<col width="14%"/>
 	   	<tr>
 	    	<th rowspan="2">局面</th>
 	    	<th rowspan="2">計画と要件定義</th>
