@@ -22,6 +22,7 @@ application = webapp.WSGIApplication([
                                       ('/cocomo/calc',  cocomo_util.CalcCocomoResponse),
                                       #FunctionPoint
                                       ('/functionpoint',                functionpoint_util.InitialFunctionPointPage),
+                                      ('/functionpoint/listproject',    functionpoint_util.ListFunctionPointProject),
                                       ('/functionpoint/createproject',  functionpoint_util.CreateFunctionPointProject),
                                       ], debug=True)
 
