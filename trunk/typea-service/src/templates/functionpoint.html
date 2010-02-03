@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 {% block html_header %}
+
+	<script type="text/javascript" src="/js/jquery-ui-1.7.2.custom.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.chromatable.js"></script>
 	<script type="text/javascript"><!-- 
 	$(document).ready(function(){
-		$.getJSON("/functionpoint/listproject", list_projects);
+		$.getJSON("/functionpoint/listproject", create_projects_table);
 	});
 	function create_new_project() {
 		var url = "/functionpoint/createproject";
@@ -15,32 +18,40 @@
 		error_msg();
 		processing_msg(PROCESSING_MSG);
 
-		$.getJSON(url, data, list_projects);
+		$.getJSON(url, data, create_projects_table);
 	}
 
-	function list_projects(json) {
+	function create_projects_table(json) {
 		if (json.error) {
 			error_msg(json.error);
 		} else {
+			var area = $("#projects_table_area")
+			area.empty(); // reset created elements by chromatable plugin. 
 
-			var tbody = $("#projects_table tbody");
-			if (tbody.length > 0) {
-				tbody.remove();
-			}
-			var table = $("#projects_table")
-			table.append("<tbody></tbody>");
-
-			html = "<tr><th>No</th><th>System Name</th><th>Application Name<th>Mesurment Type</th></tr>";
+			area.append("<table id='projects_table'>" +
+					    "<thead><tr><th>No</th><th>System Name</th><th>Application Name<th>Mesurment Type</th></tr></thead>" +
+                        "<tbody></tbody>" +
+						"</table>"			
+  						);
+			
+			var html = "";
 			for (var i=0; i< json.items.length; i++) {
 				html += "<tr><td><a href='" + json.items[i].id + "'>" + (i+1) + "</td>" +
 					        "<td>" + json.items[i].system_name + "</td>" + 
 				            "<td>" + json.items[i].application_name + "</td>" +
 				            "<td>" + json.items[i].mesurement_type_name + "</td></tr>"
 			}
-			$("#projects_table").append(html);
-			
+			$("#projects_table tbody").append(html);
+
+			$("#projects_table").chromatable({
+				width:     "100%",
+				height:   "200px",
+				scrolling:  "yes"
+			});
 		}
+
 		processing_msg();
+		
 	}
 	
 	function show_project_profile(is_display) {
@@ -55,25 +66,22 @@
 {% endblock %}
 {% block content %}
 	<h3>Projects</h3>
-	<div id="project_list">
-		<a href="javascript:show_project_profile(true);">new project</a>
-		<div id="new_project_profile" style="display:none;width:100%;">
-			system name:
-			<input type="text" id="create_system_name" value="test1" maxlength="30"/>
-			application name:
-			<input type="text" id="create_application_name" value="test2" maxlength="30"/>
-			mesurement type:
-			<select id="create_mesurement_type">
-			{% for itm in mesurement_type %}
-				<option value="{{itm.0}}">{{itm.1}}</option>
-			{% endfor %}
-			</select>
-			<input type="button" value="create" onclick="javascript:create_new_project();"/>
-			<input type="button" value="close" onclick="javascript:show_project_profile(false);"/>
-		</div>
-		<table id="projects_table">
-		</table>
+	<a href="javascript:show_project_profile(true);">new project</a>
+	<div id="new_project_profile" style="display:none;">
+		system name:
+		<input type="text" id="create_system_name" value="test1" maxlength="30"/>
+		application name:
+		<input type="text" id="create_application_name" value="test2" maxlength="30"/>
+		mesurement type:
+		<select id="create_mesurement_type">
+		{% for itm in mesurement_type %}
+			<option value="{{itm.0}}">{{itm.1}}</option>
+		{% endfor %}
+		</select>
+		<input type="button" value="create" onclick="javascript:create_new_project();"/>
+		<input type="button" value="close" onclick="javascript:show_project_profile(false);"/>
 	</div>
+	<div id="projects_table_area"></div>
 	
 	
 	
