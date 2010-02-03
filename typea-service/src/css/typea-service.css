@@ -33,20 +33,20 @@ h3 {
 table {
     border          : steelblue 1px solid;
     border-collapse : collapse;
-    margin-left     : 20px;   
     font-size       : 90%;
 }
+
 th {    
-    border           : steelblue 1px solid;
-    background-color : lightsteelblue;
+    border-right     : steelblue 1px solid;
+    border-bottom    : steelblue 1px solid;
+	background-color : lightsteelblue;
     font-weight      : normal;
 }
 td {
-    border           : steelblue 1px solid;
-    background-color : white;
-    padding-left     : 5px;
-    padding-right    : 5px;
+	border           : steelblue 1px solid;
+	background-color : white;
 }
+
 
 A:link { 
     color            : midnightblue;
@@ -89,6 +89,7 @@ A:hover {
 	position: absolute;
 	left:101px;
 	top:21px;
+	width: 90%;
 }
 
 #loading {
