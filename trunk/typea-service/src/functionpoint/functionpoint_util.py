@@ -31,6 +31,7 @@ class InitialFunctionPointPage(webapp.RequestHandler):
     def post(self):
         context = common.default_context(self.request.uri)
         context['mesurement_type'] = functionpoint.mesurement_type(tuple=True) 
+        context['datafunction_type'] = functionpoint.datafunction_type(tuple=True) 
         
         
         path = 'templates/functionpoint.html'
@@ -71,7 +72,7 @@ class CreateFunctionPointProject(webapp.RequestHandler):
             for result in results:
                 projects.append(result.to_dict()) 
             
-            return self.response.out.write(json.write({'items':projects}))
+            return self.response.out.write(json.write(project.to_dict()))
         else:
             err = {'error':'Please login!'}
             return self.response.out.write(json.write(err))
