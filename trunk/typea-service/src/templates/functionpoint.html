@@ -5,29 +5,47 @@
 	<script type="text/javascript" src="/js/jquery.chromatable.js"></script>
 	<script type="text/javascript"><!-- 
 	$(document).ready(function(){
+
 		$("#projects_table").chromatable({
-			width:    "520px",
+			width:    "540px",
 			height:   "120px",
 			scrolling:  "yes"
 		});
-		$.getJSON("/functionpoint/listproject", 
-				function (json) {
-					if (json.error) {
-						error_msg(json.error);
-					} else {
+
+		$("#project_profile_btn").click(function(){
+			toggle_visble($("#new_project_profile"));
+		});
+		$("#create_project_btn").click(create_new_project);
 		
-						var html = "";
-						for (var i=0; i< json.items.length; i++) {
-							html += projecttable_row_html(json.items[i]);
-						}
-						$("#projects_table tbody").append(html);
-		
-					}
-					processing_msg();
-				});
+		$.getJSON("/fp/projects/load",load_projects); 
+
 	});
+
+	function load_projects(json) {
+		if (json.error) {
+			error_msg(json.error);
+		} else {
+			for (var i=0; i< json.items.length; i++) {
+				$("#projects_table tbody").append(projecttable_row(json.items[i]));
+			}
+		}
+		processing_msg();
+	}
+
+	function load_project(json) {
+		if (json.error) {
+			error_msg(json.error);
+		} else {
+			var tr = projecttable_row(json)
+			$("#projects_table tbody").append(tr);
+			project_selected(tr);
+		}
+		processing_msg();
+	}
+
+
 	function create_new_project() {
-		var url = "/functionpoint/createproject";
+		var url = "/fp/projects/create";
 
 		var data = new Object();
 		data['create_system_name']      = $("#create_system_name").val();
@@ -37,21 +55,33 @@
 		error_msg();
 		processing_msg(PROCESSING_MSG);
 
-		$.getJSON(url, data, 
-				function (json) {
-					if (json.error) {
-						error_msg(json.error);
-					} else {
-						var html = projecttable_row_html(json);
-						$("#projects_table tbody").append(html);
-					}
-					processing_msg();
-				});
+		$.getJSON(url, data, load_project); 
 	}
-	function projecttable_row_html(row) {
-		return "<tr><td>" + row.system_name + "</td>" +
-			       "<td><a href='" + row.key + "'>" + row.application_name + "</a></td>" +
-        		   "<td>" + row.mesurement_type_name + "</td></tr>";
+
+
+	function project_selected(tr) {
+		$("#projects_table tbody tr").removeClass("selected_row");
+		tr.addClass("selected_row");
+		tr.children("td").children("input:radio").attr("checked","checked");
+	}
+	function set_project_profile(tr) {
+		var cols = tr.children();
+		$("#create_system_name").val($(cols[1]).text());
+		$("#create_application_name").val($(cols[2]).text());
+		$("#create_mesurement_type").val($(cols[3]).children("input:hidden").val());
+	}
+	function projecttable_row(row) {
+		var tr = $("<tr>")
+		tr.click(function(){
+			project_selected($(this));
+			set_project_profile($(this));
+		});
+		tr.append("<td><input type='radio' name='sel_project' value='" + row.key + "'/></td>" + 
+				  "<td>" + row.system_name + "</td>" +
+			      "<td>" + row.application_name + "</td>" +
+        	      "<td><input type='hidden' value='" + row.mesurement_type + "'>" + row.mesurement_type_name + "</td>"
+				);
+		return tr;
 	}
 	//--></script>
 	<title></title>
@@ -59,26 +89,30 @@
 {% block content %}
 	<h3>Projects</h3>
 	
-	<div id="new_project_profile">
-		<div>new project</div>
+	<a href="javascript:;" id="project_profile_btn">new or edit project</a>
+	<div id="new_project_profile" style="display:none;">
+		
 		system name:
-		<input type="text" id="create_system_name" value="test1" maxlength="30"/>
+		<input type="text" id="create_system_name" value="test1" maxlength="30"/><br/>
 		application name:
-		<input type="text" id="create_application_name" value="test2" maxlength="30"/>
+		<input type="text" id="create_application_name" value="test2" maxlength="30"/><br/>
 		mesurement type:
 		<select id="create_mesurement_type">
 		{% for itm in mesurement_type %}
 			<option value="{{itm.0}}">{{itm.1}}</option>
 		{% endfor %}
 		</select>
-		<input type="button" value="create" onclick="javascript:create_new_project();"/>
-		<input type="button" value="close" onclick="javascript:show_project_profile(false);"/>
+		<br/>
+		<a href="javascript:;" id="create_project_btn">create</a>
+		<a href="javascript:;" id="update_project_btn">update</a>
+		<a href="javascript:;" id="delete_project_btn">delete</a>
 	</div>
 	<table id="projects_table" style="width:520px;table-layout: fixed;">
+		<col width="20px;"/>
 		<col width="200px;"/>
 		<col width="200px;"/>
 		<col width="100px;"/>
-		<thead><tr><th>System Name</th><th>Application Name<th>Mesurment Type</th></tr></thead>
+		<thead><tr><th></th><th>System Name</th><th>Application Name<th>Mesurment Type</th></tr></thead>
 		<tbody></tbody>
 	</table>
 

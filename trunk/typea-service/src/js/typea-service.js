@@ -1,5 +1,16 @@
 var PROCESSING_MSG = "処理中・・・"; 
 
+
+function toggle_visble(area) {
+	if (area.css("display") == 'none') {
+		area.show("normal");
+	} else {
+		area.hide("normal");
+	}
+}
+
+
+
 function initial_message_area() {
 	$("#loading").corner()
 	$("#message").corner()
