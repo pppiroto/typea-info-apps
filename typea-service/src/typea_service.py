@@ -5,8 +5,8 @@ from google.appengine.ext.webapp import template
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 
-from cocomo import cocomo_util
-from functionpoint import functionpoint_util
+from cocomo import cocomo_request_handler as ccm_handler
+from functionpoint import functionpoint_req_handler as fp_handler
 import common
 
 class MainPage(webapp.RequestHandler):
@@ -18,12 +18,12 @@ class MainPage(webapp.RequestHandler):
 application = webapp.WSGIApplication([
                                       ('/',                     MainPage),
                                       #Cocomo
-                                      ('/cocomo',       cocomo_util.InitialCocomoPage),
-                                      ('/cocomo/calc',  cocomo_util.CalcCocomoResponse),
+                                      ('/cocomo',       ccm_handler.InitialCocomoPage),
+                                      ('/cocomo/calc',  ccm_handler.CalcCocomoResponse),
                                       #FunctionPoint
-                                      ('/functionpoint',                functionpoint_util.InitialFunctionPointPage),
-                                      ('/functionpoint/listproject',    functionpoint_util.ListFunctionPointProject),
-                                      ('/functionpoint/createproject',  functionpoint_util.CreateFunctionPointProject),
+                                      ('/fp',                  fp_handler.InitialFunctionPointPage),
+                                      ('/fp/projects/load',    fp_handler.LoadFunctionPointProject),
+                                      ('/fp/projects/create',  fp_handler.CreateFunctionPointProject),
                                       ], debug=True)
 
 def main():

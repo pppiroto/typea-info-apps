@@ -35,14 +35,9 @@ table {
     border-collapse: collapse;
     /* width:100%; */ 
 }
-
-table td {
-    border:1px solid #D5D5D5;
-    font-size:12px;
-    padding:2px 2px;
+table tr {
     background-color:white;
 }
-
 table th {
     background-color:#EEE;
     border-right:1px solid #D5D5D5;
@@ -53,6 +48,15 @@ table th {
     padding:2px 2px;
     text-align:left;
 }
+table td {
+    border:1px solid #D5D5D5;
+    font-size:12px;
+    padding:2px 2px;
+}
+.selected_row {
+	background-color:#99ffcc;
+}
+
 .ui-resizable {
     position:relative;
 }

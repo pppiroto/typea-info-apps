@@ -37,7 +37,7 @@ class InitialFunctionPointPage(webapp.RequestHandler):
         path = 'templates/functionpoint.html'
         return self.response.out.write(template.render(path, context))
 
-class ListFunctionPointProject(webapp.RequestHandler):
+class LoadFunctionPointProject(webapp.RequestHandler):
     def get(self):
         self.post();
     
