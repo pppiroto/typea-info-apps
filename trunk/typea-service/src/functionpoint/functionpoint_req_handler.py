@@ -7,8 +7,10 @@ import os
 from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
+from google.appengine.ext import db
+
 import common
-from functionpoint import FunctionPointProject
+from functionpoint import FunctionPointProject, FunctionEntity
 import functionpoint
 import re
 import json
@@ -16,13 +18,24 @@ import json
 import cgi
 import logging
 
+MAX_PROJECT  = 20
+MAX_FUNCTION = 100
+
 def list_projects(user):
     projects = []
     q = FunctionPointProject.gql("WHERE owner=:1", user)
-    results = q.fetch(20)
+    results = q.fetch(MAX_PROJECT)
     for result in results:
         projects.append(result.to_dict()) 
     return projects
+
+def list_functions(project_key):
+    functions = []
+    q = FunctionEntity.gql("WHERE project_key=:1", project_key)
+    results = q.fetch(MAX_FUNCTION)
+    for result in results:
+        functions.append(result.to_dict())
+    return functions
 
 class InitialFunctionPointPage(webapp.RequestHandler):
     def get(self):
@@ -32,6 +45,7 @@ class InitialFunctionPointPage(webapp.RequestHandler):
         context = common.default_context(self.request.uri)
         context['mesurement_type'] = functionpoint.mesurement_type(tuple=True) 
         context['datafunction_type'] = functionpoint.datafunction_type(tuple=True) 
+        context['tranfunction_type'] = functionpoint.tranfunction_type(tuple=True) 
         
         
         path = 'templates/functionpoint.html'
@@ -44,10 +58,11 @@ class LoadFunctionPointProject(webapp.RequestHandler):
     def post(self):
         user = users.get_current_user()
         if user:
-            projects = list_projects(user) 
+            projects = list_projects(user)
             return self.response.out.write(json.write({'items':projects}))
         else:
             err = {'error':'Please login!'}
+            
             return self.response.out.write(json.write(err))
 
 class CreateFunctionPointProject(webapp.RequestHandler):
@@ -57,21 +72,14 @@ class CreateFunctionPointProject(webapp.RequestHandler):
     def post(self):
         user = users.get_current_user()
         if user:
-            system_name = self.request.get('create_system_name')
-            application_name = self.request.get('create_application_name')
-            mesurement_type = self.request.get('create_mesurement_type')
+            system_name = self.request.get('project_profile_system_name')
+            application_name = self.request.get('project_profile_application_name')
+            mesurement_type = self.request.get('project_profile_mesurement_type')
             
             project = FunctionPointProject(system_name=system_name,
                                            application_name=application_name,
                                            mesurement_type=mesurement_type)
             project.put();
-            
-            projects = []
-            q = FunctionPointProject.gql("WHERE owner=:1", user)
-            results = q.fetch(20)
-            for result in results:
-                projects.append(result.to_dict()) 
-            
             return self.response.out.write(json.write(project.to_dict()))
         else:
             err = {'error':'Please login!'}
@@ -80,8 +88,161 @@ class CreateFunctionPointProject(webapp.RequestHandler):
         err = {'error':'Unknown Error'}
         return self.response.out.write(json.write(err))
 
+class UpdateFunctionPointProject(webapp.RequestHandler):
+    def get(self):
+        self.post();
+    
+    def post(self):
+        user = users.get_current_user()
+        if user:
+            key_str = self.request.get('project_profile_key')
+            system_name = self.request.get('project_profile_system_name')
+            application_name = self.request.get('project_profile_application_name')
+            mesurement_type = self.request.get('project_profile_mesurement_type')
 
+            key = db.Key(key_str)
+            q = FunctionPointProject.gql("WHERE __key__ =:1", key)
+            
+            projects = q.fetch(1)
+            for project in projects:
+                project.system_name = system_name
+                project.application_name = application_name
+                project.mesurement_type = mesurement_type
+                project.put()
+            
+            projects = list_projects(user) 
+            return self.response.out.write(json.write({'items':projects}))
+        else:
+            err = {'error':'Please login!'}
+            return self.response.out.write(json.write(err))
+        
+        err = {'error':'Unknown Error'}
+        return self.response.out.write(json.write(err))
 
+class DeleteFunctionPointProject(webapp.RequestHandler):
+    def get(self):
+        self.post();
+    
+    def post(self):
+        user = users.get_current_user()
+        if user:
+            key_str = self.request.get('project_profile_key')
+            key = db.Key(key_str)
+            q = FunctionPointProject.gql("WHERE __key__ =:1", key)
+            
+            projects = q.fetch(1)
+            for project in projects:
+                project.delete()
+            
+            projects = list_projects(user) 
+            return self.response.out.write(json.write({'items':projects}))
+        else:
+            err = {'error':'Please login!'}
+            return self.response.out.write(json.write(err))
+        
+        err = {'error':'Unknown Error'}
+        return self.response.out.write(json.write(err))
+
+class LoadFunction(webapp.RequestHandler):
+    def get(self):
+        self.post();
+    
+    def post(self):
+        user = users.get_current_user()
+        if user:
+            project_key   = self.request.get('project_key')
+            
+            if project_key <> '':    
+                functions = list_functions(project_key)
+                
+                return self.response.out.write(json.write({'items':functions}))
+            else:
+                err = {'error':'Please Select project!'}
+                return self.response.out.write(json.write(err))
+        else:
+            err = {'error':'Please login!'}
+            return self.response.out.write(json.write(err))
+        
+        err = {'error':'Unknown Error'}
+        return self.response.out.write(json.write(err))
+
+class AddFunction(webapp.RequestHandler):
+    def get(self):
+        self.post();
+    
+    def post(self):
+        user = users.get_current_user()
+        if user:
+            project_key   = self.request.get('project_key')
+            function_type = self.request.get('function_type')
+            
+            if project_key <> '':    
+                func_entity = FunctionEntity(
+                                             project_key=project_key,
+                                             function_type=function_type,
+                                             function_name='',
+                                             measurement_index1=0,
+                                             measurement_index2=0,
+                                            );
+                func_entity.put()
+                
+                return self.response.out.write(json.write(func_entity.to_dict()))
+            else:
+                err = {'error':'Please Select project!'}
+                return self.response.out.write(json.write(err))
+        else:
+            err = {'error':'Please login!'}
+            return self.response.out.write(json.write(err))
+        
+        err = {'error':'Unknown Error'}
+        return self.response.out.write(json.write(err))
+
+class UpdateFunction(webapp.RequestHandler):
+    def get(self):
+        self.post();
+    
+    def post(self):
+        user = users.get_current_user()
+        if user:
+            key_str   = self.request.get('key')
+            function_name = self.request.get('function_name')
+            function_category = self.request.get('function_category')
+            measurement_index1_str = self.request.get('measurement_index1')
+            measurement_index2_str = self.request.get('measurement_index2')
+            
+            try:
+                measurement_index1 = int(measurement_index1_str.strip())
+                measurement_index2 = int(measurement_index2_str.strip())
+            except:
+                err = {'error':'Invalid number.'}
+                return self.response.out.write(json.write(err))
+
+            key = db.Key(key_str);
+            
+            func_entity = None
+            q = FunctionEntity.gql("WHERE __key__ = :1", key)
+            results = q.fetch(1)
+            for result in results:
+                result.function_name = function_name
+                result.function_category = function_category
+                result.measurement_index1 = measurement_index1
+                result.measurement_index2 = measurement_index2
+                result.put()
+            
+                func_entity = result
+            
+            if func_entity:
+                return self.response.out.write(json.write(func_entity.to_dict()))
+            else:
+                err = {'error':'Entity is not found.'}
+                return self.response.out.write(json.write(err))
+                
+        else:
+            err = {'error':'Please login!'}
+            return self.response.out.write(json.write(err))
+        
+        err = {'error':'Unknown Error'}
+        return self.response.out.write(json.write(err))
 
 
 
