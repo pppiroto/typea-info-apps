@@ -2,6 +2,18 @@
 # -*- encoding: utf-8 -*-
 from google.appengine.api import users
 
+def message(key):
+    msg_table = {'login_err':u'ログインしてください',
+                 'project_not_selected':u'プロジェクトを選択してください',
+                 
+                 
+                }
+    
+    if key in msg_table:
+        return msg_table[key]
+    else:
+        return u'原因不明のエラー'
+
 def default_context(request_uri='/'):
     context = {'settings':AppSettings(request_uri)}
     return context

@@ -1,6 +1,6 @@
 body {
     background-color : #F5F5F5;
-    color            : black:;
+    color            : #330066;
     font-size        : small;
     font-family      : Courier New;
 }
@@ -8,7 +8,6 @@ body {
 h1 {
     text-align       : left;
     font-size        : 140%;
-    color            : black;
     border-bottom    : silver  1px dotted;
 }
 
@@ -16,8 +15,6 @@ h2 {
     text-align       : left;
     font-size        : 120%;
     font-weight      : normal;
-    color            : black;
-    padding-left     : 1em;
     border-bottom    : silver  1px dotted;
 }
 
@@ -25,8 +22,6 @@ h3 {
     text-align       : left;
     font-size        : 110%;
     font-weight      : normal;
-    color            : black;
-    padding-left     : 2em;
     border-bottom    : silver  1px dotted;
 }
 
@@ -57,6 +52,10 @@ table td {
 	background-color:#99ffcc;
 }
 
+.layout {
+	background-color : #F5F5F5;
+	border:none;
+}
 .ui-resizable {
     position:relative;
 }
@@ -108,14 +107,14 @@ A:hover {
 
 #sidebar {
 	position: absolute;
-	left:21px;
+	left:0px;
 	top:21px;
-	width:100px;
+	width:160px;
 }
 
 #content {
 	position: absolute;
-	left:101px;
+	left:161px;
 	top:21px;
 	width: 90%;
 }
@@ -136,7 +135,7 @@ A:hover {
 	top:200px;
 	left:200px;
 	padding: 8px;
-	background-color:lightyellow;
+	background-color:#ffcc99;
 	color: red;
 	text-decoration:bold;
 	border:1px solid red;

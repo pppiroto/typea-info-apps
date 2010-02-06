@@ -61,7 +61,7 @@ class LoadFunctionPointProject(webapp.RequestHandler):
             projects = list_projects(user)
             return self.response.out.write(json.write({'items':projects}))
         else:
-            err = {'error':'Please login!'}
+            err = {'error':common.message('login_err')}
             
             return self.response.out.write(json.write(err))
 
@@ -82,7 +82,7 @@ class CreateFunctionPointProject(webapp.RequestHandler):
             project.put();
             return self.response.out.write(json.write(project.to_dict()))
         else:
-            err = {'error':'Please login!'}
+            err = {'error':common.message('login_err')}
             return self.response.out.write(json.write(err))
         
         err = {'error':'Unknown Error'}
@@ -113,7 +113,7 @@ class UpdateFunctionPointProject(webapp.RequestHandler):
             projects = list_projects(user) 
             return self.response.out.write(json.write({'items':projects}))
         else:
-            err = {'error':'Please login!'}
+            err = {'error':common.message('login_err')}
             return self.response.out.write(json.write(err))
         
         err = {'error':'Unknown Error'}
@@ -128,16 +128,20 @@ class DeleteFunctionPointProject(webapp.RequestHandler):
         if user:
             key_str = self.request.get('project_profile_key')
             key = db.Key(key_str)
-            q = FunctionPointProject.gql("WHERE __key__ =:1", key)
+            q_parent = FunctionPointProject.gql("WHERE __key__ =:1", key)
             
-            projects = q.fetch(1)
+            projects = q_parent.fetch(1)
             for project in projects:
+                q_child = FunctionEntity.gql("WHERE project_key =:1", key_str)
+                entities = q_child.fetch(MAX_FUNCTION)
+                for entity in entities:
+                    entity.delete()
                 project.delete()
             
             projects = list_projects(user) 
             return self.response.out.write(json.write({'items':projects}))
         else:
-            err = {'error':'Please login!'}
+            err = {'error':common.message('login_err')}
             return self.response.out.write(json.write(err))
         
         err = {'error':'Unknown Error'}
@@ -157,10 +161,10 @@ class LoadFunction(webapp.RequestHandler):
                 
                 return self.response.out.write(json.write({'items':functions}))
             else:
-                err = {'error':'Please Select project!'}
+                err = {'error':common.message('project_not_selected')}
                 return self.response.out.write(json.write(err))
         else:
-            err = {'error':'Please login!'}
+            err = {'error':common.message('login_err')}
             return self.response.out.write(json.write(err))
         
         err = {'error':'Unknown Error'}
@@ -188,10 +192,10 @@ class AddFunction(webapp.RequestHandler):
                 
                 return self.response.out.write(json.write(func_entity.to_dict()))
             else:
-                err = {'error':'Please Select project!'}
+                err = {'error':common.message('project_not_selected')}
                 return self.response.out.write(json.write(err))
         else:
-            err = {'error':'Please login!'}
+            err = {'error':common.message('login_err')}
             return self.response.out.write(json.write(err))
         
         err = {'error':'Unknown Error'}
@@ -238,7 +242,7 @@ class UpdateFunction(webapp.RequestHandler):
                 return self.response.out.write(json.write(err))
                 
         else:
-            err = {'error':'Please login!'}
+            err = {'error':common.message('login_err')}
             return self.response.out.write(json.write(err))
         
         err = {'error':'Unknown Error'}
