@@ -24,8 +24,30 @@
 		<a href="{{settings.user_logout_url}}">logout</a>
 	</div>
 	<div id="sidebar">
-		<a href="/cocomo">COCOMO</a><br>
-		<a href="/fp">Function Point</a><br>
+		<table class="layout" style="margin-top:16px;">
+			<tr>
+				<th>サイト</th>
+			</tr>
+			<tr>
+				<td class="layout"><a href="http://typea.info/" target="_blank">Home</a></td>
+			</tr>
+			<tr>
+				<td class="layout"><a href="/">Project Home</a></td>
+			</tr>
+			<tr>
+				<td class="layout"><a href="http://typea.info/blg/glob/" target="_blank">ブログ</a></td>
+			</tr>
+			<tr>
+				<th>見積手法</th>
+			</tr>
+			<tr>
+				<td class="layout"><a href="/cocomo">COCOMOによる工数計算</a></td>
+			</tr>
+			<tr>
+				<td class="layout"><a href="/fp">ファンクションポイント</a></td>
+			</tr>
+		</table>
+		
 	</div>
 	<div id="content">
 		{% block content %}
