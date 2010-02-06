@@ -138,5 +138,7 @@ A:hover {
 	padding: 8px;
 	background-color:lightyellow;
 	color: red;
+	text-decoration:bold;
+	border:1px solid red;
 	font-size:small;
 }

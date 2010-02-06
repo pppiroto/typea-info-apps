@@ -24,6 +24,11 @@ application = webapp.WSGIApplication([
                                       ('/fp',                  fp_handler.InitialFunctionPointPage),
                                       ('/fp/projects/load',    fp_handler.LoadFunctionPointProject),
                                       ('/fp/projects/create',  fp_handler.CreateFunctionPointProject),
+                                      ('/fp/projects/update',  fp_handler.UpdateFunctionPointProject),
+                                      ('/fp/projects/delete',  fp_handler.DeleteFunctionPointProject),
+                                      ('/fp/function/load',    fp_handler.LoadFunction),
+                                      ('/fp/function/add',     fp_handler.AddFunction),
+                                      ('/fp/function/update',  fp_handler.UpdateFunction),
                                       ], debug=True)
 
 def main():

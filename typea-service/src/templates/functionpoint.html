@@ -12,10 +12,22 @@
 			scrolling:  "yes"
 		});
 
+		$("#function_table").chromatable({
+			width:    "860px",
+			height:   "240px",
+			scrolling:  "yes"
+		});
+
 		$("#project_profile_btn").click(function(){
 			toggle_visble($("#new_project_profile"));
 		});
-		$("#create_project_btn").click(create_new_project);
+		$("#create_project_btn").click(create_project);
+		$("#update_project_btn").click(update_project);
+		$("#delete_project_btn").click(delete_project);
+
+		$("#add_data_function_btn").click(add_data_function);
+		$("#add_tran_function_btn").click(add_tran_function);
+		
 		
 		$.getJSON("/fp/projects/load",load_projects); 
 
@@ -25,6 +37,7 @@
 		if (json.error) {
 			error_msg(json.error);
 		} else {
+			$("#projects_table tbody").empty();
 			for (var i=0; i< json.items.length; i++) {
 				$("#projects_table tbody").append(projecttable_row(json.items[i]));
 			}
@@ -43,14 +56,13 @@
 		processing_msg();
 	}
 
-
-	function create_new_project() {
+	function create_project() {
 		var url = "/fp/projects/create";
 
 		var data = new Object();
-		data['create_system_name']      = $("#create_system_name").val();
-		data['create_application_name'] = $("#create_application_name").val();
-		data['create_mesurement_type']  = $("#create_mesurement_type").val();
+		data['project_profile_system_name']      = $("#project_profile_system_name").val();
+		data['project_profile_application_name'] = $("#project_profile_application_name").val();
+		data['project_profile_mesurement_type']  = $("#project_profile_mesurement_type").val();
 		
 		error_msg();
 		processing_msg(PROCESSING_MSG);
@@ -58,6 +70,32 @@
 		$.getJSON(url, data, load_project); 
 	}
 
+	function update_project() {
+		var url = "/fp/projects/update";
+
+		var data = new Object();
+		data['project_profile_key'] 			 = $("#project_profile_key").val();
+		data['project_profile_system_name']      = $("#project_profile_system_name").val();
+		data['project_profile_application_name'] = $("#project_profile_application_name").val();
+		data['project_profile_mesurement_type']  = $("#project_profile_mesurement_type").val();
+
+		error_msg();
+		processing_msg(PROCESSING_MSG);
+
+		$.getJSON(url, data, load_projects); 
+	}
+
+	function delete_project() {
+		var url = "/fp/projects/delete";
+
+		var data = new Object();
+		data['project_profile_key'] = $("#project_profile_key").val();
+		
+		error_msg();
+		processing_msg(PROCESSING_MSG);
+
+		$.getJSON(url, data, load_projects); 
+	}
 
 	function project_selected(tr) {
 		$("#projects_table tbody tr").removeClass("selected_row");
@@ -65,10 +103,22 @@
 		tr.children("td").children("input:radio").attr("checked","checked");
 	}
 	function set_project_profile(tr) {
+		
 		var cols = tr.children();
-		$("#create_system_name").val($(cols[1]).text());
-		$("#create_application_name").val($(cols[2]).text());
-		$("#create_mesurement_type").val($(cols[3]).children("input:hidden").val());
+		var project_key = $(cols[0]).children("input:radio").val();
+		$("#project_profile_key").val(project_key);
+		$("#project_profile_system_name").val($(cols[1]).text());
+		$("#project_profile_application_name").val($(cols[2]).text());
+		$("#project_profile_mesurement_type").val($(cols[3]).children("input:hidden").val());
+
+		var url = "/fp/function/load";
+		var data = new Object();
+		data['project_key'] = project_key;
+
+		error_msg();
+		processing_msg(PROCESSING_MSG);
+
+		$.getJSON(url, data, load_functions); 
 	}
 	function projecttable_row(row) {
 		var tr = $("<tr>")
@@ -83,6 +133,143 @@
 				);
 		return tr;
 	}
+
+	function add_data_function() {
+		var url = "/fp/function/add";
+
+		var data = new Object();
+		data['function_type'] = 'data';
+		data['project_key'] = $("#project_profile_key").val();
+		
+		error_msg();
+		processing_msg(PROCESSING_MSG);
+
+		$.getJSON(url, data, load_function); 
+	}
+
+	function add_tran_function() {
+		var url = "/fp/function/add";
+
+		var data = new Object();
+		data['function_type'] = 'tran';
+		data['project_key'] = $("#project_profile_key").val();
+		
+		error_msg();
+		processing_msg(PROCESSING_MSG);
+
+		$.getJSON(url, data, load_function); 
+	}
+	
+	function load_function(json) {
+		if (json.error) {
+			error_msg(json.error);
+		} else {
+			var tr = functiontable_row(json)
+			$("#function_table tbody").append(tr);
+		}
+		processing_msg();
+	}
+	
+	function load_functions(json) {
+		if (json.error) {
+			error_msg(json.error);
+		} else {
+			$("#function_table tbody").empty();
+			for (var i=0; i< json.items.length; i++) {
+				$("#function_table tbody").append(functiontable_row(json.items[i]));
+			}
+		}
+		processing_msg();
+	}
+
+	function func_data_change(row_id) {
+		var tr = $("#" + row_id);
+		var function_name = tr.children("td").children("input:text[name=function_name]").val();
+		var function_category = tr.children("td").children("select[name=function_category]").val();
+		var measurement_index1 = tr.children("td").children("input:text[name=measurement_index1]").val();
+		var measurement_index2 = tr.children("td").children("input:text[name=measurement_index2]").val();
+
+		var url = "/fp/function/update";
+
+		var data = new Object();
+		data['key'] = row_id;
+		data['function_name'] = function_name;
+		data['function_category'] = function_category;
+		data['measurement_index1'] = measurement_index1;
+		data['measurement_index2'] = measurement_index2;
+
+		
+		error_msg();
+		processing_msg(PROCESSING_MSG);
+
+		$.getJSON(url, data, update_function); 
+	}
+	function update_function(json) {
+		if (json.error) {
+			error_msg(json.error);
+		} else {
+			var tr = $("#" + json.key);
+			tr.children(".complexity").text(json.complexity);
+			tr.children(".function_point").text(json.function_point);
+		}
+		processing_msg();
+	}
+	function functiontable_row(row) {
+		var row_id = row.key;
+		var change_event_html = " onchange='javascript:func_data_change(\"" + row_id + "\");'";
+		
+		var tr = $("<tr id='" + row_id + "'>")
+		var cel1 = $("<td>")
+			var txt_func_name = $("<input type='text' name='function_name' value='" + row.function_name + "'" + change_event_html + "/>");
+			cel1.append(txt_func_name);
+			
+			var hdn_key = $("<input type='hidden' value='" + row.key + "'/></td>");
+			cel1.append(hdn_key);
+		tr.append(cel1);
+
+		var cel2 = $("<td>");	
+		var sel = $("<select name='function_category'" + change_event_html + ">");
+			var op_html_data = ''
+			{% for itm in datafunction_type %}
+				op_html_data += "<option value='{{itm.0}}'>{{itm.1}}</option>" 
+			{% endfor %}
+			;
+			var op_html_tran = ''
+			{% for itm in tranfunction_type %}
+				op_html_tran += "<option value='{{itm.0}}'>{{itm.1}}</option>" 
+			{% endfor %}
+			;
+			if (row.function_type == 'data') {
+				sel.append(op_html_data);
+			} else if
+			   (row.function_type == 'tran') {
+				sel.append(op_html_tran);
+			}	
+			sel.val(row.function_category);
+			cel2.append(sel);
+		
+		tr.append(cel2);
+	
+		var cel3 = $("<td>")
+			var txt_measurement_index1 = $("<input type='text' name='measurement_index1' size='4' value='" + row.measurement_index1 + "'" + change_event_html + "/>");
+			cel3.append(txt_measurement_index1);
+		tr.append(cel3);
+	
+		var cel4 = $("<td>")
+			var txt_measurement_index2 = $("<input type='text' name='measurement_index2' size='4' value='" + row.measurement_index2 + "'" + change_event_html + "/>");
+			cel4.append(txt_measurement_index2);
+		tr.append(cel4);
+	
+		var cel5 = $("<td class='complexity'>" + row.complexity + "</td>");
+		tr.append(cel5);
+	
+		var cel6 = $("<td class='function_point'>");
+		cel6.text(row.function_point).format({format:"#,###.00",locale:"jp"}).addClass("num-field");
+
+		tr.append(cel6);
+		return tr;
+
+	}
 	//--></script>
 	<title></title>
 {% endblock %}
@@ -91,13 +278,13 @@
 	
 	<a href="javascript:;" id="project_profile_btn">new or edit project</a>
 	<div id="new_project_profile" style="display:none;">
-		
+		<input type="hidden" id="project_profile_key" value=""/>
 		system name:
-		<input type="text" id="create_system_name" value="test1" maxlength="30"/><br/>
+		<input type="text" id="project_profile_system_name" value="test1" maxlength="30"/><br/>
 		application name:
-		<input type="text" id="create_application_name" value="test2" maxlength="30"/><br/>
+		<input type="text" id="project_profile_application_name" value="test2" maxlength="30"/><br/>
 		mesurement type:
-		<select id="create_mesurement_type">
+		<select id="project_profile_mesurement_type">
 		{% for itm in mesurement_type %}
 			<option value="{{itm.0}}">{{itm.1}}</option>
 		{% endfor %}
@@ -112,17 +299,23 @@
 		<col width="200px;"/>
 		<col width="200px;"/>
 		<col width="100px;"/>
-		<thead><tr><th></th><th>System Name</th><th>Application Name<th>Mesurment Type</th></tr></thead>
+		<thead><tr><th></th><th>System Name</th><th>Application Name</th><th>Mesurment Type</th></tr></thead>
+		<tbody></tbody>
+	</table>
+	<br/>
+	<a href="javascript:;" id="add_data_function_btn">add data function</a>
+	<a href="javascript:;" id="add_tran_function_btn">add transactional function</a>
+	<table id="function_table" style="width:800px;table-layout: fixed;">
+		<col width="200px;"/>
+		<col width="240px;"/>
+		<col width="100px;"/>
+		<col width="100px;"/>
+		<col width="100px;"/>
+		<col width="100px;"/>
+		<thead><tr><th>name</th><th>category</th><th>DET</th><th>RET/FTR</th><th>complexity</th><th>FP</th></tr></thead>
 		<tbody></tbody>
 	</table>
 
-	<div id="new_data_function">
-		<select id="create_datafunction_type">
-		{% for itm in datafunction_type %}
-			<option value="{{itm.0}}">{{itm.1}}</option>
-		{% endfor %}
-		</select>
-	</div>	
 	
 	
 	
