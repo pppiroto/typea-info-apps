@@ -51,6 +51,7 @@ class FunctionPointProject(db.Model):
     system_name = db.StringProperty()
     application_name = db.StringProperty()
     mesurement_type = db.StringProperty()
+    sort_order = db.IntegerProperty()
     
     def to_dict(self):
         return { 'key':str(self.key()),
@@ -69,6 +70,7 @@ class FunctionEntity(db.Model):
     function_category = db.StringProperty()
     measurement_index1 = db.IntegerProperty()
     measurement_index2 = db.IntegerProperty()
+    sort_order = db.IntegerProperty()
     
     def complexity(self):
         if self.function_type == 'data':

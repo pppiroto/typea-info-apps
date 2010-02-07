@@ -78,7 +78,9 @@ class CreateFunctionPointProject(webapp.RequestHandler):
             
             project = FunctionPointProject(system_name=system_name,
                                            application_name=application_name,
-                                           mesurement_type=mesurement_type)
+                                           mesurement_type=mesurement_type,
+                                           sort_order=0,
+                                           )
             project.put();
             return self.response.out.write(json.write(project.to_dict()))
         else:
@@ -187,6 +189,7 @@ class AddFunction(webapp.RequestHandler):
                                              function_name='',
                                              measurement_index1=0,
                                              measurement_index2=0,
+                                             sort_order=0,
                                             );
                 func_entity.put()
                 
@@ -248,6 +251,35 @@ class UpdateFunction(webapp.RequestHandler):
         err = {'error':'Unknown Error'}
         return self.response.out.write(json.write(err))
 
+class DeleteFunction(webapp.RequestHandler):
+    def get(self):
+        self.post();
+    
+    def post(self):
+        user = users.get_current_user()
+        if user:
+            key_str   = self.request.get('key')
+            key = db.Key(key_str);
+            
+            func_entity = None
+            q = FunctionEntity.gql("WHERE __key__ = :1", key)
+            results = q.fetch(1)
+            for result in results:
+                result.delete()
+                func_entity = result
+            
+            if func_entity:
+                return self.response.out.write(json.write({'key':key_str}))
+            else:
+                err = {'error':'Entity is not found.'}
+                return self.response.out.write(json.write(err))
+                
+        else:
+            err = {'error':common.message('login_err')}
+            return self.response.out.write(json.write(err))
+        
+        err = {'error':'Unknown Error'}
+        return self.response.out.write(json.write(err))
 
 
 

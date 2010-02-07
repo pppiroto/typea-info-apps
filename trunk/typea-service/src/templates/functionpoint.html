@@ -18,21 +18,27 @@
 			scrolling:  "yes"
 		});
 
-		$("#project_profile_btn").click(function(){
-			toggle_visble($("#new_project_profile"));
-		});
+		$("#project_profile_btn").click(edit_project);
+		$("#img_open_prj_edit").click(edit_project);
+		
 		$("#create_project_btn").click(create_project);
+		$("#img_new_prj").click(create_project);
 		$("#update_project_btn").click(update_project);
+		$("#img_edit_prj").click(update_project);
 		$("#delete_project_btn").click(delete_project);
+		$("#img_del_prj").click(delete_project);
 
 		$("#add_data_function_btn").click(add_data_function);
+		$("#img_add_dat").click(add_data_function);
 		$("#add_tran_function_btn").click(add_tran_function);
-		
+		$("#img_add_trn").click(add_tran_function);
 		
 		$.getJSON("/fp/projects/load",load_projects); 
 
 	});
-
+	function edit_project() {
+		toggle_visble($("#new_project_profile"));
+	}
 	function load_projects(json) {
 		if (json.error) {
 			error_msg(json.error);
@@ -55,6 +61,11 @@
 			
 			var tr = projecttable_row(json)
 			$("#project_table tbody").append(tr);
+
+			var cols = tr.children();
+			var project_key = $(cols[0]).children("input:radio").val();
+			$("#project_profile_key").val(project_key);
+			
 			project_selected(tr);
 		}
 		processing_msg();
@@ -94,6 +105,7 @@
 
 		var data = new Object();
 		data['project_profile_key'] = $("#project_profile_key").val();
+		$("#project_profile_key").val('');
 		
 		error_msg();
 		processing_msg(PROCESSING_MSG);
@@ -222,12 +234,39 @@
 		}
 		processing_msg();
 	}
+	function delete_function_btn(row_id) {
+		var tr = $("#" + row_id);
+
+		var url = "/fp/function/delete";
+
+		var data = new Object();
+		data['key'] = row_id;
+		
+		error_msg();
+		processing_msg(PROCESSING_MSG);
+
+		$.getJSON(url, data, delete_function); 
+	}
+	function delete_function(json) {
+		if (json.error) {
+			error_msg(json.error);
+		} else {
+			var tr = $("#" + json.key);
+			tr.empty();
+			total_unadjusted_fp();
+		}
+		processing_msg();
+	}
 	function functiontable_row(row) {
 		var row_id = row.key;
 		var change_event_html = " onchange='javascript:func_data_change(\"" + row_id + "\");'";
 		
 		var tr = $("<tr id='" + row_id + "'>")
 		var cel1 = $("<td>")
+			var img_del = $("<img src='/images/del.gif' border='0' onclick='javascript:delete_function_btn(\"" + row_id + "\");'/>");
+			cel1.append(img_del);
+
+			cel1.append(" ");
 			var txt_func_name = $("<input type='text' name='function_name' value='" + row.function_name + "'" + change_event_html + "/>");
 			cel1.append(txt_func_name);
 			
@@ -292,10 +331,14 @@
 {% block content %}
 	<h1>ファンクションポイント</h1>
 	
-	<h3><a href="javascript:;" id="project_profile_btn">プロジェクトの作成 編集</a></h3>
+	
+	<h3><img src='/images/open_prj_edit.gif' id="img_open_prj_edit" border='0'/><a href="javascript:;" id="project_profile_btn">プロジェクトの作成 編集</a></h3>
 	<div id="new_project_profile" style="display:none;">
+		<img src='/images/new_prj.gif' id="img_new_prj" border='0'/>
 		<a href="javascript:;" id="create_project_btn">新規作成</a> |
+		<img src='/images/edit_prj.gif' id="img_edit_prj" border='0'/>
 		<a href="javascript:;" id="update_project_btn">更新</a> |
+		<img src='/images/del_prj.gif' id="img_del_prj" border='0'/>
 		<a href="javascript:;" id="delete_project_btn">削除</a>
 		<input type="hidden" id="project_profile_key" value=""/>
 		<table class="layout">
@@ -329,8 +372,10 @@
 		<tbody></tbody>
 	</table>
 	<br/>
+	<img src='/images/add_dat.gif' id="img_add_dat" border='0'/>
 	<a href="javascript:;" id="add_data_function_btn">データファンクションの追加</a>
 	|
+	<img src='/images/add_trn.gif' id="img_add_trn" border='0'/>
 	<a href="javascript:;" id="add_tran_function_btn">トランザクショナルファンクションの追加</a>
 	<table id="function_table" style="width:767px;table-layout: fixed;">
 		<col width="200px;"/>
@@ -348,7 +393,7 @@
 			<col width="80px"/>
 			<tbody>
 				<tr>
-					<th>合計(未調整FP値)</th>
+					<th style="text-align:right;">合計(未調整FP値)</th>
 					<td id="unadjusted_fp_total"></td>
 				</tr>
 			</tbody>
