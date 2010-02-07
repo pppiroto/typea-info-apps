@@ -29,6 +29,7 @@ application = webapp.WSGIApplication([
                                       ('/fp/function/load',    fp_handler.LoadFunction),
                                       ('/fp/function/add',     fp_handler.AddFunction),
                                       ('/fp/function/update',  fp_handler.UpdateFunction),
+                                      ('/fp/function/delete',  fp_handler.DeleteFunction),
                                       ], debug=True)
 
 def main():
