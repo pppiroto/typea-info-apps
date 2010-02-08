@@ -1,3 +1,25 @@
+/**
+ * styling for tip content
+ * mostly for example
+ * note: canvas (the tip itself) cannot be styled here. use javascript options for that.
+ */
+.bt-content {
+  font-size: small;
+  color: #000;
+  line-height: normal;
+}
+
+/* styling for active target elements - usually for background hilighting */
+.bt-active {
+  /* example:
+  background-color: yellow !important;
+  */
+}
+
+div.help_tips_text {
+	display : none;
+}
+
 body {
     background-color : #F5F5F5;
     color            : #330066;
