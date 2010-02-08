@@ -14,7 +14,7 @@
 
 		$("#function_table").chromatable({
 			width:    "786px",
-			height:   "240px",
+			height:   "220px",
 			scrolling:  "yes"
 		});
 
@@ -32,10 +32,34 @@
 		$("#img_add_dat").click(add_data_function);
 		$("#add_tran_function_btn").click(add_tran_function);
 		$("#img_add_trn").click(add_tran_function);
+
+		
+		bind_help_text('img_help_mesurment_type', 'txt_help_mesurment_type');
+		bind_help_text('img_help_mesurement_steps', 'txt_help_mesurement_steps');
+		bind_help_text('img_data_function', 'txt_data_function');
+		bind_help_text('img_tran_function', 'txt_tran_function');
 		
 		$.getJSON("/fp/projects/load",load_projects); 
 
 	});
+	function bind_help_text(icon_id, txt_id) {
+		$('#' + icon_id).bt(
+				$("#" + txt_id).html(),
+				{
+				    fill: '#FFF',
+				    cornerRadius: 10,
+				    strokeWidth: 0,
+				    shadow: true,
+				    shadowOffsetX: 3,
+				    shadowOffsetY: 3,
+				    shadowBlur: 8,
+				    shadowColor: 'rgba(0,0,0,.9)',
+				    shadowOverlap: false,
+				    noShadowOpts: {strokeStyle: '#999', strokeWidth: 2},
+				    positions: ['right', 'top']
+				  });
+	}
+	
 	function edit_project() {
 		toggle_visble($("#new_project_profile"));
 	}
@@ -215,7 +239,6 @@
 		data['function_category'] = function_category;
 		data['measurement_index1'] = measurement_index1;
 		data['measurement_index2'] = measurement_index2;
-
 		
 		error_msg();
 		processing_msg(PROCESSING_MSG);
@@ -331,8 +354,8 @@
 {% block content %}
 	<h1>ファンクションポイント</h1>
 	
-	
-	<h3><img src='/images/open_prj_edit.gif' id="img_open_prj_edit" border='0'/><a href="javascript:;" id="project_profile_btn">プロジェクトの作成 編集</a></h3>
+	<h2>未調整ファンクションポイント値の算出 <img src='/images/help.gif' id="img_help_mesurement_steps" border='0'/></h2>
+	<h3><img src='/images/open_prj_edit.gif' id="img_open_prj_edit" border='0'/> <a href="javascript:;" id="project_profile_btn">プロジェクトの作成 編集</a></h3>
 	<div id="new_project_profile" style="display:none;">
 		<img src='/images/new_prj.gif' id="img_new_prj" border='0'/>
 		<a href="javascript:;" id="create_project_btn">新規作成</a> |
@@ -358,6 +381,7 @@
 						<option value="{{itm.0}}">{{itm.1}}</option>
 					{% endfor %}
 					</select>
+					<img src='/images/help.gif' id="img_help_mesurment_type" border='0'/>
 				</td>
 			</tr>
 		
@@ -374,9 +398,11 @@
 	<br/>
 	<img src='/images/add_dat.gif' id="img_add_dat" border='0'/>
 	<a href="javascript:;" id="add_data_function_btn">データファンクションの追加</a>
+	<img src='/images/help.gif' id="img_data_function" border='0'/>
 	|
 	<img src='/images/add_trn.gif' id="img_add_trn" border='0'/>
 	<a href="javascript:;" id="add_tran_function_btn">トランザクショナルファンクションの追加</a>
+	<img src='/images/help.gif' id="img_tran_function" border='0'/>
 	<table id="function_table" style="width:767px;table-layout: fixed;">
 		<col width="200px;"/>
 		<col width="240px;"/>
@@ -384,7 +410,7 @@
 		<col width="80px;"/>
 		<col width="80px;"/>
 		<col width="80px;"/>
-		<thead><tr><th>要素処理名</th><th>区分</th><th>DET</th><th>RET/FTR</th><th>複雑度</th><th>FP</th></tr></thead>
+		<thead><tr><th>要素処理名 </th><th>区分</th><th>DET</th><th>RET/FTR</th><th>複雑度</th><th>FP</th></tr></thead>
 		<tbody></tbody>
 	</table>
 	<div style="width:786px;border-left:#cccccc 1px solid;border-right:#cccccc 1px solid;border-bottom:#cccccc 1px solid;padding-right:17px;">
@@ -400,5 +426,71 @@
 		</table>
 	</div>
 	
+	<h2>調整係数の計算</h2>
 	
+	
+	
+	<div class="help_tips_text">
+		<div id="txt_help_mesurement_steps">
+			<span>計測の手順</span>
+			<ol>
+				<li>計測タイプの決定 
+				<li>計測範囲の決定、アプリケーション境界の決定 
+				<li>データファンクション計測 
+				<li>トランザクショナルファンクション計測 
+				<li>未調整ファンクションポイント計算 
+				<li>調整係数計算 
+				<li>調整済ファンクションポイント計算
+			</ol>	
+		</div>
+		<div id="txt_help_mesurment_type">
+			<table>
+				<caption>計測タイプ</caption>
+				<thead><tr><th>タイプ</th><th>概要</th></tr></thead>
+				<tbody>
+					<tr><td>新規開発FP計測(Development Project FP Counting)</td><td>ソフトウェアを新規導入時に適用</td></tr>
+					<tr><td>機能拡張FP計測(Enhancement Project FP Counting)</td><td>既存のアプリケーションに対して、機能の追加/変更/削除により変更される部分の計測</td></tr>
+					<tr><td>アプリケーションFP計測(Application FP Counting)</td><td>導入済みソフトウェアのFP値</td></tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<div id="txt_data_function">
+			<table>
+				<caption>ファイルの分類</caption>
+				<thead><tr><th>ファイル</th><th>概要</th></tr></thead>
+				<body>
+					<tr><td>内部論理ファイル(Internal Logical File: ILF)</td><td>当該アプリケーションの操作対象</td></tr>			
+					<tr><td>外部インターフェースファイル(External Interface File: EIF)</td><td>当該アプリケーションにより参照(操作はできない)</td></tr>
+				</body>
+			</table>
+			<table>
+				<caption>ファイル計測指標</caption>
+				<thead><tr><th>指標</th><th>概要</th></tr></thead>
+				<tbody>
+					<tr><td>データエレメントタイプ(Data Element Type: DET)</td><td>ILFやEIFのユニークで繰り返しを含まないユーザーが識別可能なデータ項目</td></tr>
+					<tr><td>レコードエレメントタイプ(Record Element Type: RET)</td><td>ILFやEIFに含まれるユーザー視点で見たデータのグループで、データ項目を構成する下位のデータグループ(サブグループ)</td></tr>
+				</tbody>
+			</table>
+		</div>
+		<div id="txt_tran_function">
+			<table>
+				<caption>要素処理の区分</caption>
+				<thead><tr><th>区分</th><th>概要</th></tr></thead>
+				<body>
+					<tr><td>EI(外部入力)</td><td>境界の外部から入力されるデータ、制御情報の処理。1つ以上のILFを維持管理するかシステムの動作変更を行う</td></tr>
+					<tr><td>EO(外部出力)</td><td>データの制御情報を境界外部へ出力。制御情報を処理ロジック(算術式、計算、派生データ生成のいずか必須)で提供。</td></tr>
+					<tr><td>EQ(外部照会)</td><td>データや制御情報を境界外部へ出力。制御情報をILFやEIFから検索し提供。ロジックは算術式、計算、派生データ生成を含めない。ILFの維持管理、システムの動作変更不可。</td></tr>
+				</body>
+			</table>
+			<table>
+				<caption>データエレメントタイプとファイルタイプリファレンス </caption>
+				<thead><tr><th>指標</th><th>概要</th></tr></thead>
+				<tbody>
+					<tr><td>データエレメントタイプ(Data Element Type: DET)</td><td>ユーザーが認識でき、繰り返しのないユニークな項目</td></tr>
+					<tr><td>ファイルタイプリファレンス(File Type Reference: FTR)</td><td>トランザクションファンクションにより読み込まれるか維持管理されるILF。　または読み込まれるEIF</td></tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 {% endblock %}
