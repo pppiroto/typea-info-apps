@@ -114,9 +114,12 @@ A:hover {
 
 .num-field {
 	text-align:right;
-	color:darkgreen;
+	color:green;
 }
-
+.adjust_point {
+	text-align:right;
+	color:green;
+}
 
 #headbar {
 	position: absolute;
