@@ -1,5 +1,6 @@
 #!Python2.6
 # -*- encoding: utf-8 -*-
+from test.test_binop import isnum
 import sys
 #sys.path.insert(0, 'gdata.zip')
 
@@ -21,6 +22,11 @@ import logging
 MAX_PROJECT  = 20
 MAX_FUNCTION = 100
 
+def to_idx(s):
+    if not s.isdigit():
+        s = '0'
+    return int(s)
+    
 def list_projects(user):
     projects = []
     q = FunctionPointProject.gql("WHERE owner=:1", user)
@@ -115,19 +121,74 @@ class UpdateFunctionPointProject(webapp.RequestHandler):
             system_name = self.request.get('project_profile_system_name')
             application_name = self.request.get('project_profile_application_name')
             mesurement_type = self.request.get('project_profile_mesurement_type')
+  
+            key = db.Key(key_str)
+            q = FunctionPointProject.gql("WHERE __key__ =:1", key)
+            
+            projects = q.fetch(1)
+            for project in projects:
+                project.system_name                =  system_name
+                project.application_name           =  application_name
+                project.mesurement_type            =  mesurement_type
+                project.put()
+            
+            projects = list_projects(user) 
+            return self.response.out.write(json.write({'items':projects}))
+        else:
+            err = {'error':common.message('login_err')}
+            return self.response.out.write(json.write(err))
+        
+        err = {'error':'Unknown Error'}
+        return self.response.out.write(json.write(err))
+
+class UpdateAdjustPoint(webapp.RequestHandler):
+    def get(self):
+        self.post();
+    
+    def post(self):
+        user = users.get_current_user()
+        if user:
+            key_str = self.request.get('project_profile_key')
+            #
+            data_communications           =      self.request.get('data_communications')
+            distoributed_processing       =      self.request.get('distoributed_processing')
+            performance                   =      self.request.get('performance')
+            heavily_used_configuration    =      self.request.get('heavily_used_configuration')
+            transaction_rate              =      self.request.get('transaction_rate')
+            online_data_entry             =      self.request.get('online_data_entry')
+            enduser_efficiency            =      self.request.get('enduser_efficiency')
+            online_update                 =      self.request.get('online_update')
+            complex_processing            =      self.request.get('complex_processing')
+            reusability                   =      self.request.get('reusability')
+            installation_ease             =      self.request.get('installation_ease')
+            operational_ease              =      self.request.get('operational_ease')
+            multiple_sites                =      self.request.get('multiple_sites')
+            facilitate_change             =      self.request.get('facilitate_change')
+            #
 
             key = db.Key(key_str)
             q = FunctionPointProject.gql("WHERE __key__ =:1", key)
             
             projects = q.fetch(1)
             for project in projects:
-                project.system_name = system_name
-                project.application_name = application_name
-                project.mesurement_type = mesurement_type
+                project.data_communications        =  to_idx(data_communications)
+                project.distoributed_processing    =  to_idx(distoributed_processing)
+                project.performance                =  to_idx(performance)
+                project.heavily_used_configuration =  to_idx(heavily_used_configuration)
+                project.transaction_rate           =  to_idx(transaction_rate)
+                project.online_data_entry          =  to_idx(online_data_entry)
+                project.enduser_efficiency         =  to_idx(enduser_efficiency)
+                project.online_update              =  to_idx(online_update)
+                project.complex_processing         =  to_idx(complex_processing)
+                project.reusability                =  to_idx(reusability)
+                project.installation_ease          =  to_idx(installation_ease)
+                project.operational_ease           =  to_idx(operational_ease)
+                project.multiple_sites             =  to_idx(multiple_sites)
+                project.facilitate_change          =  to_idx(facilitate_change)
+                
                 project.put()
             
-            projects = list_projects(user) 
-            return self.response.out.write(json.write({'items':projects}))
+            return self.response.out.write(json.write(project.to_dict()))
         else:
             err = {'error':common.message('login_err')}
             return self.response.out.write(json.write(err))

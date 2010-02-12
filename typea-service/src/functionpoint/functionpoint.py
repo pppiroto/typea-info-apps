@@ -47,10 +47,12 @@ def tranfunction_type(tuple=False):
     return dict_or_tuple(d,tuple)
 
 class FunctionPointProject(db.Model):
+    #
     owner = db.UserProperty(auto_current_user_add=True)
     system_name = db.StringProperty()
     application_name = db.StringProperty()
     mesurement_type = db.StringProperty()
+    #
     data_communications = db.IntegerProperty()       
     distoributed_processing = db.IntegerProperty()   
     performance = db.IntegerProperty()
@@ -65,15 +67,50 @@ class FunctionPointProject(db.Model):
     operational_ease = db.IntegerProperty()
     multiple_sites = db.IntegerProperty()
     facilitate_change = db.IntegerProperty()
+    #
     sort_order = db.IntegerProperty()
     
+    def total_adjust_points(self):
+        return sum( (self.data_communications ,
+                    self.distoributed_processing ,
+                    self.performance ,
+                    self.heavily_used_configuration ,
+                    self.transaction_rate ,
+                    self.online_data_entry ,
+                    self.enduser_efficiency ,
+                    self.online_update ,
+                    self.complex_processing ,
+                    self.reusability ,
+                    self.installation_ease ,
+                    self.operational_ease ,
+                    self.multiple_sites ,
+                    self.facilitate_change ,
+                    )
+                )
+        
+        
     def to_dict(self):
-        return { 'key':str(self.key()),
-                 'owner':str(self.owner),
-                 'system_name':self.system_name,
-                 'application_name':self.application_name,
-                 'mesurement_type':self.mesurement_type,
-                 'mesurement_type_name':get_dict_value(mesurement_type(),self.mesurement_type),
+        return {    'key':                          str(self.key()),
+                    'owner':                        str(self.owner),
+                    'system_name':                  self.system_name,
+                    'application_name':             self.application_name,
+                    'mesurement_type':              self.mesurement_type,
+                    'mesurement_type_name':         get_dict_value(mesurement_type(),self.mesurement_type),
+                    'data_communications ':         self.data_communications ,
+                    'distoributed_processing ':     self.distoributed_processing ,
+                    'performance ':                 self.performance ,
+                    'heavily_used_configuration ':  self.heavily_used_configuration ,
+                    'transaction_rate ':            self.transaction_rate ,
+                    'online_data_entry ':           self.online_data_entry ,
+                    'enduser_efficiency ':          self.enduser_efficiency ,
+                    'online_update ':               self.online_update ,
+                    'complex_processing ':          self.complex_processing ,
+                    'reusability ':                 self.reusability ,
+                    'installation_ease ':           self.installation_ease ,
+                    'operational_ease ':            self.operational_ease ,
+                    'multiple_sites ':              self.multiple_sites ,
+                    'facilitate_change ':           self.facilitate_change ,
+                    'total_adjust_points':          self.total_adjust_points(),
                 }
         
 class FunctionEntity(db.Model):
@@ -127,9 +164,9 @@ class FunctionEntity(db.Model):
         x = None    
         if 0 <= self.measurement_index2 <= 1:
             x = 0
-        elif 2 == self.measurement_index2:
+        elif 2 <= self.measurement_index2 <=3:
             x = 1
-        elif 3 <= self.measurement_index2:
+        elif 4 <= self.measurement_index2:
             x = 2
 
         y = None

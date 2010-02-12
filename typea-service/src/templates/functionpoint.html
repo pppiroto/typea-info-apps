@@ -33,6 +33,10 @@
 		$("#add_tran_function_btn").click(add_tran_function);
 		$("#img_add_trn").click(add_tran_function);
 
+		$("#update_adjust_point_btn").click(update_adjust_point);
+		$("#img_update_adjust_point").click(update_adjust_point);
+
+		
         $(".detail_content").css("display","none");
         $(".detail_header").click (
             function(){
@@ -219,7 +223,49 @@
 
 		$.getJSON(url, data, load_projects); 
 	}
+	function update_adjust_point() {
+		var url = "/fp/projects/up_point";
 
+		var data = new Object();
+		data['project_profile_key'] 			 = $("#project_profile_key").val();
+
+		data['data_communications']          =     $("input:radio[name=data_communications ]:checked").val();
+	    data['distoributed_processing']      =     $("input:radio[name=distoributed_processing ]:checked").val();
+	    data['performance']                  =     $("input:radio[name=performance ]:checked").val();
+	    data['heavily_used_configuration']   =     $("input:radio[name=heavily_used_configuration ]:checked").val();
+	    data['transaction_rate']             =     $("input:radio[name=transaction_rate ]:checked").val();
+	    data['online_data_entry']            =     $("input:radio[name=online_data_entry ]:checked").val();
+	    data['enduser_efficiency']           =     $("input:radio[name=enduser_efficiency ]:checked").val();
+	    data['online_update']                =     $("input:radio[name=online_update ]:checked").val();
+	    data['complex_processing']           =     $("input:radio[name=complex_processing ]:checked").val();
+	    data['reusability']                  =     $("input:radio[name=reusability ]:checked").val();
+	    data['installation_ease']            =     $("input:radio[name=installation_ease ]:checked").val();
+	    data['operational_ease']             =     $("input:radio[name=operational_ease ]:checked").val();
+	    data['multiple_sites']               =     $("input:radio[name=multiple_sites ]:checked").val();
+	    data['facilitate_change']            =     $("input:radio[name=facilitate_change ]:checked").val();
+		
+		error_msg();
+		processing_msg(PROCESSING_MSG);
+
+		$.getJSON(url, data, update_total); 
+	}
+	function update_total(json) {
+		if (json.error) {
+			error_msg(json.error);
+		} else {
+			adjust_point_update(json);
+		}
+		processing_msg();
+	}
+
+	function adjust_point_update(project) {
+		alert(project.total_adjust_points);
+
+
+	}
+
+
+	
 	function delete_project() {
 		var url = "/fp/projects/delete";
 
@@ -546,7 +592,9 @@
 	</div>
 	
 	<h2><img src="/images/calculator.png" border="0"/> 調整係数の計算</h2>
-    <table border="1">
+    <img src='/images/table_save.png' id="img_update_adjust_point" border='0'/>
+	<a href="javascript:;" id="update_adjust_point_btn">保存</a>
+	<table border="1">
         <col width="200px;"/>
         <col width="50px;"/>
         <col width="200px;"/>
