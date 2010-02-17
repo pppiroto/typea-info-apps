@@ -234,9 +234,20 @@ class LoadFunction(webapp.RequestHandler):
             project_key   = self.request.get('project_key')
             
             if project_key <> '':    
+                key = db.Key(project_key)
+                q = FunctionPointProject.gql("WHERE __key__ =:1", key)
+                projects = q.fetch(1)
+                project = None
+                for p in projects:
+                    project = p
+                    break
+                
                 functions = list_functions(project_key)
                 
-                return self.response.out.write(json.write({'items':functions}))
+                logging.warn(project.to_dict())
+                
+                return self.response.out.write(json.write({'project':project.to_dict(),
+                                                           'items':functions}))
             else:
                 err = {'error':common.message('project_not_selected')}
                 return self.response.out.write(json.write(err))
