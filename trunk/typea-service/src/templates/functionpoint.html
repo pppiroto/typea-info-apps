@@ -227,22 +227,22 @@
 		var url = "/fp/projects/up_point";
 
 		var data = new Object();
-		data['project_profile_key'] 			 = $("#project_profile_key").val();
+		data['project_profile_key'] 		 = $("#project_profile_key").val();
 
-		data['data_communications']          =     $("input:radio[name=data_communications ]:checked").val();
-	    data['distoributed_processing']      =     $("input:radio[name=distoributed_processing ]:checked").val();
-	    data['performance']                  =     $("input:radio[name=performance ]:checked").val();
-	    data['heavily_used_configuration']   =     $("input:radio[name=heavily_used_configuration ]:checked").val();
-	    data['transaction_rate']             =     $("input:radio[name=transaction_rate ]:checked").val();
-	    data['online_data_entry']            =     $("input:radio[name=online_data_entry ]:checked").val();
-	    data['enduser_efficiency']           =     $("input:radio[name=enduser_efficiency ]:checked").val();
-	    data['online_update']                =     $("input:radio[name=online_update ]:checked").val();
-	    data['complex_processing']           =     $("input:radio[name=complex_processing ]:checked").val();
-	    data['reusability']                  =     $("input:radio[name=reusability ]:checked").val();
-	    data['installation_ease']            =     $("input:radio[name=installation_ease ]:checked").val();
-	    data['operational_ease']             =     $("input:radio[name=operational_ease ]:checked").val();
-	    data['multiple_sites']               =     $("input:radio[name=multiple_sites ]:checked").val();
-	    data['facilitate_change']            =     $("input:radio[name=facilitate_change ]:checked").val();
+		data['data_communications']          = $("#txt_data_communications").text();
+	    data['distoributed_processing']      = $("#txt_distoributed_processing").text();
+	    data['performance']                  = $("#txt_performance").text();
+	    data['heavily_used_configuration']   = $("#txt_heavily_used_configuration").text();
+	    data['transaction_rate']             = $("#txt_transaction_rate").text();
+	    data['online_data_entry']            = $("#txt_online_data_entry").text();
+	    data['enduser_efficiency']           = $("#txt_enduser_efficiency").text();
+	    data['online_update']                = $("#txt_online_update").text();
+	    data['complex_processing']           = $("#txt_complex_processing").text();
+	    data['reusability']                  = $("#txt_reusability").text();
+	    data['installation_ease']            = $("#txt_installation_ease").text();
+	    data['operational_ease']             = $("#txt_operational_ease").text();
+	    data['multiple_sites']               = $("#txt_multiple_sites").text();
+	    data['facilitate_change']            = $("#txt_facilitate_change").text();
 		
 		error_msg();
 		processing_msg(PROCESSING_MSG);
@@ -259,9 +259,21 @@
 	}
 
 	function adjust_point_update(project) {
-		alert(project.total_adjust_points);
-
-
+		$("#txt_data_communications"        ).text(project.data_communications);
+		$("#txt_distoributed_processing"    ).text(project.distoributed_processing);
+		$("#txt_performance"                ).text(project.performance);
+		$("#txt_heavily_used_configuration" ).text(project.heavily_used_configuration);
+		$("#txt_transaction_rate"           ).text(project.transaction_rate);
+		$("#txt_online_data_entry"          ).text(project.online_data_entry);
+		$("#txt_enduser_efficiency"         ).text(project.enduser_efficiency);
+		$("#txt_online_update"              ).text(project.online_update);
+		$("#txt_complex_processing"         ).text(project.complex_processing);
+		$("#txt_reusability"                ).text(project.reusability);
+		$("#txt_installation_ease"          ).text(project.installation_ease);
+		$("#txt_operational_ease"           ).text(project.operational_ease);
+		$("#txt_multiple_sites"             ).text(project.multiple_sites);
+		$("#txt_facilitate_change"          ).text(project.facilitate_change);
+		$("#txt_total_adjust_points"        ).text(project.total_adjust_points).format({format:"####.00",locale:"jp"}).addClass("num-field");;
 	}
 
 
@@ -362,6 +374,7 @@
 				$("#function_table tbody").append(functiontable_row(json.items[i]));
 			}
 			total_unadjusted_fp();
+			adjust_point_update(json.project);
 		}
 		processing_msg();
 	}
@@ -502,7 +515,7 @@
                 ttl += Number(txt)
             }
         }
-        $("#txt_adjust_point_total").text(ttl).format({format:"####.00",locale:"jp"}).addClass("num-field");
+        $("#txt_total_adjust_points").text(ttl).format({format:"####.00",locale:"jp"}).addClass("num-field");
     }
     function expand_detail(div, isOpen) {
         var child = div.children(".detail_content");
@@ -585,7 +598,7 @@
 			<col width="80px"/>
 			<tbody>
 				<tr><th style="text-align:right;">未調整FP値 計</th><td id="unadjusted_fp_total"></td></tr>
-				<tr><th style="text-align:right;">調整係数 計</th><td id="txt_adjust_point_total" ></td></tr>
+				<tr><th style="text-align:right;">調整係数 計</th><td id="txt_total_adjust_points" ></td></tr>
 				<tr><th style="text-align:right;">FP値</th><td id="adjusted_fp_total" style="border:2px red solid;"></td></tr>
 			</tbody>
 		</table>
