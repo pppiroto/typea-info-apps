@@ -1,4 +1,4 @@
-/**
+‚ˆ‚P/**
  * styling for tip content
  * mostly for example
  * note: canvas (the tip itself) cannot be styled here. use javascript options for that.
@@ -26,6 +26,7 @@ body {
     font-size        : small;
     font-family      : Courier New;
 }
+
 
 h1 {
     text-align       : left;
@@ -56,7 +57,7 @@ table tr {
     background-color:white;
 }
 table th {
-    background-color:#EEE;
+	background-color:#EEE;
     border-right:1px solid #D5D5D5;
     border-bottom:1px solid #D5D5D5;
     font-size:13.5px;
@@ -121,13 +122,21 @@ A:hover {
 	color:green;
 }
 
+#logo {
+	position: absolute;
+	left:0px;
+	top:0px;
+	font-size      : 200%;
+	text-decoration: bold;
+}
+
 #headbar {
 	position: absolute;
 	left:0px;
 	top:0px;
 	height:20px;
-	width: 100%;
-	text-align: right;
+	width:100%;
+	text-align : right;
 }
 
 #sidebar {
@@ -141,7 +150,14 @@ A:hover {
 	position: absolute;
 	left:161px;
 	top:21px;
-	width: 90%;
+	width:100%;
+}
+
+#footerbar {
+	margin-top:20px;
+	margin-bottom:100px;
+	border-top:solid 1px silver;
+	width:100%;
 }
 
 #loading {
@@ -153,7 +169,7 @@ A:hover {
 	color: steelblue;
 	font-size:small;
 	text-align:center;
-	width:100px;
+	width:90px;
 }
 #message {
 	position: absolute;

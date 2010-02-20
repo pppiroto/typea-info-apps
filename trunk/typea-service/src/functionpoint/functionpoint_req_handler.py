@@ -1,6 +1,5 @@
 #!Python2.6
 # -*- encoding: utf-8 -*-
-from test.test_binop import isnum
 import sys
 #sys.path.insert(0, 'gdata.zip')
 
@@ -29,7 +28,7 @@ def to_idx(s):
     
 def list_projects(user):
     projects = []
-    q = FunctionPointProject.gql("WHERE owner=:1", user)
+    q = FunctionPointProject.gql("WHERE owner=:1 ORDER BY sort_order", user)
     results = q.fetch(MAX_PROJECT)
     for result in results:
         projects.append(result.to_dict()) 
@@ -37,7 +36,7 @@ def list_projects(user):
 
 def list_functions(project_key):
     functions = []
-    q = FunctionEntity.gql("WHERE project_key=:1", project_key)
+    q = FunctionEntity.gql("WHERE project_key=:1 ORDER BY sort_order", project_key)
     results = q.fetch(MAX_FUNCTION)
     for result in results:
         functions.append(result.to_dict())
@@ -149,6 +148,10 @@ class UpdateAdjustPoint(webapp.RequestHandler):
         user = users.get_current_user()
         if user:
             key_str = self.request.get('project_profile_key')
+            if key_str.strip() == '':
+                err = {'error':common.message('project_not_selected')}
+                return self.response.out.write(json.write(err))
+
             #
             data_communications           =      self.request.get('data_communications')
             distoributed_processing       =      self.request.get('distoributed_processing')
@@ -243,8 +246,6 @@ class LoadFunction(webapp.RequestHandler):
                     break
                 
                 functions = list_functions(project_key)
-                
-                logging.warn(project.to_dict())
                 
                 return self.response.out.write(json.write({'project':project.to_dict(),
                                                            'items':functions}))
@@ -368,4 +369,50 @@ class DeleteFunction(webapp.RequestHandler):
         return self.response.out.write(json.write(err))
 
 
+class ReOrderFunction(webapp.RequestHandler):
+    def get(self):
+        self.post();
+    
+    def post(self):
+        user = users.get_current_user()
+        if user:
+            project_key   = self.request.get('project_key')
+            key_str   = self.request.get('key')
+            
+            q = FunctionEntity.gql("WHERE project_key=:1 ORDER BY sort_order", project_key)
+            
+            functions = q.fetch(MAX_FUNCTION)
+            for i, func in enumerate(functions):
+                if key_str == str(func.key()):
+                    if i > 0:
+                        tmp = functions[i - 1]
+                        functions[i - 1] = functions[i]
+                        functions[i] = tmp
+                        
+                        functions[i - 1].put()
+                        functions[i].put() 
+                    break
 
+            sort_order = 1
+            for func in functions:
+                func.sort_order = sort_order
+                func.put()
+                sort_order += 1
+                
+            result = list_functions(project_key)
+             
+            return self.response.out.write(json.write({'items':result}))
+        else:
+            err = {'error':common.message('login_err')}
+            return self.response.out.write(json.write(err))
+        
+        err = {'error':'Unknown Error'}
+        return self.response.out.write(json.write(err))
+            
+            
+            
+            
+            
+            
+            
+            

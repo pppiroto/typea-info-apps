@@ -13,7 +13,7 @@
 		});
 
 		$("#function_table").chromatable({
-			width:    "786px",
+			width:    "826px",
 			height:   "220px",
 			scrolling:  "yes"
 		});
@@ -189,6 +189,8 @@
 			var cols = tr.children();
 			var project_key = $(cols[0]).children("input:radio").val();
 			$("#project_profile_key").val(project_key);
+
+			adjust_point_update(json);
 			
 			project_selected(tr);
 		}
@@ -274,6 +276,7 @@
 		$("#txt_multiple_sites"             ).text(project.multiple_sites);
 		$("#txt_facilitate_change"          ).text(project.facilitate_change);
 		$("#txt_total_adjust_points"        ).text(project.total_adjust_points).format({format:"####.00",locale:"jp"}).addClass("num-field");;
+		total_fp();
 	}
 
 
@@ -374,7 +377,9 @@
 				$("#function_table tbody").append(functiontable_row(json.items[i]));
 			}
 			total_unadjusted_fp();
-			adjust_point_update(json.project);
+			if (json.project) {
+				adjust_point_update(json.project);
+			}
 		}
 		processing_msg();
 	}
@@ -412,6 +417,21 @@
 		}
 		processing_msg();
 	}
+	function reorder_function_btn(row_id) {
+		var tr = $("#" + row_id);
+
+		var url = "/fp/function/reorder";
+		
+		var data = new Object();
+		data['project_key'] = $("#project_profile_key").val();
+		data['key'] = row_id;
+		
+		error_msg();
+		processing_msg(PROCESSING_MSG);
+
+		$.getJSON(url, data, load_functions); 
+	}
+	
 	function delete_function_btn(row_id) {
 		var tr = $("#" + row_id);
 
@@ -440,8 +460,14 @@
 		var change_event_html = " onchange='javascript:func_data_change(\"" + row_id + "\");'";
 		
 		var tr = $("<tr id='" + row_id + "'>")
+		var cel0 = $("<td>")
+			cel0.append(row.sort_order);
+			cel0.css("text-align","right");
+		tr.append(cel0);
 		var cel1 = $("<td>")
 			var img_del = $("<img src='/images/del.gif' border='0' onclick='javascript:delete_function_btn(\"" + row_id + "\");'/>");
+		    var img_up  = $("<img src='/images/arrow_up.png' border='0' onclick='javascript:reorder_function_btn(\"" + row_id + "\");'/>");
+		    cel1.append(img_up);
 			cel1.append(img_del);
 
 			cel1.append(" ");
@@ -502,6 +528,7 @@
 			ttl += Number($(fps[i]).text());
 		}
 		$("#unadjusted_fp_total").text(ttl).format({format:"####.00",locale:"jp"}).addClass("num-field");
+		total_fp();
 	}
     function sel_adjust_option(opt) {
         var key = opt.attr("name");
@@ -516,7 +543,14 @@
             }
         }
         $("#txt_total_adjust_points").text(ttl).format({format:"####.00",locale:"jp"}).addClass("num-field");
+        total_fp();
     }
+    function total_fp() {
+    	unadjusted_fp = Number($("#unadjusted_fp_total").text());
+    	adjust_point = Number($("#txt_total_adjust_points").text());
+    	$("#adjusted_fp_total").text(unadjusted_fp + adjust_point).format({format:"####.00",locale:"jp"}).addClass("num-field");
+    }
+    
     function expand_detail(div, isOpen) {
         var child = div.children(".detail_content");
         var now = child.css("display");
@@ -533,7 +567,7 @@
 {% block content %}
 	<h1>ファンクションポイント</h1>
 	
-	<h2>未調整ファンクションポイント値の算出 <img src='/images/help.gif' id="img_help_mesurement_steps" border='0'/></h2>
+	<h2>未調整ファンクションポイント値の算出<span style="font-size:8pt;color:green;">(最大20プロジェクト)</span> <img src='/images/help.gif' id="img_help_mesurement_steps" border='0'/></h2>
 	<h3><img src='/images/open_prj_edit.gif' id="img_open_prj_edit" border='0'/> <a href="javascript:;" id="project_profile_btn">プロジェクトの作成 編集</a></h3>
 	<div id="new_project_profile" style="display:none;">
 		<img src='/images/new_prj.gif' id="img_new_prj" border='0'/>
@@ -582,24 +616,26 @@
 	<img src='/images/add_trn.gif' id="img_add_trn" border='0'/>
 	<a href="javascript:;" id="add_tran_function_btn">トランザクショナルファンクションの追加</a>
 	<img src='/images/help.gif' id="img_tran_function" border='0'/>
+	<span style="font-size:8pt;color:green;">(最大100ファンクション)</span>
 	<table id="function_table" style="width:767px;table-layout: fixed;">
-		<col width="200px;"/>
+		<col width="30px;"/>
+		<col width="210px;"/>
 		<col width="240px;"/>
 		<col width="80px;"/>
 		<col width="80px;"/>
 		<col width="80px;"/>
 		<col width="80px;"/>
-		<thead><tr><th>要素処理名 </th><th>区分</th><th>DET</th><th>RET/FTR</th><th>複雑度</th><th>FP</th></tr></thead>
+		<thead><tr><th>No</th><th>要素処理名 </th><th>区分</th><th>DET</th><th>RET/FTR</th><th>複雑度</th><th>FP</th></tr></thead>
 		<tbody></tbody>
 	</table>
 	<div style="width:786px;border-left:#cccccc 1px solid;border-right:#cccccc 1px solid;border-bottom:#cccccc 1px solid;padding-right:17px;">
 		<table id="function_total_table" style="width:767px;table-layout: fixed;">
-			<col width="704px"/>
+			<col width="744px"/>
 			<col width="80px"/>
 			<tbody>
 				<tr><th style="text-align:right;">未調整FP値 計</th><td id="unadjusted_fp_total"></td></tr>
 				<tr><th style="text-align:right;">調整係数 計</th><td id="txt_total_adjust_points" ></td></tr>
-				<tr><th style="text-align:right;">FP値</th><td id="adjusted_fp_total" style="border:2px red solid;"></td></tr>
+				<tr><th style="text-align:right;">FP 値</th><td id="adjusted_fp_total" style="border:2px red solid;"></td></tr>
 			</tbody>
 		</table>
 	</div>
@@ -608,9 +644,9 @@
     <img src='/images/table_save.png' id="img_update_adjust_point" border='0'/>
 	<a href="javascript:;" id="update_adjust_point_btn">保存</a>
 	<table border="1">
-        <col width="200px;"/>
+        <col width="400px;"/>
         <col width="50px;"/>
-        <col width="200px;"/>
+        <col width="400px;"/>
         <col width="50px;"/>
         <thead>
             <tr>
@@ -620,372 +656,385 @@
         </thead>
         <tbody>
 			<tr>
-				<th><a class="detail_link" href="#p_data_communications"    >1.データ通信</a></th><td class="adjust_point" id="txt_data_communications"></td>
-				<th><a class="detail_link" href="#p_online_update"          >8.オンライン更新</a></th><td class="adjust_point" id="txt_online_update"></td>
+				<th>
+					<div> 
+				        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_data_communications">1.データ通信(Data Communications)</a></span>
+				        <div class="detail_content">
+				            <table border="1">
+				                <col width="20px;"/>
+				                <col width="50px;"/>
+				                <col width="*;"/>
+				                <thead>
+				                    <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
+				                </thead>
+				                <tbody>
+				                    <tr><td><input type="radio" class="adjust_option" name="data_communications" value="0"/></td><td class="num-field">0</td><td>バッチ処理のみ、またはスタンドアロン</td></tr>
+				                    <tr><td><input type="radio" class="adjust_option" name="data_communications" value="1"/></td><td class="num-field">1</td><td>バッチ処理だが、リモートでのデータ入力またはリモートでの印刷</td></tr>
+				                    <tr><td><input type="radio" class="adjust_option" name="data_communications" value="2"/></td><td class="num-field">2</td><td>バッチ処理だが、リモートのデータ入力およびリモートでの印刷両方</td></tr>
+				                    <tr><td><input type="radio" class="adjust_option" name="data_communications" value="3"/></td><td class="num-field">3</td><td>オンラインでデータ収集するか、バッチ処理のためのTP(遠隔操作)フロントエンド</td></tr>
+				                    <tr><td><input type="radio" class="adjust_option" name="data_communications" value="4"/></td><td class="num-field">4</td><td>フロントエンド以上の通信機能を持つが、1種類のTP通信プロトコルのみサポート</td></tr>
+				                    <tr><td><input type="radio" class="adjust_option" name="data_communications" value="5"/></td><td class="num-field">5</td><td>フロントエンド以上の通信機能を持つが、複数種類のTP通信プロトコルをサポート</td></tr>
+				                </tbody>
+				            </table>
+				        </div>
+				    </div>
+				</th><td class="adjust_point" id="txt_data_communications"></td>
+				<th>
+				    <div> 
+				        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_online_update">8.オンライン更新(Online Update)</a></span>
+				        <div class="detail_content">
+				        <table border="1">
+				            <col width="20px;" align="center"/>
+				            <col width="50px;" align="center"/>
+				            <col width="*;"/>
+				            <thead>
+				                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
+				            </thead>
+				            <tbody>
+				                <tr><td><input type="radio" class="adjust_option" name="online_update" value="0"/></td><td class="num-field">0</td><td>オンライン更新はない</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="online_update" value="1"/></td><td class="num-field">1</td><td>1～3のILFをオンラインで更新。更新量は少なく、回復は容易</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="online_update" value="2"/></td><td class="num-field">2</td><td>4以上のILFをオンラインで更新。更新量は少なく、回復は容易</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="online_update" value="3"/></td><td class="num-field">3</td><td>主要なILFをオンラインで更新</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="online_update" value="4"/></td><td class="num-field">4</td><td>3に加え、データ損失保護が必須、特別な設計、プログラムあり</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="online_update" value="5"/></td><td class="num-field">5</td><td>4に加え、更新量が多く、回復処理の費用面の考慮がなされている。オペレータの介在が最小となるような高度に自動化された回復手順が必要</td></tr>
+				            </tbody>
+				        </table>
+				        </div>
+				    </div>
+				</th><td class="adjust_point" id="txt_online_update"></td>
 			</tr>
 			<tr>
-				<th><a class="detail_link" href="#p_distoributed_processing">2.分散処理</a> </th><td class="adjust_point" id="txt_distoributed_processing"></td>
-				<th><a class="detail_link" href="#p_complex_processing"     >9.複雑な処理</a></th><td class="adjust_point" id="txt_complex_processing"></td>
+				<th>
+				    <div> 
+				        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_distoributed_processing">2.分散処理(Distributed Data Processing)</a></span>
+				        <div class="detail_content">
+				            <table border="1">
+				                <col width="20px;" align="center"/>
+				                <col width="50px;" align="center"/>
+				                <col width="*;"/>
+				                <thead>
+				                    <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
+				                </thead>
+				                <tbody>
+				                    <tr><td><input type="radio" class="adjust_option" name="distoributed_processing" value="0"/></td><td class="num-field">0</td><td>システム構成要素間でのデータ転送、データ処理機能に関与しない</td></tr>
+				                    <tr><td><input type="radio" class="adjust_option" name="distoributed_processing" value="1"/></td><td class="num-field">1</td><td>PCの表計算やDBMSなどの構成要素でエンドユーザーコンピューティング(EUC)向けのデータを準備</td></tr>
+				                    <tr><td><input type="radio" class="adjust_option" name="distoributed_processing" value="2"/></td><td class="num-field">2</td><td>エンドユーザーコンピューティング(EUC)のためではなく、データが転送のために準備され、システムのほかの構成要素に転送、処理される</td></tr>
+				                    <tr><td><input type="radio" class="adjust_option" name="distoributed_processing" value="3"/></td><td class="num-field">3</td><td>一方向のみのオンラインでの分散処理とデータ転送あり</td></tr>
+				                    <tr><td><input type="radio" class="adjust_option" name="distoributed_processing" value="4"/></td><td class="num-field">4</td><td>双方向でのオンラインでの分散処理とデータ転送あり</td></tr>
+				                    <tr><td><input type="radio" class="adjust_option" name="distoributed_processing" value="5"/></td><td class="num-field">5</td><td>データ処理がシステムの最適な構成要素上で動的に実行</td></tr>
+				                </tbody>
+				            </table>
+				        </div>
+				    </div>
+				</th><td class="adjust_point" id="txt_distoributed_processing"></td>
+				<th>
+				    <div> 
+				        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_complex_processing">9.複雑な処理(Complex Processing)</a></span class="detail_header">
+				        <div class="detail_content">
+				        <ul>
+				            <li><input type="checkbox" name="chk_complex_processing" value="0"/>きめ細かい制御、または特有のセキュリティ処理
+				            <li><input type="checkbox" name="chk_complex_processing" value="1"/>広範な論理的処理
+				            <li><input type="checkbox" name="chk_complex_processing" value="2"/>広範な演算処理
+				            <li><input type="checkbox" name="chk_complex_processing" value="3"/>再処理が必要となる不完全トランザクションが原因での多くの例外処理
+				            <li><input type="checkbox" name="chk_complex_processing" value="4"/>多様の入出力機能を扱う複雑な処理
+				        </ul>
+				        <table border="1">
+				            <col width="20px;" align="center"/>
+				            <col width="50px;" align="center"/>
+				            <col width="*;"/>
+				            <thead>
+				                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
+				            </thead>
+				            <tbody>
+				                <tr><td><input type="radio" class="adjust_option" name="complex_processing" value="0"/></td><td class="num-field">0</td><td>要素のいずれにも該当せず</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="complex_processing" value="1"/></td><td class="num-field">1</td><td>要素のいずれか1項目に該当</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="complex_processing" value="2"/></td><td class="num-field">2</td><td>要素のいずれか2項目に該当</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="complex_processing" value="3"/></td><td class="num-field">3</td><td>要素のいずれか3項目に該当</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="complex_processing" value="4"/></td><td class="num-field">4</td><td>要素のいずれか4項目に該当</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="complex_processing" value="5"/></td><td class="num-field">5</td><td>要素の5項目すべてに該当</td></tr>
+				            </tbody>
+				        </table>
+				        </div>
+				    </div>
+				</th><td class="adjust_point" id="txt_complex_processing"></td>
 			</tr>
 			<tr>
-				<th><a class="detail_link" href="#p_performance"            >3.性能</a></th><td class="adjust_point" id="txt_performance"></td>
-				<th><a class="detail_link" href="#p_reusability"            >10.再利用可能性</a></th><td class="adjust_point" id="txt_reusability"></td>
+				<th>
+				    <div> 
+				        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_performance">3.性能(Performance)</a></span>
+				        <div class="detail_content">
+				        <table border="1">
+				            <col width="20px;" align="center"/>
+				            <col width="50px;" align="center"/>
+				            <col width="*;"/>
+				            <thead>
+				                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
+				            </thead>
+				            <tbody>
+				                <tr><td><input type="radio" class="adjust_option" name="performance" value="0"/></td><td class="num-field">0</td><td>性能に対する特別な要求はない</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="performance" value="1"/></td><td class="num-field">1</td><td>性能条件と設計について要求が明言され、レビュー実施されるも、対応要求なし</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="performance" value="2"/></td><td class="num-field">2</td><td>レスポンスタイムまたはスループットがピーク時に厳しい状況だが、CPU使用率に対する設計上の特別な配慮は不要。処理の期限は翌営業日</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="performance" value="3"/></td><td class="num-field">3</td><td>レスポンスタイムまたはスループットが全業務時間中厳しい状況となるが、CPU使用に対する設計上の特別な配慮は不要。インターフェースをとっているシステムによって、処理の期限に制限あり</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="performance" value="4"/></td><td class="num-field">4</td><td>3に加え、ユーザーの指定した性能要件が厳しいため、設計段階で性能分析が必要</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="performance" value="5"/></td><td class="num-field">5</td><td>4に加え、ユーザーの指定した性能要件を満たすため、設計、開発、導入の段階で性能分析ツールを使用する必要がある</td></tr>
+				            </tbody>
+				        </table>
+				        </div>
+				    </div>
+				</th><td class="adjust_point" id="txt_performance"></td>
+				<th>
+				    <div> 
+				        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_reusability">10.再利用可能性(Reusability)</a></span>
+				        <div class="detail_content">
+				        <table border="1">
+				            <col width="20px;" align="center"/>
+				            <col width="50px;" align="center"/>
+				            <col width="*;"/>
+				            <thead>
+				                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
+				            </thead>
+				            <tbody>
+				                <tr><td><input type="radio" class="adjust_option" name="reusability" value="0"/></td><td class="num-field">0</td><td>再利用できるコードはない</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="reusability" value="1"/></td><td class="num-field">1</td><td>再利用できるコードがアプリケーション内で使用されている</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="reusability" value="2"/></td><td class="num-field">2</td><td>アプリケーションの10%未満で複数のユーザーのニーズを考慮</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="reusability" value="3"/></td><td class="num-field">3</td><td>アプリケーションの10%以上で複数のユーザーのニーズを考慮</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="reusability" value="4"/></td><td class="num-field">4</td><td>アプリケーションは再利用し易くするために特別なパッケージ化および文書化がされている。またアプリケーションはソースコードレベルでユーザーによりカスタマイズされる</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="reusability" value="5"/></td><td class="num-field">5</td><td>アプリケーションは再利用し易くするために特別なパッケージ化および文書化がされていて、アプリケーションのカスタマイズはユーザーのパラメータ維持管理で可能</td></tr>
+				            </tbody>
+				        </table>
+				        </div>
+				    </div>
+				</th><td class="adjust_point" id="txt_reusability"></td>
 			</tr>
 			<tr>
-				<th><a class="detail_link" href="#p_heavily_used_configuration">4.高負荷構成</a></th><td class="adjust_point" id="txt_heavily_used_configuration"></td>
-				<th><a class="detail_link" href="#p_installation_ease"      >11.インストール容易性</a></th><td class="adjust_point" id="txt_installation_ease"></td>
+				<th>
+				    <div> 
+				        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_heavily_used_configuration">4.高負荷構成(Heavily Used Configuration)</a></span>
+				        <div class="detail_content">
+				        <table border="1">
+				            <col width="20px;" align="center"/>
+				            <col width="50px;" align="center"/>
+				            <col width="*;"/>
+				            <thead>
+				                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
+				            </thead>
+				            <tbody>
+				                <tr><td><input type="radio" class="adjust_option" name="heavily_used_configuration" value="0"/></td><td class="num-field">0</td><td>運用上の制約は明示されておらず、暗黙的にもない</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="heavily_used_configuration" value="1"/></td><td class="num-field">1</td><td>運用上の制約はあるが、通常よりも厳しくなく、特別の配慮は不要</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="heavily_used_configuration" value="2"/></td><td class="num-field">2</td><td>セキュリティまたはタイミング上の配慮が必要</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="heavily_used_configuration" value="3"/></td><td class="num-field">3</td><td>アプリケーションの特定部分に対して、特別なプロセッサ要件がある</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="heavily_used_configuration" value="4"/></td><td class="num-field">4</td><td>指定された運用上の制約によって、セントラルプロセッサまたは専用プロセッサに関して特別の制約が必要</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="heavily_used_configuration" value="5"/></td><td class="num-field">5</td><td>4に加えて、システムの分散構成要素に関してアプリケーションに特別な制約が必要</td></tr>
+				            </tbody>
+				        </table>
+				        </div>
+				    </div>
+				</th><td class="adjust_point" id="txt_heavily_used_configuration"></td>
+				<th>
+				    <div> 
+				        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_installation_ease">11.インストール容易性(Installation Ease)</a></span>
+				        <div class="detail_content">
+				        <table border="1">
+				            <col width="20px;" align="center"/>
+				            <col width="50px;" align="center"/>
+				            <col width="*;"/>
+				            <thead>
+				                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
+				            </thead>
+				            <tbody>
+				                <tr><td><input type="radio" class="adjust_option" name="installation_ease" value="0"/></td><td class="num-field">0</td><td>導入に対してユーザーの特別な指定、特別な設置作業も不要</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="installation_ease" value="1"/></td><td class="num-field">1</td><td>導入に対してユーザーの特別な指定はないが、特別なセットアップが必要</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="installation_ease" value="2"/></td><td class="num-field">2</td><td>移行および導入にユーザー指定があり、移行および導入ガイドを提供するとともにテストされている。プロジェクトに対する移行の影響は重大ではない</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="installation_ease" value="3"/></td><td class="num-field">3</td><td>移行および導入にユーザー指定があり、移行および導入ガイドを提供するとともにテストされている。プロジェクトに対する移行の影響は重大である</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="installation_ease" value="4"/></td><td class="num-field">4</td><td>2に加えて、自動移行および自動導入ツールを提供するとともにテストされている</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="installation_ease" value="5"/></td><td class="num-field">5</td><td>3に加えて、自動移行および自動導入ツールを提供するとともにテストされている</td></tr>
+				            </tbody>
+				        </table>
+				        </div>
+				    </div>
+				</th><td class="adjust_point" id="txt_installation_ease"></td>
 			</tr>
 			<tr>
-				<th><a class="detail_link" href="#p_transaction_rate"       >5.トランザクション量</a></th><td class="adjust_point" id="txt_transaction_rate"></td>
-				<th><a class="detail_link" href="#p_operational_ease"       >12.運用性</a></th><td class="adjust_point" id="txt_operational_ease"></td>
+				<th>
+				    <div> 
+				        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_transaction_rate">5.トランザクション量(Transaction Rate)</a></span>
+				        <div class="detail_content">
+				        <table border="1">
+				            <col width="20px;" align="center"/>
+				            <col width="50px;" align="center"/>
+				            <col width="*;"/>
+				            <thead>
+				                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
+				            </thead>
+				            <tbody>
+				                <tr><td><input type="radio" class="adjust_option" name="transaction_rate" value="0"/></td><td class="num-field">0</td><td>トランザクションのピーク期間はないと予測</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="transaction_rate" value="1"/></td><td class="num-field">1</td><td>トランザクションのピーク期間は、毎月、四半期、季節ごと、年に一回程度に予想</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="transaction_rate" value="2"/></td><td class="num-field">2</td><td>毎週トランザクションのピークがあると予想</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="transaction_rate" value="3"/></td><td class="num-field">3</td><td>毎日トランザクションのピークがあると予想</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="transaction_rate" value="4"/></td><td class="num-field">4</td><td>アプリケーションに対するユーザー要求、サービス契約の面でユーザーから高いトランザクション処理率が要求されるため、設計段階で性能分析作業が必要</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="transaction_rate" value="5"/></td><td class="num-field">5</td><td>4に加えて、設計、開発、導入の段階で性能分析ツールを使用する必要がある</td></tr>
+				            </tbody>
+				        </table>
+				        </div>
+				    </div>
+				</th><td class="adjust_point" id="txt_transaction_rate"></td>
+				<th>
+				    <div> 
+				        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_operational_ease">12.運用性(Operational Ease)</a></span>
+				        <div class="detail_content">
+				        <table border="1">
+				            <col width="20px;" align="center"/>
+				            <col width="50px;" align="center"/>
+				            <col width="*;"/>
+				            <thead>
+				                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
+				            </thead>
+				            <tbody>
+				                <tr><td><input type="radio" class="adjust_option" name="operational_ease" value="0"/></td><td class="num-field">0</td><td>通常の手続き以外、ユーザーからの運用上の指定は特にない</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="operational_ease" value="1"/></td><td class="num-field">1</td>
+				                    <td rowspan="4">アプリケーションに適用される項目を以下から選択。各項目1度数としてカウント。
+				                        <ol>
+				                            <li> 効率的な始動、バックアップ、回復処理が提供されているが、オペレータの介入も必要。
+				                            <li> 効率的な始動、バックアップ、回復処理が提供されており、オペレータの介入が不要(2度数としてカウント)。
+				                            <li> アプリケーションは、テープマウントの必要性が最小限になるようにしている。
+				                            <li> アプリケーションは用紙操作の必要性が最小限になるようにしている。            
+				                        </ol>
+				                    </td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="operational_ease" value="2"/></td><td class="num-field">2</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="operational_ease" value="3"/></td><td class="num-field">3</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="operational_ease" value="4"/></td><td class="num-field">4</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="operational_ease" value="5"/></td><td class="num-field">5</td><td>アプリケーションは無人操作となるように設計されている。無人操作とは、アプリケーションの始動、シャットダウン以外はオペレーターがシステムを操作する必要がないことを意味する。自動エラー回復機能付アプリケーション。</td></tr>
+				            </tbody>
+				        </table>
+				        </div>
+				    </div>
+				</th><td class="adjust_point" id="txt_operational_ease"></td>
 			</tr>
 			<tr>
-				<th><a class="detail_link" href="#p_online_data_entry"      >6.オンライン入力</a></th><td class="adjust_point" id="txt_online_data_entry"></td>
-				<th><a class="detail_link" href="#p_multiple_sites"         >13.複数サイト</a></th><td class="adjust_point" id="txt_multiple_sites"></td>
+				<th>
+				    <div> 
+				        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_online_data_entry">6.オンライン入力(Online Data Entry)</a></span>
+				        <div class="detail_content">
+				        <table border="1">
+				            <col width="20px;" align="center"/>
+				            <col width="50px;" align="center"/>
+				            <col width="*;"/>
+				            <thead>
+				                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
+				            </thead>
+				            <tbody>
+				                <tr><td><input type="radio" class="adjust_option" name="online_data_entry" value="0"/></td><td class="num-field">0</td><td>すべてのトランザクションがバッチモードで処理</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="online_data_entry" value="1"/></td><td class="num-field">1</td><td>トランザクションの1～7%がオンライン画面経由で入力</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="online_data_entry" value="2"/></td><td class="num-field">2</td><td>トランザクションの8～15%がオンライン画面経由で入力</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="online_data_entry" value="3"/></td><td class="num-field">3</td><td>トランザクションの16～23%がオンライン画面経由で入力</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="online_data_entry" value="4"/></td><td class="num-field">4</td><td>トランザクションの24～30%がオンライン画面経由で入力</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="online_data_entry" value="5"/></td><td class="num-field">5</td><td>トランザクションの30%以上がオンライン画面経由で入力</td></tr>
+				            </tbody>
+				        </table>
+				        </div>
+				    </div>
+				</th><td class="adjust_point" id="txt_online_data_entry"></td>
+				<th>
+				    <div> 
+				        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_multiple_sites">13.複数サイト(Multiple Sites)</a></span>
+				        <div class="detail_content">
+				        <table border="1">
+				            <col width="20px;" align="center"/>
+				            <col width="50px;" align="center"/>
+				            <col width="*;"/>
+				            <thead>
+				                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
+				            </thead>
+				            <tbody>
+				                <tr><td><input type="radio" class="adjust_option" name="multiple_sites" value="0"/></td><td class="num-field">0</td><td>複数サイトへの導入の要求はない</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="multiple_sites" value="1"/></td><td class="num-field">1</td><td>複数サイトへの必要性を考慮し、アプリケーションは同一のハードウェア、ソフトウェア環境だけで運用するように設計されている。</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="multiple_sites" value="2"/></td><td class="num-field">2</td><td>複数サイトへの必要性を考慮し、アプリケーションは類似のハードウェア、ソフトウェア環境だけで運用するように設計されている。</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="multiple_sites" value="3"/></td><td class="num-field">3</td><td>複数サイトへの必要性を考慮し、アプリケーションは異なるハードウェア、ソフトウェア環境だけで運用するように設計されている。</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="multiple_sites" value="4"/></td><td class="num-field">4</td><td>複数サイトでアプリケーションを使用するためのドキュメントとサポート計画が提供され、テストされている。アプリケーションの状態は1と2の記述の通り。</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="multiple_sites" value="5"/></td><td class="num-field">5</td><td>複数サイトでアプリケーションを使用するためのドキュメントとサポート計画が提供され、テストされている。アプリケーションの状態は3の記述の通り。</td></tr>
+				            </tbody>
+				        </table>
+				        </div>
+				    </div>
+				</th><td class="adjust_point" id="txt_multiple_sites"></td>
 			</tr>
 			<tr>
-				<th><a class="detail_link" href="#p_enduser_efficiency"     >7.エンドユーザー効率</a></th><td class="adjust_point" id="txt_enduser_efficiency"></td>
-				<th><a class="detail_link" href="#p_facilitate_change"      >14.変更容易性</a></th><td class="adjust_point" id="txt_facilitate_change"></td>
+				<th>
+				    <div> 
+				        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_enduser_efficiency">7.エンドユーザー効率(End-User Efficiency)</a></span>
+				        <div class="detail_content">
+				        <ul>
+				            <li><input type="checkbox" name="chk_enduser_efficiency" value="0"/>メニュー
+				            <li><input type="checkbox" name="chk_enduser_efficiency" value="1"/>オンラインヘルプ
+				            <li><input type="checkbox" name="chk_enduser_efficiency" value="2"/>オンラインドキュメント
+				            <li><input type="checkbox" name="chk_enduser_efficiency" value="3"/>カーソル移動の自動化
+				            <li><input type="checkbox" name="chk_enduser_efficiency" value="4"/>スクロール
+				            <li><input type="checkbox" name="chk_enduser_efficiency" value="5"/>オンライントランザクションによる遠隔印刷
+				            <li><input type="checkbox" name="chk_enduser_efficiency" value="6"/>ファンクションキーの事前割当
+				            <li><input type="checkbox" name="chk_enduser_efficiency" value="7"/>オンライントランザクションからのバッチジョブ起動
+				            <li><input type="checkbox" name="chk_enduser_efficiency" value="8"/>画面上のデータのカーソルによる選択
+				            <li><input type="checkbox" name="chk_enduser_efficiency" value="9"/>反転表示
+				            <li><input type="checkbox" name="chk_enduser_efficiency" value="10"/>ハイライト表示
+				            <li><input type="checkbox" name="chk_enduser_efficiency" value="11"/>カラーアンダーライン表示およびその他の表示機能の多用
+				            <li><input type="checkbox" name="chk_enduser_efficiency" value="12"/>オンライントランザクションのユーザードキュメンテーションのハードコピー
+				            <li><input type="checkbox" name="chk_enduser_efficiency" value="13"/>マウスインターフェース
+				            <li><input type="checkbox" name="chk_enduser_efficiency" value="14"/>ポップアップウィンドウ
+				            <li><input type="checkbox" name="chk_enduser_efficiency" value="15"/>必要最小限の画面による業務機能の実現
+				            <li><input type="checkbox" name="chk_enduser_efficiency" value="16"/>二ヶ国語サポート(4項目としてカウント)
+				            <li><input type="checkbox" name="chk_enduser_efficiency" value="17"/>多言語サポート(6項目としてカウント)
+				        </ul>
+				        <table border="1">
+				            <col width="20px;" align="center"/>
+				            <col width="50px;" align="center"/>
+				            <col width="*;"/>
+				            <thead>
+				                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
+				            </thead>
+				            <tbody>
+				                <tr><td><input type="radio" class="adjust_option" name="enduser_efficiency" value="0"/></td><td class="num-field">0</td><td>機能のいずれも実現していない</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="enduser_efficiency" value="1"/></td><td class="num-field">1</td><td>機能の1～3項目を実現</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="enduser_efficiency" value="2"/></td><td class="num-field">2</td><td>機能の4～5項目を実現</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="enduser_efficiency" value="3"/></td><td class="num-field">3</td><td>機能の6項目以上を実現。しかし操作効率についてユーザーからの要求は特にない</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="enduser_efficiency" value="4"/></td><td class="num-field">4</td><td>機能の6項目以上を実現。さらに操作効率に対するユーザー要求が厳しいため、ヒューマンファクターに対する設計作業が必要である</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="enduser_efficiency" value="5"/></td><td class="num-field">5</td><td>4に加えて専用のツールおよび処理を用いて目的が達成されたことを証明する必要がある</td></tr>
+				            </tbody>
+				        </table>
+				        </div>
+				    </div>
+				</th><td class="adjust_point" id="txt_enduser_efficiency"></td>
+				<th>
+				    <div> 
+				        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_facilitate_change">14.変更容易性(Facilitate Change)</a></span>
+				        <div class="detail_content">
+				        <ul>
+				            <li><input type="checkbox" name="chk_facilitate_change" value="0"/>簡単な要求(eg-1つのILF)を処理するための柔軟な照会、レポート機能を提供
+				            <li><input type="checkbox" name="chk_facilitate_change" value="1"/>平均的な要求(eg-複数のILF)を処理するための柔軟な照会、レポート機能を提供 
+				            <li><input type="checkbox" name="chk_facilitate_change" value="2"/>複雑な要求(eg-複数のILFに対する複数のロジック)を処理するための柔軟な照会、レポート機能を提供 
+				            <li><input type="checkbox" name="chk_facilitate_change" value="3"/>オンライン対話型処理によりユーザーが保守できるように、制御データが保持されるが、反映されるのは翌営業日 
+				            <li><input type="checkbox" name="chk_facilitate_change" value="4"/>オンライン対話型処理によりユーザーが保守できるように、制御データが保持され、直ちに反映される 
+				        </ul>
+				        <table border="1">
+				            <col width="20px;" align="center"/>
+				            <col width="50px;" align="center"/>
+				            <col width="*;"/>
+				            <thead>
+				                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
+				            </thead>
+				            <tbody>
+				                <tr><td><input type="radio" class="adjust_option" name="facilitate_change" value="0"/></td><td class="num-field">0</td><td>特性のいずれにも該当しない</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="facilitate_change" value="1"/></td><td class="num-field">1</td><td>特性のいずれか1項目に該当</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="facilitate_change" value="2"/></td><td class="num-field">2</td><td>特性のいずれか2項目に該当</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="facilitate_change" value="3"/></td><td class="num-field">3</td><td>特性のいずれか3項目に該当</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="facilitate_change" value="4"/></td><td class="num-field">4</td><td>特性のいずれか4項目に該当</td></tr>
+				                <tr><td><input type="radio" class="adjust_option" name="facilitate_change" value="5"/></td><td class="num-field">5</td><td>特性のいずれか5項目に該当</td></tr>
+				            </tbody>
+				        </table>
+				        </div>
+				    </div>
+				</th><td class="adjust_point" id="txt_facilitate_change"></td>
 			</tr>
         </tbody>
     </table>
-	    <div> 
-	        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_data_communications">データ通信(Data Communications)</a></span>
-	        <div class="detail_content">
-	            <table border="1">
-	                <col width="20px;"/>
-	                <col width="50px;"/>
-	                <col width="*;"/>
-	                <thead>
-	                    <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
-	                </thead>
-	                <tbody>
-	                    <tr><td><input type="radio" class="adjust_option" name="data_communications" value="0"/></td><td class="num-field">0</td><td>バッチ処理のみ、またはスタンドアロン</td></tr>
-	                    <tr><td><input type="radio" class="adjust_option" name="data_communications" value="1"/></td><td class="num-field">1</td><td>バッチ処理だが、リモートでのデータ入力またはリモートでの印刷</td></tr>
-	                    <tr><td><input type="radio" class="adjust_option" name="data_communications" value="2"/></td><td class="num-field">2</td><td>バッチ処理だが、リモートのデータ入力およびリモートでの印刷両方</td></tr>
-	                    <tr><td><input type="radio" class="adjust_option" name="data_communications" value="3"/></td><td class="num-field">3</td><td>オンラインでデータ収集するか、バッチ処理のためのTP(遠隔操作)フロントエンド</td></tr>
-	                    <tr><td><input type="radio" class="adjust_option" name="data_communications" value="4"/></td><td class="num-field">4</td><td>フロントエンド以上の通信機能を持つが、1種類のTP通信プロトコルのみサポート</td></tr>
-	                    <tr><td><input type="radio" class="adjust_option" name="data_communications" value="5"/></td><td class="num-field">5</td><td>フロントエンド以上の通信機能を持つが、複数種類のTP通信プロトコルをサポート</td></tr>
-	                </tbody>
-	            </table>
-	        </div>
-	    </div>
-	    <div> 
-	        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_distoributed_processing">分散処理(Distributed Data Processing)</a></span>
-	        <div class="detail_content">
-	            <table border="1">
-	                <col width="20px;" align="center"/>
-	                <col width="50px;" align="center"/>
-	                <col width="*;"/>
-	                <thead>
-	                    <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
-	                </thead>
-	                <tbody>
-	                    <tr><td><input type="radio" class="adjust_option" name="distoributed_processing" value="0"/></td><td class="num-field">0</td><td>システム構成要素間でのデータ転送、データ処理機能に関与しない</td></tr>
-	                    <tr><td><input type="radio" class="adjust_option" name="distoributed_processing" value="1"/></td><td class="num-field">1</td><td>PCの表計算やDBMSなどの構成要素でエンドユーザーコンピューティング(EUC)向けのデータを準備</td></tr>
-	                    <tr><td><input type="radio" class="adjust_option" name="distoributed_processing" value="2"/></td><td class="num-field">2</td><td>エンドユーザーコンピューティング(EUC)のためではなく、データが転送のために準備され、システムのほかの構成要素に転送、処理される</td></tr>
-	                    <tr><td><input type="radio" class="adjust_option" name="distoributed_processing" value="3"/></td><td class="num-field">3</td><td>一方向のみのオンラインでの分散処理とデータ転送あり</td></tr>
-	                    <tr><td><input type="radio" class="adjust_option" name="distoributed_processing" value="4"/></td><td class="num-field">4</td><td>双方向でのオンラインでの分散処理とデータ転送あり</td></tr>
-	                    <tr><td><input type="radio" class="adjust_option" name="distoributed_processing" value="5"/></td><td class="num-field">5</td><td>データ処理がシステムの最適な構成要素上で動的に実行</td></tr>
-	                </tbody>
-	            </table>
-	        </div>
-	    </div>
-	    <div> 
-	        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_performance">性能(Performance)</a></span>
-	        <div class="detail_content">
-	        <table border="1">
-	            <col width="20px;" align="center"/>
-	            <col width="50px;" align="center"/>
-	            <col width="*;"/>
-	            <thead>
-	                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
-	            </thead>
-	            <tbody>
-	                <tr><td><input type="radio" class="adjust_option" name="performance" value="0"/></td><td class="num-field">0</td><td>性能に対する特別な要求はない</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="performance" value="1"/></td><td class="num-field">1</td><td>性能条件と設計について要求が明言され、レビュー実施されるも、対応要求なし</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="performance" value="2"/></td><td class="num-field">2</td><td>レスポンスタイムまたはスループットがピーク時に厳しい状況だが、CPU使用率に対する設計上の特別な配慮は不要。処理の期限は翌営業日</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="performance" value="3"/></td><td class="num-field">3</td><td>レスポンスタイムまたはスループットが全業務時間中厳しい状況となるが、CPU使用に対する設計上の特別な配慮は不要。インターフェースをとっているシステムによって、処理の期限に制限あり</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="performance" value="4"/></td><td class="num-field">4</td><td>3に加え、ユーザーの指定した性能要件が厳しいため、設計段階で性能分析が必要</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="performance" value="5"/></td><td class="num-field">5</td><td>4に加え、ユーザーの指定した性能要件を満たすため、設計、開発、導入の段階で性能分析ツールを使用する必要がある</td></tr>
-	            </tbody>
-	        </table>
-	        </div>
-	    </div>
-	    <div> 
-	        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_heavily_used_configuration">高負荷構成(Heavily Used Configuration)</a></span>
-	        <div class="detail_content">
-	        <table border="1">
-	            <col width="20px;" align="center"/>
-	            <col width="50px;" align="center"/>
-	            <col width="*;"/>
-	            <thead>
-	                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
-	            </thead>
-	            <tbody>
-	                <tr><td><input type="radio" class="adjust_option" name="heavily_used_configuration" value="0"/></td><td class="num-field">0</td><td>運用上の制約は明示されておらず、暗黙的にもない</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="heavily_used_configuration" value="1"/></td><td class="num-field">1</td><td>運用上の制約はあるが、通常よりも厳しくなく、特別の配慮は不要</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="heavily_used_configuration" value="2"/></td><td class="num-field">2</td><td>セキュリティまたはタイミング上の配慮が必要</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="heavily_used_configuration" value="3"/></td><td class="num-field">3</td><td>アプリケーションの特定部分に対して、特別なプロセッサ要件がある</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="heavily_used_configuration" value="4"/></td><td class="num-field">4</td><td>指定された運用上の制約によって、セントラルプロセッサまたは専用プロセッサに関して特別の制約が必要</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="heavily_used_configuration" value="5"/></td><td class="num-field">5</td><td>4に加えて、システムの分散構成要素に関してアプリケーションに特別な制約が必要</td></tr>
-	            </tbody>
-	        </table>
-	        </div>
-	    </div>
-	    <div> 
-	        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_transaction_rate">トランザクション量(Transaction Rate)</a></span>
-	        <div class="detail_content">
-	        <table border="1">
-	            <col width="20px;" align="center"/>
-	            <col width="50px;" align="center"/>
-	            <col width="*;"/>
-	            <thead>
-	                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
-	            </thead>
-	            <tbody>
-	                <tr><td><input type="radio" class="adjust_option" name="transaction_rate" value="0"/></td><td class="num-field">0</td><td>トランザクションのピーク期間はないと予測</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="transaction_rate" value="1"/></td><td class="num-field">1</td><td>トランザクションのピーク期間は、毎月、四半期、季節ごと、年に一回程度に予想</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="transaction_rate" value="2"/></td><td class="num-field">2</td><td>毎週トランザクションのピークがあると予想</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="transaction_rate" value="3"/></td><td class="num-field">3</td><td>毎日トランザクションのピークがあると予想</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="transaction_rate" value="4"/></td><td class="num-field">4</td><td>アプリケーションに対するユーザー要求、サービス契約の面でユーザーから高いトランザクション処理率が要求されるため、設計段階で性能分析作業が必要</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="transaction_rate" value="5"/></td><td class="num-field">5</td><td>4に加えて、設計、開発、導入の段階で性能分析ツールを使用する必要がある</td></tr>
-	            </tbody>
-	        </table>
-	        </div>
-	    </div>
-	    <div> 
-	        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_online_data_entry">オンライン入力(Online Data Entry)</a></span>
-	        <div class="detail_content">
-	        <table border="1">
-	            <col width="20px;" align="center"/>
-	            <col width="50px;" align="center"/>
-	            <col width="*;"/>
-	            <thead>
-	                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
-	            </thead>
-	            <tbody>
-	                <tr><td><input type="radio" class="adjust_option" name="online_data_entry" value="0"/></td><td class="num-field">0</td><td>すべてのトランザクションがバッチモードで処理</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="online_data_entry" value="1"/></td><td class="num-field">1</td><td>トランザクションの1～7%がオンライン画面経由で入力</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="online_data_entry" value="2"/></td><td class="num-field">2</td><td>トランザクションの8～15%がオンライン画面経由で入力</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="online_data_entry" value="3"/></td><td class="num-field">3</td><td>トランザクションの16～23%がオンライン画面経由で入力</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="online_data_entry" value="4"/></td><td class="num-field">4</td><td>トランザクションの24～30%がオンライン画面経由で入力</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="online_data_entry" value="5"/></td><td class="num-field">5</td><td>トランザクションの30%以上がオンライン画面経由で入力</td></tr>
-	            </tbody>
-	        </table>
-	        </div>
-	    </div>
-	    <div> 
-	        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_enduser_efficiency">エンドユーザー効率(End-User Efficiency)</a></span>
-	        <div class="detail_content">
-	        <ul>
-	            <li><input type="checkbox" name="chk_enduser_efficiency" value="0"/>メニュー
-	            <li><input type="checkbox" name="chk_enduser_efficiency" value="1"/>オンラインヘルプ
-	            <li><input type="checkbox" name="chk_enduser_efficiency" value="2"/>オンラインドキュメント
-	            <li><input type="checkbox" name="chk_enduser_efficiency" value="3"/>カーソル移動の自動化
-	            <li><input type="checkbox" name="chk_enduser_efficiency" value="4"/>スクロール
-	            <li><input type="checkbox" name="chk_enduser_efficiency" value="5"/>オンライントランザクションによる遠隔印刷
-	            <li><input type="checkbox" name="chk_enduser_efficiency" value="6"/>ファンクションキーの事前割当
-	            <li><input type="checkbox" name="chk_enduser_efficiency" value="7"/>オンライントランザクションからのバッチジョブ起動
-	            <li><input type="checkbox" name="chk_enduser_efficiency" value="8"/>画面上のデータのカーソルによる選択
-	            <li><input type="checkbox" name="chk_enduser_efficiency" value="9"/>反転表示
-	            <li><input type="checkbox" name="chk_enduser_efficiency" value="10"/>ハイライト表示
-	            <li><input type="checkbox" name="chk_enduser_efficiency" value="11"/>カラーアンダーライン表示およびその他の表示機能の多用
-	            <li><input type="checkbox" name="chk_enduser_efficiency" value="12"/>オンライントランザクションのユーザードキュメンテーションのハードコピー
-	            <li><input type="checkbox" name="chk_enduser_efficiency" value="13"/>マウスインターフェース
-	            <li><input type="checkbox" name="chk_enduser_efficiency" value="14"/>ポップアップウィンドウ
-	            <li><input type="checkbox" name="chk_enduser_efficiency" value="15"/>必要最小限の画面による業務機能の実現
-	            <li><input type="checkbox" name="chk_enduser_efficiency" value="16"/>二ヶ国語サポート(4項目としてカウント)
-	            <li><input type="checkbox" name="chk_enduser_efficiency" value="17"/>多言語サポート(6項目としてカウント)
-	        </ul>
-	        <table border="1">
-	            <col width="20px;" align="center"/>
-	            <col width="50px;" align="center"/>
-	            <col width="*;"/>
-	            <thead>
-	                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
-	            </thead>
-	            <tbody>
-	                <tr><td><input type="radio" class="adjust_option" name="enduser_efficiency" value="0"/></td><td class="num-field">0</td><td>機能のいずれも実現していない</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="enduser_efficiency" value="1"/></td><td class="num-field">1</td><td>機能の1～3項目を実現</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="enduser_efficiency" value="2"/></td><td class="num-field">2</td><td>機能の4～5項目を実現</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="enduser_efficiency" value="3"/></td><td class="num-field">3</td><td>機能の6項目以上を実現。しかし操作効率についてユーザーからの要求は特にない</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="enduser_efficiency" value="4"/></td><td class="num-field">4</td><td>機能の6項目以上を実現。さらに操作効率に対するユーザー要求が厳しいため、ヒューマンファクターに対する設計作業が必要である</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="enduser_efficiency" value="5"/></td><td class="num-field">5</td><td>4に加えて専用のツールおよび処理を用いて目的が達成されたことを証明する必要がある</td></tr>
-	            </tbody>
-	        </table>
-	        </div>
-	    </div>
-	    <div> 
-	        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_online_update">オンライン更新(Online Update)</a></span>
-	        <div class="detail_content">
-	        <table border="1">
-	            <col width="20px;" align="center"/>
-	            <col width="50px;" align="center"/>
-	            <col width="*;"/>
-	            <thead>
-	                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
-	            </thead>
-	            <tbody>
-	                <tr><td><input type="radio" class="adjust_option" name="online_update" value="0"/></td><td class="num-field">0</td><td>オンライン更新はない</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="online_update" value="1"/></td><td class="num-field">1</td><td>1～3のILFをオンラインで更新。更新量は少なく、回復は容易</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="online_update" value="2"/></td><td class="num-field">2</td><td>4以上のILFをオンラインで更新。更新量は少なく、回復は容易</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="online_update" value="3"/></td><td class="num-field">3</td><td>主要なILFをオンラインで更新</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="online_update" value="4"/></td><td class="num-field">4</td><td>3に加え、データ損失保護が必須、特別な設計、プログラムあり</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="online_update" value="5"/></td><td class="num-field">5</td><td>4に加え、更新量が多く、回復処理の費用面の考慮がなされている。オペレータの介在が最小となるような高度に自動化された回復手順が必要</td></tr>
-	            </tbody>
-	        </table>
-	        </div>
-	    </div>
-	    <div> 
-	        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_complex_processing">複雑な処理(Complex Processing)</a></span class="detail_header">
-	        <div class="detail_content">
-	        <ul>
-	            <li><input type="checkbox" name="chk_complex_processing" value="0"/>きめ細かい制御、または特有のセキュリティ処理
-	            <li><input type="checkbox" name="chk_complex_processing" value="1"/>広範な論理的処理
-	            <li><input type="checkbox" name="chk_complex_processing" value="2"/>広範な演算処理
-	            <li><input type="checkbox" name="chk_complex_processing" value="3"/>再処理が必要となる不完全トランザクションが原因での多くの例外処理
-	            <li><input type="checkbox" name="chk_complex_processing" value="4"/>多様の入出力機能を扱う複雑な処理
-	        </ul>
-	        <table border="1">
-	            <col width="20px;" align="center"/>
-	            <col width="50px;" align="center"/>
-	            <col width="*;"/>
-	            <thead>
-	                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
-	            </thead>
-	            <tbody>
-	                <tr><td><input type="radio" class="adjust_option" name="complex_processing" value="0"/></td><td class="num-field">0</td><td>要素のいずれにも該当せず</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="complex_processing" value="1"/></td><td class="num-field">1</td><td>要素のいずれか1項目に該当</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="complex_processing" value="2"/></td><td class="num-field">2</td><td>要素のいずれか2項目に該当</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="complex_processing" value="3"/></td><td class="num-field">3</td><td>要素のいずれか3項目に該当</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="complex_processing" value="4"/></td><td class="num-field">4</td><td>要素のいずれか4項目に該当</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="complex_processing" value="5"/></td><td class="num-field">5</td><td>要素の5項目すべてに該当</td></tr>
-	            </tbody>
-	        </table>
-	        </div>
-	    </div>
-	    <div> 
-	        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_reusability">再利用可能性(Reusability)</a></span>
-	        <div class="detail_content">
-	        <table border="1">
-	            <col width="20px;" align="center"/>
-	            <col width="50px;" align="center"/>
-	            <col width="*;"/>
-	            <thead>
-	                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
-	            </thead>
-	            <tbody>
-	                <tr><td><input type="radio" class="adjust_option" name="reusability" value="0"/></td><td class="num-field">0</td><td>再利用できるコードはない</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="reusability" value="1"/></td><td class="num-field">1</td><td>再利用できるコードがアプリケーション内で使用されている</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="reusability" value="2"/></td><td class="num-field">2</td><td>アプリケーションの10%未満で複数のユーザーのニーズを考慮</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="reusability" value="3"/></td><td class="num-field">3</td><td>アプリケーションの10%以上で複数のユーザーのニーズを考慮</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="reusability" value="4"/></td><td class="num-field">4</td><td>アプリケーションは再利用し易くするために特別なパッケージ化および文書化がされている。またアプリケーションはソースコードレベルでユーザーによりカスタマイズされる</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="reusability" value="5"/></td><td class="num-field">5</td><td>アプリケーションは再利用し易くするために特別なパッケージ化および文書化がされていて、アプリケーションのカスタマイズはユーザーのパラメータ維持管理で可能</td></tr>
-	            </tbody>
-	        </table>
-	        </div>
-	    </div>
-	    <div> 
-	        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_installation_ease">インストール容易性(Installation Ease)</a></span>
-	        <div class="detail_content">
-	        <table border="1">
-	            <col width="20px;" align="center"/>
-	            <col width="50px;" align="center"/>
-	            <col width="*;"/>
-	            <thead>
-	                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
-	            </thead>
-	            <tbody>
-	                <tr><td><input type="radio" class="adjust_option" name="installation_ease" value="0"/></td><td class="num-field">0</td><td>導入に対してユーザーの特別な指定、特別な設置作業も不要</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="installation_ease" value="1"/></td><td class="num-field">1</td><td>導入に対してユーザーの特別な指定はないが、特別なセットアップが必要</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="installation_ease" value="2"/></td><td class="num-field">2</td><td>移行および導入にユーザー指定があり、移行および導入ガイドを提供するとともにテストされている。プロジェクトに対する移行の影響は重大ではない</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="installation_ease" value="3"/></td><td class="num-field">3</td><td>移行および導入にユーザー指定があり、移行および導入ガイドを提供するとともにテストされている。プロジェクトに対する移行の影響は重大である</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="installation_ease" value="4"/></td><td class="num-field">4</td><td>2に加えて、自動移行および自動導入ツールを提供するとともにテストされている</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="installation_ease" value="5"/></td><td class="num-field">5</td><td>3に加えて、自動移行および自動導入ツールを提供するとともにテストされている</td></tr>
-	            </tbody>
-	        </table>
-	        </div>
-	    </div>
-	    <div> 
-	        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_operational_ease">運用性(Operational Ease)</a></span>
-	        <div class="detail_content">
-	        <table border="1">
-	            <col width="20px;" align="center"/>
-	            <col width="50px;" align="center"/>
-	            <col width="*;"/>
-	            <thead>
-	                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
-	            </thead>
-	            <tbody>
-	                <tr><td><input type="radio" class="adjust_option" name="operational_ease" value="0"/></td><td class="num-field">0</td><td>通常の手続き以外、ユーザーからの運用上の指定は特にない</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="operational_ease" value="1"/></td><td class="num-field">1</td>
-	                    <td rowspan="4">アプリケーションに適用される項目を以下から選択。各項目1度数としてカウント。
-	                        <ol>
-	                            <li> 効率的な始動、バックアップ、回復処理が提供されているが、オペレータの介入も必要。
-	                            <li> 効率的な始動、バックアップ、回復処理が提供されており、オペレータの介入が不要(2度数としてカウント)。
-	                            <li> アプリケーションは、テープマウントの必要性が最小限になるようにしている。
-	                            <li> アプリケーションは用紙操作の必要性が最小限になるようにしている。            
-	                        </ol>
-	                    </td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="operational_ease" value="2"/></td><td class="num-field">2</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="operational_ease" value="3"/></td><td class="num-field">3</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="operational_ease" value="4"/></td><td class="num-field">4</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="operational_ease" value="5"/></td><td class="num-field">5</td><td>アプリケーションは無人操作となるように設計されている。無人操作とは、アプリケーションの始動、シャットダウン以外はオペレーターがシステムを操作する必要がないことを意味する。自動エラー回復機能付アプリケーション。</td></tr>
-	            </tbody>
-	        </table>
-	        </div>
-	    </div>
-	    <div> 
-	        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_multiple_sites">複数サイト(Multiple Sites)</a></span>
-	        <div class="detail_content">
-	        <table border="1">
-	            <col width="20px;" align="center"/>
-	            <col width="50px;" align="center"/>
-	            <col width="*;"/>
-	            <thead>
-	                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
-	            </thead>
-	            <tbody>
-	                <tr><td><input type="radio" class="adjust_option" name="multiple_sites" value="0"/></td><td class="num-field">0</td><td>複数サイトへの導入の要求はない</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="multiple_sites" value="1"/></td><td class="num-field">1</td><td>複数サイトへの必要性を考慮し、アプリケーションは同一のハードウェア、ソフトウェア環境だけで運用するように設計されている。</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="multiple_sites" value="2"/></td><td class="num-field">2</td><td>複数サイトへの必要性を考慮し、アプリケーションは類似のハードウェア、ソフトウェア環境だけで運用するように設計されている。</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="multiple_sites" value="3"/></td><td class="num-field">3</td><td>複数サイトへの必要性を考慮し、アプリケーションは異なるハードウェア、ソフトウェア環境だけで運用するように設計されている。</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="multiple_sites" value="4"/></td><td class="num-field">4</td><td>複数サイトでアプリケーションを使用するためのドキュメントとサポート計画が提供され、テストされている。アプリケーションの状態は1と2の記述の通り。</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="multiple_sites" value="5"/></td><td class="num-field">5</td><td>複数サイトでアプリケーションを使用するためのドキュメントとサポート計画が提供され、テストされている。アプリケーションの状態は3の記述の通り。</td></tr>
-	            </tbody>
-	        </table>
-	        </div>
-	    </div>
-	    <div> 
-	        <span class="detail_header"><img src="images/add.png" border="0"/> <a name="p_facilitate_change">変更容易性(Facilitate Change)</a></span>
-	        <div class="detail_content">
-	        <ul>
-	            <li><input type="checkbox" name="chk_facilitate_change" value="0"/>簡単な要求(eg-1つのILF)を処理するための柔軟な照会、レポート機能を提供
-	            <li><input type="checkbox" name="chk_facilitate_change" value="1"/>平均的な要求(eg-複数のILF)を処理するための柔軟な照会、レポート機能を提供 
-	            <li><input type="checkbox" name="chk_facilitate_change" value="2"/>複雑な要求(eg-複数のILFに対する複数のロジック)を処理するための柔軟な照会、レポート機能を提供 
-	            <li><input type="checkbox" name="chk_facilitate_change" value="3"/>オンライン対話型処理によりユーザーが保守できるように、制御データが保持されるが、反映されるのは翌営業日 
-	            <li><input type="checkbox" name="chk_facilitate_change" value="4"/>オンライン対話型処理によりユーザーが保守できるように、制御データが保持され、直ちに反映される 
-	        </ul>
-	        <table border="1">
-	            <col width="20px;" align="center"/>
-	            <col width="50px;" align="center"/>
-	            <col width="*;"/>
-	            <thead>
-	                <tr><th>&nbsp;</th><th>評価点</th><th>説明</th></tr>
-	            </thead>
-	            <tbody>
-	                <tr><td><input type="radio" class="adjust_option" name="facilitate_change" value="0"/></td><td class="num-field">0</td><td>特性のいずれにも該当しない</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="facilitate_change" value="1"/></td><td class="num-field">1</td><td>特性のいずれか1項目に該当</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="facilitate_change" value="2"/></td><td class="num-field">2</td><td>特性のいずれか2項目に該当</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="facilitate_change" value="3"/></td><td class="num-field">3</td><td>特性のいずれか3項目に該当</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="facilitate_change" value="4"/></td><td class="num-field">4</td><td>特性のいずれか4項目に該当</td></tr>
-	                <tr><td><input type="radio" class="adjust_option" name="facilitate_change" value="5"/></td><td class="num-field">5</td><td>特性のいずれか5項目に該当</td></tr>
-	            </tbody>
-	        </table>
-	        </div>
-	    </div>
-	
 	
 	
 	<div class="help_tips_text">
