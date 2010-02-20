@@ -38,8 +38,13 @@ def list_functions(project_key):
     functions = []
     q = FunctionEntity.gql("WHERE project_key=:1 ORDER BY sort_order", project_key)
     results = q.fetch(MAX_FUNCTION)
+    sort_order = 1
     for result in results:
+        result.sort_order = sort_order
+        sort_order += 1
         functions.append(result.to_dict())
+        result.put()
+        
     return functions
 
 class InitialFunctionPointPage(webapp.RequestHandler):
@@ -276,7 +281,7 @@ class AddFunction(webapp.RequestHandler):
                                              function_name='',
                                              measurement_index1=0,
                                              measurement_index2=0,
-                                             sort_order=0,
+                                             sort_order=99,
                                             );
                 func_entity.put()
                 
