@@ -31,7 +31,7 @@ application = webapp.WSGIApplication([
                                       ('/fp/function/add',     fp_handler.AddFunction),
                                       ('/fp/function/update',  fp_handler.UpdateFunction),
                                       ('/fp/function/delete',  fp_handler.DeleteFunction),
-                                      
+                                      ('/fp/function/reorder', fp_handler.ReOrderFunction),
                                       ], debug=True)
 
 def main():

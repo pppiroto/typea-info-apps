@@ -88,7 +88,6 @@ class FunctionPointProject(db.Model):
                     )
                 )
         
-        
     def to_dict(self):
         return {'key':                          str(self.key()),
                 'owner':                        str(self.owner),
@@ -249,6 +248,7 @@ class FunctionEntity(db.Model):
         return { 'key':str(self.key()),
                  'owner':str(self.owner),
                  'project_key':self.project_key,
+                 'sort_order':self.sort_order,
                  'function_type':self.function_type,
                  'function_name':self.function_name,
                  'function_category':self.function_category,

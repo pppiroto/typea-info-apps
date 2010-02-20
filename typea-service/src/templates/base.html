@@ -18,6 +18,7 @@
 	{% endblock %}
 </head>
 <body>
+	<div id="logo"><a href="/">PMTools</a></div>
 	<div id="headbar">
 		{{settings.user_nickname}}
 		|
@@ -32,9 +33,6 @@
 			</tr>
 			<tr>
 				<td class="layout"><a href="http://typea.info/" target="_blank">Home</a></td>
-			</tr>
-			<tr>
-				<td class="layout"><a href="/">Project Home</a></td>
 			</tr>
 			<tr>
 				<td class="layout"><a href="http://typea.info/blg/glob/" target="_blank">ブログ</a></td>
@@ -54,8 +52,23 @@
 	<div id="content">
 		{% block content %}
 		{% endblock %}
+		<div id="footerbar">
+			contact to <a href="http://twitter.com/pppiroto">http://twitter.com/pppiroto</a> 
+		</div>
 	</div>
 	<div id="loading" style="display:none"></div>
 	<div id="message" style="display:none"></div>
+
+	<!--  Google Analytics Tracking Code -->
+	<script type="text/javascript">
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+	try {
+	var pageTracker = _gat._getTracker("UA-3022275-3");
+	pageTracker._trackPageview();
+	} catch(err) {}</script>
+
 </body>
 </html>
