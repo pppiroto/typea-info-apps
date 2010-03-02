@@ -1,0 +1,184 @@
+‚ˆ‚P/**
+ * styling for tip content
+ * mostly for example
+ * note: canvas (the tip itself) cannot be styled here. use javascript options for that.
+ */
+.bt-content {
+  font-size: small;
+  color: #000;
+  line-height: normal;
+}
+
+/* styling for active target elements - usually for background hilighting */
+.bt-active {
+  /* example:
+  background-color: yellow !important;
+  */
+}
+
+div.help_tips_text {
+	display : none;
+}
+
+body {
+    background-color : #F5F5F5;
+    color            : #330066;
+    font-size        : small;
+    font-family      : Courier New;
+}
+
+
+h1 {
+    text-align       : left;
+    font-size        : 140%;
+    border-bottom    : silver  1px dotted;
+}
+
+h2 {
+    text-align       : left;
+    font-size        : 120%;
+    font-weight      : normal;
+    border-bottom    : silver  1px dotted;
+}
+
+h3 {
+    text-align       : left;
+    font-size        : 110%;
+    font-weight      : normal;
+    border-bottom    : silver  1px dotted;
+}
+
+table {
+    border: solid 1px #D5D5D5;
+    border-collapse: collapse;
+    /* width:100%; */ 
+}
+table tr {
+    background-color:white;
+}
+table th {
+	background-color:#EEE;
+    border-right:1px solid #D5D5D5;
+    border-bottom:1px solid #D5D5D5;
+    font-size:13.5px;
+    /*line-height:120%;*/
+    font-weight:normal;
+    padding:2px 2px;
+    text-align:left;
+}
+table td {
+    border:1px solid #D5D5D5;
+    font-size:12px;
+    padding:2px 2px;
+}
+.selected_row {
+	background-color:#99ffcc;
+}
+
+.layout {
+	background-color : #F5F5F5;
+	border:none;
+}
+.ui-resizable {
+    position:relative;
+}
+.ui-resizable-handle {
+    display:block;
+    font-size:0.1px;
+    position:absolute;
+    z-index:99999;
+}
+.ui-resizable-s { 
+    background:#EEEEEE url(../images/grippie.png) no-repeat scroll center 2px;
+    border-top:1px solid #CCCCCC;
+    bottom:-5px;
+    cursor:s-resize;
+    height:14px;
+    left:0;width:100%; 
+}
+
+
+A:link { 
+    color            : midnightblue;
+    text-decoration  : none;
+}
+
+A:visited {
+    color            : midnightblue;
+    text-decoration  : none;
+}
+
+A:hover {
+    color           : #004284;
+    text-decoration : underline;
+}
+
+.num-field {
+	text-align:right;
+	color:green;
+}
+.adjust_point {
+	text-align:right;
+	color:green;
+}
+
+#logo {
+	position: absolute;
+	left:0px;
+	top:0px;
+	font-size      : 200%;
+	text-decoration: bold;
+}
+
+#headbar {
+	position: absolute;
+	left:0px;
+	top:0px;
+	height:20px;
+	width:100%;
+	text-align : right;
+}
+
+#sidebar {
+	position: absolute;
+	left:0px;
+	top:21px;
+	width:160px;
+}
+
+#content {
+	position: absolute;
+	left:161px;
+	top:21px;
+	width:100%;
+}
+
+#footerbar {
+	margin-top:20px;
+	margin-bottom:100px;
+	border-top:solid 1px silver;
+	width:100%;
+}
+
+#loading {
+	position: absolute;
+	top:200px;
+	left:200px;
+	padding: 8px;
+	background-color:lightyellow;
+	color: steelblue;
+	font-size:small;
+	text-align:center;
+	width:90px;
+}
+#message {
+	position: absolute;
+	top:200px;
+	left:200px;
+	padding: 8px;
+	background-color:#ffcc99;
+	color: red;
+	text-decoration:bold;
+	border:1px solid red;
+	font-size:small;
+}
