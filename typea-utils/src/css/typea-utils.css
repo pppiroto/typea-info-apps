@@ -1,0 +1,37 @@
+#logo {
+	position: absolute;
+	left:0px;
+	top:0px;
+	font-size      : 200%;
+	text-decoration: bold;
+}
+
+#headbar {
+	position: absolute;
+	left:0px;
+	top:0px;
+	height:40px;
+	width:100%;
+	text-align : right;
+}
+
+#sidebar {
+	position: absolute;
+	left:0px;
+	top:21px;
+	width:160px;
+}
+
+#content {
+	position: absolute;
+	left:161px;
+	top:41px;
+	width:100%;
+}
+
+#footerbar {
+	margin-top:20px;
+	margin-bottom:100px;
+	border-top:solid 1px silver;
+	width:100%;
+}
