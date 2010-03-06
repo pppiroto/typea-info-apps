@@ -71,7 +71,7 @@ class LoadFunctionPointProject(webapp.RequestHandler):
             projects = list_projects(user)
             return self.response.out.write(json.write({'items':projects}))
         else:
-            err = {'error':common.message('login_err',common.AppSettings(self.request.uri))}
+            err = {'error':common.message('login_err',common.AppSettings('/fp'))}
             
             return self.response.out.write(json.write(err))
 
@@ -108,7 +108,7 @@ class CreateFunctionPointProject(webapp.RequestHandler):
             project.put();
             return self.response.out.write(json.write(project.to_dict()))
         else:
-            err = {'error':common.message('login_err',common.AppSettings(self.request.uri))}
+            err = {'error':common.message('login_err',common.AppSettings('/fp'))}
             return self.response.out.write(json.write(err))
         
         err = {'error':'Unknown Error'}
@@ -139,7 +139,7 @@ class UpdateFunctionPointProject(webapp.RequestHandler):
             projects = list_projects(user) 
             return self.response.out.write(json.write({'items':projects}))
         else:
-            err = {'error':common.message('login_err',common.AppSettings(self.request.uri))}
+            err = {'error':common.message('login_err',common.AppSettings('/fp'))}
             return self.response.out.write(json.write(err))
         
         err = {'error':'Unknown Error'}
@@ -198,7 +198,7 @@ class UpdateAdjustPoint(webapp.RequestHandler):
             
             return self.response.out.write(json.write(project.to_dict()))
         else:
-            err = {'error':common.message('login_err',common.AppSettings(self.request.uri))}
+            err = {'error':common.message('login_err',common.AppSettings('/fp'))}
             return self.response.out.write(json.write(err))
         
         err = {'error':'Unknown Error'}
@@ -226,7 +226,7 @@ class DeleteFunctionPointProject(webapp.RequestHandler):
             projects = list_projects(user) 
             return self.response.out.write(json.write({'items':projects}))
         else:
-            err = {'error':common.message('login_err',common.AppSettings(self.request.uri))}
+            err = {'error':common.message('login_err',common.AppSettings('/fp'))}
             return self.response.out.write(json.write(err))
         
         err = {'error':'Unknown Error'}
@@ -258,7 +258,7 @@ class LoadFunction(webapp.RequestHandler):
                 err = {'error':common.message('project_not_selected')}
                 return self.response.out.write(json.write(err))
         else:
-            err = {'error':common.message('login_err',common.AppSettings(self.request.uri))}
+            err = {'error':common.message('login_err',common.AppSettings('/fp'))}
             return self.response.out.write(json.write(err))
         
         err = {'error':'Unknown Error'}
@@ -290,7 +290,7 @@ class AddFunction(webapp.RequestHandler):
                 err = {'error':common.message('project_not_selected')}
                 return self.response.out.write(json.write(err))
         else:
-            err = {'error':common.message('login_err',common.AppSettings(self.request.uri))}
+            err = {'error':common.message('login_err',common.AppSettings('/fp'))}
             return self.response.out.write(json.write(err))
         
         err = {'error':'Unknown Error'}
@@ -337,7 +337,7 @@ class UpdateFunction(webapp.RequestHandler):
                 return self.response.out.write(json.write(err))
                 
         else:
-            err = {'error':common.message('login_err',common.AppSettings(self.request.uri))}
+            err = {'error':common.message('login_err',common.AppSettings('/fp'))}
             return self.response.out.write(json.write(err))
         
         err = {'error':'Unknown Error'}
@@ -367,7 +367,7 @@ class DeleteFunction(webapp.RequestHandler):
                 return self.response.out.write(json.write(err))
                 
         else:
-            err = {'error':common.message('login_err',common.AppSettings(self.request.uri))}
+            err = {'error':common.message('login_err',common.AppSettings('/fp'))}
             return self.response.out.write(json.write(err))
         
         err = {'error':'Unknown Error'}
@@ -408,7 +408,7 @@ class ReOrderFunction(webapp.RequestHandler):
              
             return self.response.out.write(json.write({'items':result}))
         else:
-            err = {'error':common.message('login_err',common.AppSettings(self.request.uri))}
+            err = {'error':common.message('login_err',common.AppSettings('/fp'))}
             return self.response.out.write(json.write(err))
         
         err = {'error':'Unknown Error'}
