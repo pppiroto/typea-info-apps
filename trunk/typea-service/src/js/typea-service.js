@@ -29,7 +29,7 @@ function error_msg(msg) {
 	if (msg == null || jQuery.trim(msg) == "") {
 		msg_area.hide("normal");
 	} else {
-		msg_area.text(msg)
+		msg_area.html(msg)
 		msg_area.show("normal");
 	}
 }
