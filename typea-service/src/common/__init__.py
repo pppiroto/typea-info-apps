@@ -1,18 +1,35 @@
 #!Python2.6
 # -*- encoding: utf-8 -*-
 from google.appengine.api import users
+import logging
 
-def message(key):
+def message(key, settings=None):
     msg_table = {'login_err':u'ログインしてください',
                  'project_not_selected':u'プロジェクトを選択してください',
                  
-                 
                 }
+    
+    msg = None 
+    if settings:
+        if key == 'login_err':
+            msg = u'まず、<a href="%s">こちらから</a> ログインしてください.<br/>Googleアカウントがあれば利用できます.' % (settings.user_login_url)
+        elif key == '':
+            pass
+        else:
+            pass
+        
+    if msg:
+        return msg
     
     if key in msg_table:
         return msg_table[key]
     else:
         return u'原因不明のエラー'
+
+
+
+
+
 
 def default_context(request_uri='/'):
     context = {'settings':AppSettings(request_uri)}
