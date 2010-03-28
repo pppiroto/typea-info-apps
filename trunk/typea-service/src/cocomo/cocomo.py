@@ -78,7 +78,7 @@ class Cocomo(object):
                                            self.phase_programming[i],
                                            self.phase_integration_test[i])
                                      ))
-        self.phase_total.append(sum(self.phase_total[:self.PHASE_COL_SIZE-2])) 
+        #self.phase_total.append(sum(self.phase_total[:self.PHASE_COL_SIZE-2])) 
 
     def list_summary(self, lst):
         ttl = sum(lst)

@@ -18,8 +18,9 @@ class MainPage(webapp.RequestHandler):
 application = webapp.WSGIApplication([
                                       ('/',                     MainPage),
                                       #Cocomo
-                                      ('/cocomo',       ccm_handler.InitialCocomoPage),
-                                      ('/cocomo/calc',  ccm_handler.CalcCocomoResponse),
+                                      ('/cocomo',              ccm_handler.InitialCocomoPage),
+                                      ('/cocomo/calc',         ccm_handler.CalcCocomoResponse),
+                                      ('/cocomo/export',       ccm_handler.ExportResponse),                                      
                                       #FunctionPoint
                                       ('/fp',                  fp_handler.InitialFunctionPointPage),
                                       ('/fp/projects/load',    fp_handler.LoadFunctionPointProject),

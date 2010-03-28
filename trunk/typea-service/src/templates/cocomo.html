@@ -1,6 +1,26 @@
 {% extends "base.html" %}
 {% block html_header %}
 	<script type="text/javascript"><!-- 
+	$(document).ready(function(){
+		$('#calc_btn').click(calc_cocomo);
+		$('#export_img').click(export_cocomo);
+	})
+	
+	function export_cocomo() {
+		var mode = $("input:radio[@name='calc_mode']:checked").val();
+		var num  = jQuery.trim($("#num").val());
+
+		if (mode && num != "") {
+			var url = "/cocomo/export"
+	                + "?calc_mode=" + mode
+	                + "&num="       + num;
+	
+			window.open(url,'_blank');		
+		} else {
+			alert("入力項目に誤りがあります。");	
+		}
+	}
+	
 	function calc_cocomo() {
 		var url = "/cocomo/calc"
 
@@ -53,9 +73,9 @@
 	<input type="radio" name="calc_mode" value="kdsi"/>プログラムサイズ(KLOC)
 	<input type="radio" name="calc_mode" value="effort"/>工数(PM)
 	<input type="text" id="num" maxlength="10" size="10"/>
-	<input type="button" value="計算" onclick="calc_cocomo()"/>
+	<input type="button" id="calc_btn" value="計算"/>
 	
-	<h3>COCOMO計算式</h3>
+	<h3>COCOMO計算式 <img src='/images/icon_xls.gif' id="export_img" border='0'></h3>
 	<table width="400px;">
 		<col width="*"/>
 		<col width="50%"/>
