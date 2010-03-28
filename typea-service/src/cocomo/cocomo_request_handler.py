@@ -93,15 +93,14 @@ class ExportResponse(webapp.RequestHandler):
             style_link.font = font_link
             #
             
-            wb = xlwt.Workbook(encoding='cp1251')
+            wb = xlwt.Workbook(encoding='utf-8')
             ws = wb.add_sheet(u'COCOMO')
-            
             
             #
             base_col = 1
             r = 1
             
-            col_w = (0x0a00,0x1e00,0x0a00,0x0a00,0x1e00,0x0a00,0x0a00,)
+            col_w = (0x0a00,0x1e00,0x0a00,0x0a00,0x2800,0x0a00,0x0a00,)
             for i, v in enumerate(col_w):
                 ws.col(i).width = v
                 
