@@ -1,1 +1,0 @@
-Amazon Product Advertising API Sample Project

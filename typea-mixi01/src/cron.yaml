@@ -1,8 +1,0 @@
-cron:
-- description: daily amazon cache delete job  schedule every sunday of month 15:00
-  url: /am_del?range=all
-  schedule: every 6 hours
-
-
-
-
