@@ -2,6 +2,9 @@
 # -*- encoding: utf-8 -*-
 import sys
 #sys.path.insert(0, 'gdata.zip')
+sys.path.insert(0, 'xlwt.zip')
+
+import xlwt
 
 import os
 from google.appengine.api import users
@@ -414,7 +417,97 @@ class ReOrderFunction(webapp.RequestHandler):
         err = {'error':'Unknown Error'}
         return self.response.out.write(json.write(err))
             
-            
+class ExportResponse(webapp.RequestHandler):
+    def get(self):
+        self.post();
+    
+    def post(self):
+        self.response.headers.add_header("Content-Disposition", 'attachment; filename="cocomo.xls"' )
+        #
+        font_title = xlwt.Font()
+        font_title.bold = True 
+        style_title = xlwt.XFStyle()
+        style_title.font = font_title
+        #
+        font_num = xlwt.Font()
+        font_num.colour_index = 4
+        style_num = xlwt.XFStyle()
+        style_num.num_format_str = '0.00'
+        style_num.font = font_num
+        
+        #
+        font_link = xlwt.Font()
+        font_link.colour_index = 4
+        font_link.underline = xlwt.Font.UNDERLINE_DOUBLE
+        style_link = xlwt.XFStyle()
+        style_link.font = font_link
+    
+        wb = xlwt.Workbook(encoding='utf-8')
+        ws = wb.add_sheet(u'FUNCTION POINT')
+    
+        #
+        base_col = 1
+        r = 1
+    
+        col_w = (0x0500,0x0500,0x2800,0x1400,0x0a00,0x0a00,0x0a00,0x0a00)
+        for i, v in enumerate(col_w):
+            ws.col(i).width = v
+    
+        ws.write(r, base_col, u'ファンクションポイント', style_title)
+    
+        r = 3    
+        ws.write(r, base_col + 0, u'システム' ,         style_title)
+        ws.write(r, base_col + 2, u'アプリケーション' , style_title)
+        ws.write(r, base_col + 3, u'計測タイプ' ,       style_title)
+    
+        r = 4
+        ws.write(r, base_col + 0, u'テストシステム')
+        ws.write(r, base_col + 2, u'テストアプリケーション')
+        ws.write(r, base_col + 3, u'新規開発')
+        
+        r = 6
+        ws.write(r, base_col + 0, u'No' ,         style_title)
+        ws.write(r, base_col + 1, u'要素処理名' , style_title)
+        ws.write(r, base_col + 2, u'区分' ,       style_title)
+        ws.write(r, base_col + 3, u'DET' ,        style_title)
+        ws.write(r, base_col + 4, u'RET/FTR' ,    style_title)
+        ws.write(r, base_col + 5, u'複雑度' ,     style_title)
+        ws.write(r, base_col + 6, u'FP' ,         style_title)
+        for i in range(5):
+            r = r + 1
+            ws.write(r, base_col + 0, u'01')
+            ws.write(r, base_col + 1, u'トランザクション1')
+            ws.write(r, base_col + 2, u'外部入力(EI)')
+            ws.write(r, base_col + 3, u'4' , style_num)
+            ws.write(r, base_col + 4, u'5' , style_num)
+            ws.write(r, base_col + 5, u'Avarage')
+            ws.write(r, base_col + 6, u'4.00', style_num)
+        
+        dat = ((u'データ通信(Data Communications)'),
+               (u'分散処理(Distributed Data Processing)'),
+               (u'性能(Performance)'),
+               (u'高負荷構成(Heavily Used Configuration)'),
+               (u'トランザクション量(Transaction Rate)'),
+               (u'オンライン入力(Online Data Entry)'),
+               (u'エンドユーザー効率(End-User Efficiency)'),
+               (u'オンライン更新(Online Update)'),
+               (u'複雑な処理(Complex Processing)'),
+               (u'再利用可能性(Reusability)'),
+               (u'インストール容易性(Installation Ease)'),
+               (u'運用性(Operational Ease)'),
+               (u'複数サイト(Multiple Sites)'),
+               (u'変更容易性(Facilitate Change)'),
+        )
+        
+        r = r + 1
+        for (k, d) in enumerate(dat):
+            r = r + 1
+            ws.write(r, base_col, k + 1)
+            ws.write(r, base_col + 1, d)
+    
+        wb.save(self.response.out)
+        return None
+        
             
             
             

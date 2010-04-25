@@ -5,7 +5,7 @@
 	<script type="text/javascript" src="/js/jquery.chromatable.js"></script>
 	<script type="text/javascript"><!-- 
 	$(document).ready(function(){
-
+		$('#export_img').click(export_fp);
 		$("#project_table").chromatable({
 			width:    "540px",
 			height:   "120px",
@@ -142,6 +142,12 @@
 		$.getJSON("/fp/projects/load",load_projects); 
 
 	});
+	
+	function export_fp() {
+		var url = "/fp/projects/export"
+		window.open(url,'_blank');		
+	}
+	
 	function bind_help_text(icon_id, txt_id) {
 		$('#' + icon_id).bt(
 				$("#" + txt_id).html(),
@@ -615,6 +621,8 @@
 	|
 	<img src='/images/add_trn.gif' id="img_add_trn" border='0'/>
 	<a href="javascript:;" id="add_tran_function_btn">トランザクショナルファンクションの追加</a>
+	|
+	<img src='/images/icon_xls.gif' id='export_img' border='0' title='Excelへ出力します'>
 	<img src='/images/help.gif' id="img_tran_function" border='0'/>
 	<span style="font-size:8pt;color:green;">(最大100ファンクション)</span>
 	<table id="function_table" style="width:767px;table-layout: fixed;">

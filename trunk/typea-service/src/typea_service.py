@@ -28,6 +28,7 @@ application = webapp.WSGIApplication([
                                       ('/fp/projects/update',  fp_handler.UpdateFunctionPointProject),
                                       ('/fp/projects/delete',  fp_handler.DeleteFunctionPointProject),
                                       ('/fp/projects/up_point',fp_handler.UpdateAdjustPoint),
+                                      ('/fp/projects/export',  fp_handler.ExportResponse),
                                       ('/fp/function/load',    fp_handler.LoadFunction),
                                       ('/fp/function/add',     fp_handler.AddFunction),
                                       ('/fp/function/update',  fp_handler.UpdateFunction),
