@@ -145,8 +145,8 @@ class FunctionEntity(db.Model):
             return self.data_function_point()
         elif self.function_type == 'tran':
             return self.tran_function_point()
-        return ''
-    
+        return '0'
+       
     def data_complexity(self):
         x = None    
         if 1 == self.measurement_index2:
@@ -253,7 +253,7 @@ class FunctionEntity(db.Model):
         if x <> None and y <> None:
             return fp[x][y]
         else:
-            return ''
+            return '0'
     
     def to_dict(self):
         return { 'key':str(self.key()),

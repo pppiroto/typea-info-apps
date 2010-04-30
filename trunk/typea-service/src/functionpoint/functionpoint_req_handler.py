@@ -418,6 +418,13 @@ class ReOrderFunction(webapp.RequestHandler):
         return self.response.out.write(json.write(err))
             
 class ExportResponse(webapp.RequestHandler):
+    def to_float(self,s):
+        try:
+            ret = float(s)
+        except:
+            ret = 0.0
+        return ret
+        
     def get(self):
         self.post();
     
@@ -443,7 +450,7 @@ class ExportResponse(webapp.RequestHandler):
                 html = "<html><head></head><body><span style='color:red'>エラー! 選択されたプロジェクトが見つかりません。</span></body></html>"
                 return self.response.out.write(html)
 
-            self.response.headers.add_header("Content-Disposition", 'attachment; filename="cocomo.xls"' )
+            self.response.headers.add_header("Content-Disposition", 'attachment; filename="fp.xls"' )
             #
             font_title = xlwt.Font()
             font_title.bold = True 
@@ -519,9 +526,9 @@ class ExportResponse(webapp.RequestHandler):
                 ws.write(r, base_col + 3, func.measurement_index1 , style_num)
                 ws.write(r, base_col + 4, func.measurement_index2 , style_num)
                 ws.write(r, base_col + 5, func.complexity())
-                ws.write(r, base_col + 6, func.function_point(), style_num)
+                ws.write(r, base_col + 6, self.to_float(func.function_point()), style_num)
                 
-                non_adjust_fp += func.function_point()
+                non_adjust_fp = non_adjust_fp + self.to_float(func.function_point())
             
             r += 1
             ws.write(r, base_col + 3, u'未調整FP値 計' , style_title)
