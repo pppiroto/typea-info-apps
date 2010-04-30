@@ -10,19 +10,16 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
-# Used 14 times in query history.
 - kind: FunctionEntity
   properties:
   - name: project_key
   - name: sort_order
 
-# Unused in query history -- copied from input.
 - kind: FunctionEntity
   properties:
   - name: project_key
   - name: srt_order
 
-# Used 5 times in query history.
 - kind: FunctionPointProject
   properties:
   - name: owner
