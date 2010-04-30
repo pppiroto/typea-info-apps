@@ -24,6 +24,13 @@ import logging
 MAX_PROJECT  = 20
 MAX_FUNCTION = 100
 
+def to_float(s):
+    try:
+        ret = float(s)
+    except:
+        ret = 0.0
+    return ret
+
 def to_idx(s):
     if not s.isdigit():
         s = '0'
@@ -418,13 +425,6 @@ class ReOrderFunction(webapp.RequestHandler):
         return self.response.out.write(json.write(err))
             
 class ExportResponse(webapp.RequestHandler):
-    def to_float(self,s):
-        try:
-            ret = float(s)
-        except:
-            ret = 0.0
-        return ret
-        
     def get(self):
         self.post();
     
@@ -526,9 +526,9 @@ class ExportResponse(webapp.RequestHandler):
                 ws.write(r, base_col + 3, func.measurement_index1 , style_num)
                 ws.write(r, base_col + 4, func.measurement_index2 , style_num)
                 ws.write(r, base_col + 5, func.complexity())
-                ws.write(r, base_col + 6, self.to_float(func.function_point()), style_num)
+                ws.write(r, base_col + 6, to_float(func.function_point()), style_num)
                 
-                non_adjust_fp = non_adjust_fp + self.to_float(func.function_point())
+                non_adjust_fp = non_adjust_fp + to_float(func.function_point())
             
             r += 1
             ws.write(r, base_col + 3, u'未調整FP値 計' , style_title)
