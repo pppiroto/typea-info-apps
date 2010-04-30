@@ -426,6 +426,10 @@ class ExportResponse(webapp.RequestHandler):
         
         if user:
             project_key   = self.request.get('project_key')
+            
+            if project_key.strip() == "":
+                html = "<html><head></head><body><span style='color:red'>エラー! プロジェクトが選択されていません。</span></body></html>"
+                return self.response.out.write(html)
 
             key = db.Key(project_key)
             q = FunctionPointProject.gql("WHERE __key__ =:1", key)
@@ -436,7 +440,8 @@ class ExportResponse(webapp.RequestHandler):
                 break
             
             if project == None:
-                pass
+                html = "<html><head></head><body><span style='color:red'>エラー! 選択されたプロジェクトが見つかりません。</span></body></html>"
+                return self.response.out.write(html)
 
             self.response.headers.add_header("Content-Disposition", 'attachment; filename="cocomo.xls"' )
             #
@@ -457,6 +462,13 @@ class ExportResponse(webapp.RequestHandler):
             font_link.underline = xlwt.Font.UNDERLINE_DOUBLE
             style_link = xlwt.XFStyle()
             style_link.font = font_link
+
+            #
+            font_link = xlwt.Font()
+            font_link.colour_index = 4
+            font_link.underline = xlwt.Font.UNDERLINE_DOUBLE
+            style_link = xlwt.XFStyle()
+            style_link.font = font_link
         
             wb = xlwt.Workbook(encoding='utf-8')
             ws = wb.add_sheet(u'FUNCTION POINT')
@@ -465,12 +477,16 @@ class ExportResponse(webapp.RequestHandler):
             base_col = 1
             r = 1
         
-            col_w = (0x0500,0x0500,0x2800,0x2000,0x0a00,0x0a00,0x0a00,0x0a00)
+            col_w = (0x0500,0x0500,0x2800,0x2400,0x0a00,0x0a00,0x0a00,0x0a00)
             for i, v in enumerate(col_w):
                 ws.col(i).width = v
         
             ws.write(r, base_col, u'ファンクションポイント', style_title)
         
+            #
+            n = "HYPERLINK"
+            ws.write(r, base_col+2, xlwt.Formula(n + '("http://typea-service.appspot.com/fp";"function point")'), style_link)
+
             r = 3    
             ws.write(r, base_col + 0, u'システム' ,     style_title)
             ws.write(r, base_col + 2, u'アプリケーション' , style_title)
@@ -491,10 +507,12 @@ class ExportResponse(webapp.RequestHandler):
             ws.write(r, base_col + 6, u'FP' ,         style_title)
 
 
+            non_adjust_fp = 0.0
+            
             q = FunctionEntity.gql("WHERE project_key=:1 ORDER BY sort_order", project_key)
             functions = q.fetch(MAX_FUNCTION)
             for i, func in enumerate(functions):
-                r = r + 1
+                r += 1
                 ws.write(r, base_col + 0, i + 1)
                 ws.write(r, base_col + 1, func.function_name)
                 ws.write(r, base_col + 2, func.function_category_name())
@@ -503,6 +521,21 @@ class ExportResponse(webapp.RequestHandler):
                 ws.write(r, base_col + 5, func.complexity())
                 ws.write(r, base_col + 6, func.function_point(), style_num)
                 
+                non_adjust_fp += func.function_point()
+            
+            r += 1
+            ws.write(r, base_col + 3, u'未調整FP値 計' , style_title)
+            ws.write(r, base_col + 6, non_adjust_fp, style_num)
+            
+            r += 1
+            ws.write(r, base_col + 3, u'調整係数 計' , style_title)
+            ws.write(r, base_col + 6, project.total_adjust_points(), style_num)
+
+            r += 1
+            ws.write(r, base_col + 3, u'FP 値' , style_title)
+            ws.write(r, base_col + 6, non_adjust_fp + project.total_adjust_points(), style_num)
+
+            r += 1
             dat = ((u'データ通信(Data Communications)'            ,project.data_communications),
                    (u'分散処理(Distributed Data Processing)'      ,project.distoributed_processing),
                    (u'性能(Performance)'                          ,project.performance),
@@ -531,8 +564,8 @@ class ExportResponse(webapp.RequestHandler):
             return None
 
         else:
-            err = {'error':common.message('login_err',common.AppSettings('/fp'))}
-            return self.response.out.write(json.write(err))
+            html = "<html><head></head><body><span style='color:red'>エラー! ログインされていません。ログインしてください。</span></body></html>"
+            return self.response.out.write(html)
         
         err = {'error':'Unknown Error'}
         return self.response.out.write(json.write(err))
