@@ -422,91 +422,121 @@ class ExportResponse(webapp.RequestHandler):
         self.post();
     
     def post(self):
-        self.response.headers.add_header("Content-Disposition", 'attachment; filename="cocomo.xls"' )
-        #
-        font_title = xlwt.Font()
-        font_title.bold = True 
-        style_title = xlwt.XFStyle()
-        style_title.font = font_title
-        #
-        font_num = xlwt.Font()
-        font_num.colour_index = 4
-        style_num = xlwt.XFStyle()
-        style_num.num_format_str = '0.00'
-        style_num.font = font_num
+        user = users.get_current_user()
         
-        #
-        font_link = xlwt.Font()
-        font_link.colour_index = 4
-        font_link.underline = xlwt.Font.UNDERLINE_DOUBLE
-        style_link = xlwt.XFStyle()
-        style_link.font = font_link
-    
-        wb = xlwt.Workbook(encoding='utf-8')
-        ws = wb.add_sheet(u'FUNCTION POINT')
-    
-        #
-        base_col = 1
-        r = 1
-    
-        col_w = (0x0500,0x0500,0x2800,0x1400,0x0a00,0x0a00,0x0a00,0x0a00)
-        for i, v in enumerate(col_w):
-            ws.col(i).width = v
-    
-        ws.write(r, base_col, u'ファンクションポイント', style_title)
-    
-        r = 3    
-        ws.write(r, base_col + 0, u'システム' ,         style_title)
-        ws.write(r, base_col + 2, u'アプリケーション' , style_title)
-        ws.write(r, base_col + 3, u'計測タイプ' ,       style_title)
-    
-        r = 4
-        ws.write(r, base_col + 0, u'テストシステム')
-        ws.write(r, base_col + 2, u'テストアプリケーション')
-        ws.write(r, base_col + 3, u'新規開発')
+        if user:
+            project_key   = self.request.get('project_key')
+
+            key = db.Key(project_key)
+            q = FunctionPointProject.gql("WHERE __key__ =:1", key)
+            
+            project = None
+            projects = q.fetch(1)
+            for project in projects:
+                break
+            
+            if project == None:
+                pass
+
+            self.response.headers.add_header("Content-Disposition", 'attachment; filename="cocomo.xls"' )
+            #
+            font_title = xlwt.Font()
+            font_title.bold = True 
+            style_title = xlwt.XFStyle()
+            style_title.font = font_title
+            #
+            font_num = xlwt.Font()
+            font_num.colour_index = 4
+            style_num = xlwt.XFStyle()
+            style_num.num_format_str = '0.00'
+            style_num.font = font_num
+            
+            #
+            font_link = xlwt.Font()
+            font_link.colour_index = 4
+            font_link.underline = xlwt.Font.UNDERLINE_DOUBLE
+            style_link = xlwt.XFStyle()
+            style_link.font = font_link
         
-        r = 6
-        ws.write(r, base_col + 0, u'No' ,         style_title)
-        ws.write(r, base_col + 1, u'要素処理名' , style_title)
-        ws.write(r, base_col + 2, u'区分' ,       style_title)
-        ws.write(r, base_col + 3, u'DET' ,        style_title)
-        ws.write(r, base_col + 4, u'RET/FTR' ,    style_title)
-        ws.write(r, base_col + 5, u'複雑度' ,     style_title)
-        ws.write(r, base_col + 6, u'FP' ,         style_title)
-        for i in range(5):
-            r = r + 1
-            ws.write(r, base_col + 0, u'01')
-            ws.write(r, base_col + 1, u'トランザクション1')
-            ws.write(r, base_col + 2, u'外部入力(EI)')
-            ws.write(r, base_col + 3, u'4' , style_num)
-            ws.write(r, base_col + 4, u'5' , style_num)
-            ws.write(r, base_col + 5, u'Avarage')
-            ws.write(r, base_col + 6, u'4.00', style_num)
+            wb = xlwt.Workbook(encoding='utf-8')
+            ws = wb.add_sheet(u'FUNCTION POINT')
         
-        dat = ((u'データ通信(Data Communications)'),
-               (u'分散処理(Distributed Data Processing)'),
-               (u'性能(Performance)'),
-               (u'高負荷構成(Heavily Used Configuration)'),
-               (u'トランザクション量(Transaction Rate)'),
-               (u'オンライン入力(Online Data Entry)'),
-               (u'エンドユーザー効率(End-User Efficiency)'),
-               (u'オンライン更新(Online Update)'),
-               (u'複雑な処理(Complex Processing)'),
-               (u'再利用可能性(Reusability)'),
-               (u'インストール容易性(Installation Ease)'),
-               (u'運用性(Operational Ease)'),
-               (u'複数サイト(Multiple Sites)'),
-               (u'変更容易性(Facilitate Change)'),
-        )
+            #
+            base_col = 1
+            r = 1
         
-        r = r + 1
-        for (k, d) in enumerate(dat):
-            r = r + 1
-            ws.write(r, base_col, k + 1)
-            ws.write(r, base_col + 1, d)
-    
-        wb.save(self.response.out)
-        return None
+            col_w = (0x0500,0x0500,0x2800,0x2000,0x0a00,0x0a00,0x0a00,0x0a00)
+            for i, v in enumerate(col_w):
+                ws.col(i).width = v
+        
+            ws.write(r, base_col, u'ファンクションポイント', style_title)
+        
+            r = 3    
+            ws.write(r, base_col + 0, u'システム' ,     style_title)
+            ws.write(r, base_col + 2, u'アプリケーション' , style_title)
+            ws.write(r, base_col + 3, u'計測タイプ' ,   style_title)
+        
+            r = 4
+            ws.write(r, base_col + 0, project.system_name)
+            ws.write(r, base_col + 2, project.application_name)
+            ws.write(r, base_col + 3, project.mesurement_type_name())
+            
+            r = 6
+            ws.write(r, base_col + 0, u'No' ,         style_title)
+            ws.write(r, base_col + 1, u'要素処理名' , style_title)
+            ws.write(r, base_col + 2, u'区分' ,       style_title)
+            ws.write(r, base_col + 3, u'DET' ,        style_title)
+            ws.write(r, base_col + 4, u'RET/FTR' ,    style_title)
+            ws.write(r, base_col + 5, u'複雑度' ,     style_title)
+            ws.write(r, base_col + 6, u'FP' ,         style_title)
+
+
+            q = FunctionEntity.gql("WHERE project_key=:1 ORDER BY sort_order", project_key)
+            functions = q.fetch(MAX_FUNCTION)
+            for i, func in enumerate(functions):
+                r = r + 1
+                ws.write(r, base_col + 0, i + 1)
+                ws.write(r, base_col + 1, func.function_name)
+                ws.write(r, base_col + 2, func.function_category_name())
+                ws.write(r, base_col + 3, func.measurement_index1 , style_num)
+                ws.write(r, base_col + 4, func.measurement_index2 , style_num)
+                ws.write(r, base_col + 5, func.complexity())
+                ws.write(r, base_col + 6, func.function_point(), style_num)
+                
+            dat = ((u'データ通信(Data Communications)'            ,project.data_communications),
+                   (u'分散処理(Distributed Data Processing)'      ,project.distoributed_processing),
+                   (u'性能(Performance)'                          ,project.performance),
+                   (u'高負荷構成(Heavily Used Configuration)'     ,project.heavily_used_configuration),
+                   (u'トランザクション量(Transaction Rate)'       ,project.transaction_rate),
+                   (u'オンライン入力(Online Data Entry)'          ,project.online_data_entry),
+                   (u'エンドユーザー効率(End-User Efficiency)'    ,project.enduser_efficiency ),
+                   (u'オンライン更新(Online Update)'              ,project.online_update),
+                   (u'複雑な処理(Complex Processing)'             ,project.complex_processing),
+                   (u'再利用可能性(Reusability)'                  ,project.reusability),
+                   (u'インストール容易性(Installation Ease)'      ,project.installation_ease),
+                   (u'運用性(Operational Ease)'                   ,project.operational_ease),
+                   (u'複数サイト(Multiple Sites)'                 ,project.multiple_sites),
+                   (u'変更容易性(Facilitate Change)'              ,project.facilitate_change),
+            )
+            
+            r = r + 2
+            ws.write(r, base_col + 2, u'調整係数', style_title)
+            for (k, d) in enumerate(dat):
+                r = r + 1
+                ws.write(r, base_col + 1, k + 1)
+                ws.write(r, base_col + 2, d[0])
+                ws.write(r, base_col + 3, d[1], style_num)
+        
+            wb.save(self.response.out)
+            return None
+
+        else:
+            err = {'error':common.message('login_err',common.AppSettings('/fp'))}
+            return self.response.out.write(json.write(err))
+        
+        err = {'error':'Unknown Error'}
+        return self.response.out.write(json.write(err))
+        
         
             
             

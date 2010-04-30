@@ -70,6 +70,10 @@ class FunctionPointProject(db.Model):
     #
     sort_order = db.IntegerProperty()
     
+    def mesurement_type_name(self):
+        d = mesurement_type()
+        return d[self.mesurement_type]
+        
     def total_adjust_points(self):
         return sum( (self.data_communications ,
                     self.distoributed_processing ,
@@ -122,6 +126,13 @@ class FunctionEntity(db.Model):
     measurement_index2 = db.IntegerProperty()
     sort_order = db.IntegerProperty()
     
+    def function_category_name(self):
+        if self.function_type == 'data':
+            d = datafunction_type()
+        elif self.function_type == 'tran':
+            d = tranfunction_type()
+        return d[self.function_category]
+        
     def complexity(self):
         if self.function_type == 'data':
             return self.data_complexity()

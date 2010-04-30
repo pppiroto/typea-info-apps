@@ -145,7 +145,8 @@
 	
 	function export_fp() {
 		var url = "/fp/projects/export"
-		window.open(url,'_blank');		
+			    + "?project_key=" + $("#project_profile_key").val();
+	    window.open(url,'_blank');		
 	}
 	
 	function bind_help_text(icon_id, txt_id) {
