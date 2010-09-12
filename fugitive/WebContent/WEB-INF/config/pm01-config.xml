@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+          "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+
+<struts-config>
+    <form-beans>
+        <form-bean name="PM01_01Form" type="libra.pm01.PM01_01Form" />
+    </form-beans>
+    <action-mappings>
+        <action path="/pages/pm01_01" 
+                name="PM01_01Form" 
+                type="libra.pm01.PM01_01Action"
+                parameter="trxId">
+            <forward name="success"  path="/pages/pm01/pm01_01.jsp" />
+            <forward name="failure"  path="welcome" />
+        </action>
+    </action-mappings>    
+</struts-config>
+

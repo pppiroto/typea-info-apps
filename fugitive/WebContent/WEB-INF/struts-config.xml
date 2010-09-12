@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+          "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+
+<struts-config>
+    <form-beans>
+    </form-beans>
+    
+    <global-exceptions>
+        <exception key="error.general"
+                   type="java.lang.Exception" 
+                   path="/error/error.jsp" />
+    </global-exceptions>
+
+    <global-forwards>
+        <forward name="welcome" path="/Welcome.do"/>
+        <forward name="amajon" path="/pages/ab01_01.do"/>
+        <forward name="cocomo" path="/pages/pm01_01.do"/>
+    </global-forwards>
+
+    <action-mappings>
+        <action path="/Welcome" forward="/pages/Welcome.jsp"/>
+    </action-mappings>
+
+    <controller nocache="true" 
+                bufferSize="100" maxFileSize="3M" tempDir="/var/temp" 
+     />
+    
+    <message-resources parameter="MessageResources" />
+
+   <!--
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property property="pathnames"
+                      value="/org/apache/struts/validator/validator-rules.xml,
+                       /WEB-INF/validation.xml"/>
+    </plug-in>
+    -->
+    <plug-in className="info.typea.fugitive.plugin.GlobalPropertiesPlugIn">
+    	<set-property property="isDebug"    value="false"/>
+    	<set-property property="serverName" value="typea.info"/>
+    </plug-in>
+    
+</struts-config>
+

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SQLPage nameConnection="xe">
+<Statement><![CDATA[SELECT * FROM DEPARTMENTS
+ 
+]]></Statement>
+</SQLPage>

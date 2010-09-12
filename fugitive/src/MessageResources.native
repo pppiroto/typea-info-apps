@@ -1,0 +1,32 @@
+# -- standard errors --
+errors.header= \
+<br/><a href="#" style="font-size:80%;color:red;" onclick="var eps = errPanel.style.display;errPanel.style.display=((eps == 'none')?'block':'none');this.innerHTML=((eps == 'none')?'エラー非表示&nbsp;&lt;':'&gt;&nbsp;エラーを表示');">エラー非表示&nbsp;&lt;</a> \
+<div id="errPanel" style="display:block;border:1px solid lightgrey;"> \
+<ul style="font-size:80%;color:red">
+errors.prefix=<li>
+errors.suffix=</li>
+errors.footer=</ul></div>
+# -- validator --
+errors.invalid={0} は不正です。
+errors.maxlength={0} は、 {1} 文字以下である必要があります。
+errors.minlength={0} は、 {1} 文字以上である必要があります。
+errors.range={0} は、 {1} から {2} の間である必要があります。
+errors.required={0} は必須です。
+errors.byte={0} は byte である必要があります。
+errors.date={0} は日付である必要があります。
+errors.double={0} は double である必要があります。
+errors.float={0} は float である必要があります。
+errors.integer={0} は integer である必要があります。
+errors.long={0} は long である必要があります。
+errors.short={0} は short である必要があります。
+errors.creditcard={0} 不正なクレジットカード番号です。
+errors.email={0} 不正なe-mailアドレスです。
+# -- other --
+errors.cancel=処理はキャンセルされました。
+errors.detail={0}
+errors.general=処理は完了していません。詳細は以下を参照してください。
+errors.token=リクエストは完了していません。不正なシーケンスです。
+# -- welcome --
+welcome.title=Struts Blank Application
+welcome.heading=Welcome!
+welcome.message=To get started on your own application, copy the struts-blank.war to a new WAR file using the name for your application. Place it in your container's "webapp" folder (or equivalent), and let your container auto-deploy the application. Edit the skeleton configuration files as needed, restart your container, and you are on your way! (You can find the MessageResources.properties file with this message in the /WEB-INF/src folder.)

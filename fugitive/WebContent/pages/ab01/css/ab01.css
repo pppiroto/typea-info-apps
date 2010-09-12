@@ -1,0 +1,104 @@
+body {
+	background-color:steelblue;
+	font-size:90%;
+	color:lightyellow;
+}
+a:hover {
+	color:white;
+	background-color:navy;
+}
+a.entry_close {
+	text-decoration:none;
+	font-size:10pt;
+}
+#wait_msg_panel{
+	visibility:visible;
+	position:absolute;
+	top:300px;
+	left:100px;
+	background-color:royalblue;
+	border:solid 1px white;
+	z-index: 255;
+}
+#comment_panel {
+}
+#menu_panel {
+	position:absolute;
+	border:solid 1px darkslategray;
+	background-color:lightgrey;
+	color:darkslategray;
+	padding:8px;
+	font-size:10pt;
+	width:80px; 
+	height:45px;
+	z-index: 253;
+}
+
+.comment {
+	border:solid 1px darkgoldenrod;
+	position:absolute;
+	width:240px; 
+	height:140px;
+	background-color:lemonchiffon;
+	color:indigo;
+	cursor:move;
+}
+
+#comment_edit_box {
+	background-color:lightyellow;
+	border:solid 1px tan;
+}
+#comment_entry_panel {
+	border:solid 1px darkgoldenrod;
+	position:absolute;
+	width:240px; 
+	height:170px;
+	background-color:lemonchiffon;
+	color:indigo;
+	z-index: 254;
+}
+#comment_entry_menu {
+	border-bottom:solid 1px darkgoldenrod;
+	text-align:right;
+}
+#comment_entry_content {
+	padding:10px;
+}
+#comment_entry_control {
+	text-align:right;
+	padding-right:10px;
+}
+#book_title {
+	color:gold;
+	font-size:130%;
+	font-weight:bold;
+}	
+#link_this_page {
+	border:none;
+	background-color:steelblue;
+	color:lightyellow;
+}
+#main_panel{
+	padding-top:40px;
+	cursor:move;
+}
+#recently_access_panel{
+	position:absolute;
+	top:160px;
+	left:600px;
+	/* border:3px dashed lightgrey; */
+	padding:20px;
+	cursor:move;
+}
+#youtube_panel{
+	padding-top:40px;
+	cursor:move;
+}
+#add_panel{
+	padding-top:40px;
+	cursor:move;
+}
+
+#book_image {
+	cursor:pointer; 
+}

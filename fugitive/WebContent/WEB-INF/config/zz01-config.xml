@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+          "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+
+<struts-config>
+    <form-beans>
+        <form-bean name="ZZ01_01Form" type="libra.zz01.ZZ01_01Form" />
+        <form-bean name="ZZ01_02Form" type="libra.zz01.ZZ01_02Form" />
+    </form-beans>
+    <action-mappings>
+        <action path="/secure/zz01_01" 
+                name="ZZ01_01Form" 
+                type="libra.zz01.ZZ01_01Action"
+                parameter="trxId">
+            <forward name="success"  path="/secure/zz01/zz01_01.jsp" />
+            <forward name="editform" path="/secure/zz01/zz01_02.jsp" />
+            <forward name="failure"  path="welcome" />
+        </action>
+        <action path="/secure/zz01_02" 
+                name="ZZ01_02Form" 
+                type="libra.zz01.ZZ01_02Action"
+                parameter="trxId">
+            <forward name="success"  path="/secure/zz01/zz01_02.jsp" />
+            <forward name="failure"  path="welcome" />
+        </action>
+    </action-mappings>    
+</struts-config>
+
