@@ -1,0 +1,2 @@
+java.text.SimpleDateFormat f = new java.text.SimpleDateFormat("yyyyMMdd");
+System.out.println(f.format(new java.util.Date()));

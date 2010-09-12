@@ -1,0 +1,73 @@
+h1 {
+	font-size:140%;
+	padding:4px;
+    color:darkslategray;
+    background-color:lightgrey;
+}
+
+table.sheet {
+    font-size:80%;
+    table-layout:fixed;
+    border-collapse:collapse;
+    border-spacing:0;
+    empty-cells:show;
+}
+th.sheet {
+    border:none;
+    font-weight:normal;
+    border-bottom:solid 1px lightgrey;
+    border-right:solid 1px lightgrey;
+    padding-left:6px;
+    padding-right:6px;
+}
+td.sheet {
+    border:none;
+    border-bottom:solid 1px lightgrey;
+    border-right:solid 1px lightgrey;
+    padding-left:6px;
+    padding-right:6px;
+}
+tr.evenrow {
+    background-color:aliceblue;
+}
+
+div.header-panel {
+    overflow:hidden;
+}
+div.item-panel {
+    overflow:scroll;
+}
+div.errmessage-panel {
+	overflow:scroll;
+	font-size:80%;
+    color:teal;
+    border:1px solid lightgrey;
+}
+div.stacktrace-panel {
+	overflow:scroll;
+    font-size:80%;
+    background-color:black;
+    color:lime;
+}
+div.log-panel {
+	width:80%;
+	font-size:80%;
+	border:1px solid lightgrey;
+}
+
+.title-field {
+    font-weight:normal;
+    color:darkslategray;
+    background-color:white;
+}
+.num-field {
+    text-align:right;
+}
+.field-label {
+    font-size:80%;
+    color:derkslategrey;
+}
+.field-value {
+    font-size:80%;
+    color:darkslategray;
+}

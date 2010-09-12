@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app
+    xmlns="http://geronimo.apache.org/xml/ns/j2ee/web-1.1">
+    <environment>
+        <moduleId>
+            <artifactId>fugitive</artifactId>
+        </moduleId>
+        <dependencies>
+            <dependency>
+                <groupId>console.dbpool</groupId>
+                <artifactId>Fugitive</artifactId>
+            </dependency>
+        </dependencies>
+    </environment>
+    <context-root>/fugitive</context-root>
+
+    <!-- security settings, if any, go here -->
+
+    <resource-ref>
+        <ref-name>jdbc/fugitive</ref-name>
+        <pattern>
+          <groupId>console.dbpool</groupId>
+          <artifactId>Fugitive</artifactId>
+          <name>Fugitive</name>
+        </pattern>
+    </resource-ref>
+</web-app>

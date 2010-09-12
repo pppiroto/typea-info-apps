@@ -1,0 +1,11 @@
+# C:\oracle\product\10.1.0\Client_1\NETWORK\ADMIN\tnsnames.ora
+GARUDA =
+  (DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.0.5)(PORT = 1521))
+    )
+    (CONNECT_DATA =
+      (SID = XE)
+      (SERVER = DEDICATED)
+    )
+  )

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+         http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+         version="2.4">
+         
+  <display-name>Fugitive Application</display-name>
+  
+  <session-config>
+    <!-- Session Time out by minutes -->
+  	<session-timeout>60</session-timeout>
+  </session-config>
+
+  <!-- Standard Action Servlet Configuration -->
+  <servlet>
+    <servlet-name>action</servlet-name>
+    <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
+    <init-param>
+      <param-name>config</param-name>
+      <!-- 業務App毎の設定ファイルを指定 -->
+      <param-value>
+          /WEB-INF/struts-config.xml,
+          /WEB-INF/config/ab01-config.xml,
+          /WEB-INF/config/al01-config.xml,
+          /WEB-INF/config/kb01-config.xml,
+          /WEB-INF/config/pm01-config.xml,
+          /WEB-INF/config/zz01-config.xml
+      </param-value>
+    </init-param>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+
+  <!-- Standard Action Servlet Mapping -->
+  <servlet-mapping>
+    <servlet-name>action</servlet-name>
+    <url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+
+  <!--  For ZZ00  -->
+  <filter>
+    <filter-name>BasicAuthenticationFilter</filter-name>
+    <filter-class>info.typea.fugitive.filter.BasicAuthenticationFilter</filter-class>
+    <init-param>
+      <param-name>authorizeClassName</param-name>
+      <param-value>libra.zz00.DatabaseCheckAuth</param-value>
+    </init-param>
+    <init-param>
+      <param-name>realmName</param-name>
+      <param-value>fugitive</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>BasicAuthenticationFilter</filter-name>
+    <url-pattern>/secure/*</url-pattern>
+  </filter-mapping>
+
+  <!-- For AL01 -->
+  <filter>
+    <filter-name>AlbumImageBasicAuthenticationFilter</filter-name>
+    <filter-class>info.typea.fugitive.filter.BasicAuthenticationFilter</filter-class>
+    <init-param>
+      <param-name>authorizeClassName</param-name>
+      <param-value>libra.al01.AlbumCheckAuth</param-value>
+    </init-param>
+    <init-param>
+      <param-name>realmName</param-name>
+      <param-value>fugitive</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>AlbumImageBasicAuthenticationFilter</filter-name>
+    <url-pattern>/pages/al01/secure/*</url-pattern>
+  </filter-mapping>
+ 
+  <filter>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <filter-class>info.typea.fugitive.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encording</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+<!--
+  <error-page>
+    <error-code>500</error-code>
+    <location>/error/error.jsp</location>
+  </error-page>
+-->
+  <jsp-config>
+  	<taglib>
+  	  <taglib-uri>
+  	  	http://typea.info/fugitive/eltags
+  	  </taglib-uri>
+  	  <taglib-location>
+  	  	/WEB-INF/eltags.tld
+  	  </taglib-location>
+  	</taglib>
+  </jsp-config>
+  
+  <resource-ref>
+    <res-ref-name>jdbc/fugitive</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+    <res-sharing-scope>Shareable</res-sharing-scope>
+  </resource-ref>
+
+<!-- 認証 -->
+<!--
+  <login-config>
+    <auth-method>BASIC</auth-method>
+    <realm-name>fugitive</realm-name>
+  </login-config>
+  <security-role>
+    <role-name>tomcat</role-name>  
+  </security-role>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>fugitive document</web-resource-name>
+      <url-pattern>/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>*</role-name>
+    </auth-constraint>
+  </security-constraint>
+-->      
+  <!-- The Usual Welcome File List -->
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
