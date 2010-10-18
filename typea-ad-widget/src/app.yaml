@@ -1,0 +1,11 @@
+application: typea-ad-widget
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /js
+  static_dir: js
+
+- url: /.*
+  script: typea_ad_widget.py
