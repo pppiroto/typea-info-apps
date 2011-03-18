@@ -1,4 +1,4 @@
-‚ˆ‚P/**
+/**
  * styling for tip content
  * mostly for example
  * note: canvas (the tip itself) cannot be styled here. use javascript options for that.
@@ -142,7 +142,7 @@ A:hover {
 #sidebar {
 	position: absolute;
 	left:0px;
-	top:21px;
+	top:60px;
 	width:160px;
 }
 
