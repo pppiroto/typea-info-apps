@@ -12,9 +12,10 @@ class Operation(object):
     __safe_chars        = '-._~' 
     __ecs_url           = 'http://ecs.amazonaws.jp/onca/xml'
     __service           = 'AWSECommerceService'
-    __access_key_id     = '1498TGK1YPN1JATPXXG2'
-    __associate_tag     = 'typea09-22' 
-    __secret_access_key = 'DiHCermoiVMaJZtByxDeJac4M18+gnMTD7igJH8Z'
+    # create your own account http://aws.amazon.com/account/
+    __access_key_id     = 'XXXXXXXXXXXXXXXXXXX'
+    __associate_tag     = 'xxxxxxxxx' 
+    __secret_access_key = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
     __http_verb         = 'GET'
     __value_of_host_header_in_lowercase = '/onca/xml'
     __http_request_uri  = 'ecs.amazonaws.jp'
