@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, LocationBasedMessageActivity!</string>
+    <string name="app_name">LocationBasedMessage</string>
+	<string name="lbl_send_message">Send</string>
+	<string name="lbl_clear_message">Clear</string>    
+</resources>
