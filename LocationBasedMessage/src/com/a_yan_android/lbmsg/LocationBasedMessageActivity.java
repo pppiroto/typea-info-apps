@@ -74,6 +74,10 @@ public class LocationBasedMessageActivity extends Activity
 		}
 	}
 
+	/**
+	 * もっとも最近取得した位置情報を元に、メッセージをGAEアプリに送信、登録
+	 * @param message
+	 */
 	private void sendLocationBasedMessage(String message) {
 		final String msg = message;
 		final Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -91,7 +95,6 @@ public class LocationBasedMessageActivity extends Activity
 				@Override
 				public HttpPost request() {
 					HttpPost post =  new HttpPost("http://typea-android-apps.appspot.com/lbmsg/insert");
-					
 					try {
 						List<NameValuePair> parms = new ArrayList<NameValuePair>();
 						parms.add(new BasicNameValuePair("lat", String.valueOf(loc.getLatitude())));
@@ -128,6 +131,8 @@ public class LocationBasedMessageActivity extends Activity
 					(Toast.makeText(getContext(), buf.toString(), Toast.LENGTH_LONG)).show();
 				}
 			});
+			
+			break;
 		}
 	}
 	
@@ -135,24 +140,20 @@ public class LocationBasedMessageActivity extends Activity
 	@Override
 	public void onLocationChanged(Location arg0) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void onProviderDisabled(String arg0) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void onProviderEnabled(String arg0) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
 		// TODO Auto-generated method stub
-		
 	}
 }
