@@ -1,6 +1,9 @@
 package com.a_yan_android.lib;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -18,7 +21,17 @@ import android.accounts.OperationCanceledException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.a_yan_android.lbmsg.LocationBasedMessageApplication;
+
+/**
+ * @author piroto
+ * 
+ * @see http://typea.info/blg/glob/2010/08/android-gae-windows7.html
+ * @see http://typea.info/blg/glob/2010/08/android-google-gae.html
+ * @see http://typea.info/blg/glob/2010/09/android-gae.html
+ */
 public class GoogleServiceUtil {
 	
 	private GoogleServiceUtil() {}
@@ -84,6 +97,37 @@ public class GoogleServiceUtil {
 		 * @param callback
 		 */
 		public void execute(Account account, GOOGLE_AUTH_TOKEN type, AccountManagerCallback<Bundle> callback) {
+			
+			
+			try {
+				AccountManager manager = getAccountManager();
+		        AccountManagerFuture<Bundle> future = manager.getAuthToken(account, "ah", false, null, null);
+		        Bundle bundle;
+				bundle = future.getResult();
+				
+				String token = bundle.getString(AccountManager.KEY_AUTHTOKEN);
+		        manager.invalidateAuthToken(account.type, token);
+		        Log.i(LocationBasedMessageApplication.TAG,token);
+		        
+		        future = manager.getAuthToken(account, "ah", false, null, null);
+		        bundle = future.getResult();
+		        token = bundle.getString(AccountManager.KEY_AUTHTOKEN);
+		        
+		        Log.i(LocationBasedMessageApplication.TAG,token);
+
+			} catch (OperationCanceledException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (AuthenticatorException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	       
+	        
+			
 			getAccountManager().getAuthToken(
 					account, 
 					type.toString(), 
@@ -112,19 +156,28 @@ public class GoogleServiceUtil {
 			Bundle bundle;
 			
 			try {
+				
 				bundle = future.getResult();
 				Intent intent = (Intent)bundle.get(AccountManager.KEY_INTENT);
 				if (intent != null) {
 					this.context.startActivity(intent);
 				} else {
+				
+					
 					String authToken = bundle.getString(AccountManager.KEY_AUTHTOKEN);
+					Log.i(LocationBasedMessageApplication.TAG,"authToken:" + authToken);
+					
 					DefaultHttpClient httpClient = getHttpClient();
 					httpClient.getParams().setBooleanParameter(ClientPNames.HANDLE_REDIRECTS, false);
 
 					String uri = getAuthenticateUri(authToken);
-					HttpGet httpGet = new HttpGet(uri);
-					httpClient.execute(httpGet);
+					Log.i(LocationBasedMessageApplication.TAG, "uri:" + uri);
 					
+					HttpGet httpAuthGetRequest = new HttpGet(uri);
+					HttpResponse httpAuthResponse = httpClient.execute(httpAuthGetRequest);
+					HttpResponse httpBodyResponse = null;
+					
+					int status = httpAuthResponse.getStatusLine().getStatusCode();
 					String acsid = null;
 					for (Cookie cookie : httpClient.getCookieStore().getCookies()) {
 						if ("SACSID".equals(cookie.getName()) ||
@@ -132,12 +185,34 @@ public class GoogleServiceUtil {
 							acsid = cookie.getName() + "=" + cookie.getValue();
 						}
 					}					
-
-					HttpPost httpPost = request();
-					httpPost.setHeader("Cookie", acsid);
 					
-					callback(httpClient.execute(httpPost));
+					Log.i(LocationBasedMessageApplication.TAG, "acsid:" + acsid);
+					
+					if (acsid != null) {
+						HttpPost httpPost = request();
+						httpPost.setHeader("Cookie", acsid);
+						httpBodyResponse = httpClient.execute(httpPost);
+					} else {
+						
+						// 認証エラーの場合、とりあえずログを吐く
+						StringBuilder buf = new StringBuilder();
+						buf.append(String.format("status:%d\n",status));
+						try {
+							InputStream in = httpAuthResponse.getEntity().getContent();
+							BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+							String l = null;
+							while((l = reader.readLine()) != null) {
+								buf.append(l + "\n");
+							}			
+							Log.e(LocationBasedMessageApplication.TAG,buf.toString());
+						} catch(Exception e) {
+							e.printStackTrace();
+						}					
+					}
+					callback(httpBodyResponse);
 				}
+				
+					
 			} catch (OperationCanceledException e) {
 				// TODO
 				e.printStackTrace();

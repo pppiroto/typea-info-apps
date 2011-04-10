@@ -1,6 +1,7 @@
 package com.a_yan_android.lbmsg;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -15,11 +16,16 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 
 import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerFuture;
+import android.accounts.AuthenticatorException;
+import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -111,24 +117,29 @@ public class LocationBasedMessageActivity extends Activity
 				@Override
 				public String getAuthenticateUri(String authToken) {
 					return GoogleServiceUtil.defaultGAELoginUrl("typea-android-apps.appspot.com",
-																"/lbmsg/insert",
+																"/lbmsg",
 																authToken);
 				}
 				
 				@Override
 				public void callback(HttpResponse response) {
-					StringBuilder buf = new StringBuilder();
-					try {
-						InputStream in = response.getEntity().getContent();
-						BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-						String l = null;
-						while((l = reader.readLine()) != null) {
-							buf.append(l + "\r\n");
-						}			
-					} catch(Exception e) {
-						e.printStackTrace();
-					}					
-					(Toast.makeText(getContext(), buf.toString(), Toast.LENGTH_LONG)).show();
+					if (response != null) {
+						int status = response.getStatusLine().getStatusCode();
+						
+						StringBuilder buf = new StringBuilder();
+						buf.append(String.format("status:%d", status));
+						try {
+							InputStream in = response.getEntity().getContent();
+							BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+							String l = null;
+							while((l = reader.readLine()) != null) {
+								buf.append(l + "\r\n");
+							}			
+						} catch(Exception e) {
+							e.printStackTrace();
+						}					
+						(Toast.makeText(getContext(), buf.toString(), Toast.LENGTH_LONG)).show();
+					}
 				}
 			});
 			
