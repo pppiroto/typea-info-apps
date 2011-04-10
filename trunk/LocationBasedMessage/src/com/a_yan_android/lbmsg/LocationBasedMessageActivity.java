@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -134,7 +135,11 @@ public class LocationBasedMessageActivity extends Activity
 							String l = null;
 							while((l = reader.readLine()) != null) {
 								buf.append(l + "\r\n");
-							}			
+							}		
+							if (status != HttpStatus.SC_OK) {
+								Log.e(LocationBasedMessageApplication.TAG, buf.toString());
+							}
+							
 						} catch(Exception e) {
 							e.printStackTrace();
 						}					

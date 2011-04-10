@@ -98,22 +98,27 @@ public class GoogleServiceUtil {
 		 */
 		public void execute(Account account, GOOGLE_AUTH_TOKEN type, AccountManagerCallback<Bundle> callback) {
 			
-			
 			try {
 				AccountManager manager = getAccountManager();
-		        AccountManagerFuture<Bundle> future = manager.getAuthToken(account, "ah", false, null, null);
-		        Bundle bundle;
-				bundle = future.getResult();
-				
-				String token = bundle.getString(AccountManager.KEY_AUTHTOKEN);
+		        
+				AccountManagerFuture<Bundle> future = manager.getAuthToken(
+														account, 
+														type.toString(), 
+														false, 
+														null, 
+														null);
+		        Bundle bundle = future.getResult();
+		        String token = bundle.getString(AccountManager.KEY_AUTHTOKEN);
 		        manager.invalidateAuthToken(account.type, token);
-		        Log.i(LocationBasedMessageApplication.TAG,token);
-		        
-		        future = manager.getAuthToken(account, "ah", false, null, null);
-		        bundle = future.getResult();
-		        token = bundle.getString(AccountManager.KEY_AUTHTOKEN);
 		        
 		        Log.i(LocationBasedMessageApplication.TAG,token);
+		        
+		        manager.getAuthToken(
+						account, 
+						type.toString(), 
+						false, 
+						callback, 
+						null);
 
 			} catch (OperationCanceledException e) {
 				// TODO Auto-generated catch block
@@ -125,15 +130,9 @@ public class GoogleServiceUtil {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	       
+	        
 	        
 			
-			getAccountManager().getAuthToken(
-					account, 
-					type.toString(), 
-					false, 
-					callback, 
-					null);
 			return;
 		}
 	}
