@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package com.a_yan_android;
+package com.a_yan_android.lbmsg;
 
 public final class R {
     public static final class attr {
