@@ -33,6 +33,7 @@ import com.a_yan_android.lbmsg.LocationBasedMessageApplication;
  * @see http://typea.info/blg/glob/2010/08/android-gae-windows7.html
  * @see http://typea.info/blg/glob/2010/08/android-google-gae.html
  * @see http://typea.info/blg/glob/2010/09/android-gae.html
+ * @see http://typea.info/blg/glob/2011/04/android-googlegaeserver-error.html
  */
 public class GoogleServiceUtil {
 	
@@ -120,7 +121,7 @@ public class GoogleServiceUtil {
 		}
 	}
 	
-	/**
+	/** 
 	 * Google サービスの認証部を実装したコールバック
 	 * @author piroto
 	 *
