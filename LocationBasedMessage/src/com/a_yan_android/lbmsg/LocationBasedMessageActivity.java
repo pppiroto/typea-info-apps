@@ -33,7 +33,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.a_yan_android.lib.GoogleServiceUtil;
-import com.a_yan_android.lib.GoogleServiceUtil.GOOGLE_AUTH_TOKEN;
+import com.a_yan_android.lib.GoogleServiceUtil.GOOGLE_ACCOUNT_TYPE;
 
 public class LocationBasedMessageActivity extends Activity  
 											implements View.OnClickListener,
@@ -94,10 +94,13 @@ public class LocationBasedMessageActivity extends Activity
 		//	 Toast.LENGTH_LONG)).show();
 		
 		GoogleServiceUtil.Executer exec = new GoogleServiceUtil.Executer(this);
+
+		//exec.removeAccount(exec.getGoogleAccounts()[0]);
+		//if (true) return;
 		
 		for (Account a : exec.getGoogleAccounts()) {
-			
-			exec.execute(a, GOOGLE_AUTH_TOKEN.GAE, new GoogleServiceUtil.AbstractGoogleServiceCallback(this) {
+
+			exec.execute(a, GOOGLE_ACCOUNT_TYPE.GAE, new GoogleServiceUtil.AbstractGoogleServiceCallback(this) {
 				
 				@Override
 				public HttpPost request() {

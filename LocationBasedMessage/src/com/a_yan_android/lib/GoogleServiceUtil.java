@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.params.ClientPNames;
@@ -36,7 +38,7 @@ public class GoogleServiceUtil {
 	
 	private GoogleServiceUtil() {}
 	
-	public enum GOOGLE_AUTH_TOKEN {
+	public enum GOOGLE_ACCOUNT_TYPE {
 		GAE 		{ public String toString() {return "ah"; 		} },
 		CALENDAR 	{ public String toString() {return "cl";		} },
 		GMAIL 		{ public String toString() {return "mail";		} },
@@ -46,7 +48,7 @@ public class GoogleServiceUtil {
 	}
 	
 	/**
-	 * GAE での認証用URIを返す
+	 * GAE での認証用URIを生成
 	 * @param appPath
 	 * @param authToken
 	 * @return
@@ -54,7 +56,6 @@ public class GoogleServiceUtil {
 	public static String defaultGAELoginUrl(String hostname, String appPath, String authToken) {
 		return "http://" + hostname + "/_ah/login?continue=" + appPath + "&auth=" + authToken;
 	}
-	
 	
 	/**
 	 * Google のサービスを実行するクラス
@@ -65,7 +66,7 @@ public class GoogleServiceUtil {
 		public static final String GOOGLE_ACCOUNT_TYPE = "com.google";
 		
 		private Context context;
-		AccountManager accountManager;
+		private AccountManager accountManager;
 	
 		/**
 		 * @param context
@@ -85,6 +86,7 @@ public class GoogleServiceUtil {
 		}
 		
 		/**
+		 * Google アカウントを取得
 		 * @return
 		 */
 		public Account[] getGoogleAccounts() {
@@ -92,48 +94,29 @@ public class GoogleServiceUtil {
 		}
 		
 		/**
-		 * @param account
-		 * @param type
-		 * @param callback
+		 * 認証を行った後、Google サービスを実行させる
+		 * @param account Google アカウント
+		 * @param type アカウントタイプ
+		 * @param callback 認証の要求が完了したときに呼び出されるコールバック
 		 */
-		public void execute(Account account, GOOGLE_AUTH_TOKEN type, AccountManagerCallback<Bundle> callback) {
+		public void execute(Account account, GOOGLE_ACCOUNT_TYPE type, AbstractGoogleServiceCallback callback) {
 			
-			try {
-				AccountManager manager = getAccountManager();
-		        
-				AccountManagerFuture<Bundle> future = manager.getAuthToken(
-														account, 
-														type.toString(), 
-														false, 
-														null, 
-														null);
-		        Bundle bundle = future.getResult();
-		        String token = bundle.getString(AccountManager.KEY_AUTHTOKEN);
-		        manager.invalidateAuthToken(account.type, token);
-		        
-		        Log.i(LocationBasedMessageApplication.TAG,token);
-		        
-		        manager.getAuthToken(
+			getAccountManager().getAuthToken(
 						account, 
 						type.toString(), 
 						false, 
 						callback, 
-						null);
-
-			} catch (OperationCanceledException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (AuthenticatorException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	        
-	        
-			
-			return;
+						null		// nullの場合、callback はメインスレッド
+						);
+		}
+		
+		/**
+		 * アカウントを削除
+		 * @param account
+		 * @param type
+		 */
+		public void removeAccount(Account account) {
+			getAccountManager().removeAccount(account, null, null);
 		}
 	}
 	
@@ -144,59 +127,61 @@ public class GoogleServiceUtil {
 	 */
 	public static abstract class AbstractGoogleServiceCallback implements AccountManagerCallback<Bundle> {
 		private Context context;
+
+		/**
+		 * @param context
+		 */
 		public AbstractGoogleServiceCallback(Context context) {
 			this.context = context;
 		}
+		
+		/**
+		 * @return
+		 */
 		public Context getContext() {
 			return this.context;
 		}
-		@Override
-		public void run(AccountManagerFuture<Bundle> future) {
-			Bundle bundle;
+	
+		/**
+		 * @param bundle
+		 * @param authToken
+		 */
+		public void removeAuthTokenCache(Bundle bundle, String authToken) {
+			String accountType = bundle.getString(AccountManager.KEY_ACCOUNT_TYPE);
+			AccountManager manager = AccountManager.get(getContext());
+			manager.invalidateAuthToken(accountType, authToken);
+		}
+		
+		/**
+		 * ACSID を取得する
+		 * @param bundle
+		 * @return
+		 */
+		private String getACSID(Bundle bundle){
+			final int RETRY_MAX = 3;
+			boolean isValidToken = false;
 			
+			int    retry = 0;
+			String acsid = null;
 			try {
-				
-				bundle = future.getResult();
-				Intent intent = (Intent)bundle.get(AccountManager.KEY_INTENT);
-				if (intent != null) {
-					this.context.startActivity(intent);
-				} else {
-				
-					
+				DefaultHttpClient httpClient = null;
+				while (!isValidToken) {
+
 					String authToken = bundle.getString(AccountManager.KEY_AUTHTOKEN);
-					Log.i(LocationBasedMessageApplication.TAG,"authToken:" + authToken);
-					
-					DefaultHttpClient httpClient = getHttpClient();
+					httpClient = new DefaultHttpClient();
 					httpClient.getParams().setBooleanParameter(ClientPNames.HANDLE_REDIRECTS, false);
 
 					String uri = getAuthenticateUri(authToken);
-					Log.i(LocationBasedMessageApplication.TAG, "uri:" + uri);
-					
 					HttpGet httpAuthGetRequest = new HttpGet(uri);
 					HttpResponse httpAuthResponse = httpClient.execute(httpAuthGetRequest);
-					HttpResponse httpBodyResponse = null;
 					
 					int status = httpAuthResponse.getStatusLine().getStatusCode();
-					String acsid = null;
-					for (Cookie cookie : httpClient.getCookieStore().getCookies()) {
-						if ("SACSID".equals(cookie.getName()) ||
-							"ACSID".equals(cookie.getName())) {
-							acsid = cookie.getName() + "=" + cookie.getValue();
-						}
-					}					
-					
-					Log.i(LocationBasedMessageApplication.TAG, "acsid:" + acsid);
-					
-					if (acsid != null) {
-						HttpPost httpPost = request();
-						httpPost.setHeader("Cookie", acsid);
-						httpBodyResponse = httpClient.execute(httpPost);
-					} else {
-						
-						// 認証エラーの場合、とりあえずログを吐く
-						StringBuilder buf = new StringBuilder();
-						buf.append(String.format("status:%d\n",status));
+					if (status == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
+
+						// 認証エラーの場合、ログにレスポンスの内容を出力
 						try {
+							StringBuilder buf = new StringBuilder();
+							buf.append(String.format("status:%d\n",status));
 							InputStream in = httpAuthResponse.getEntity().getContent();
 							BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 							String l = null;
@@ -205,12 +190,62 @@ public class GoogleServiceUtil {
 							}			
 							Log.e(LocationBasedMessageApplication.TAG,buf.toString());
 						} catch(Exception e) {
-							e.printStackTrace();
-						}					
+						}
+						
+						// 認証トークンキャッシュの削除
+						//   期限切れ、もしくは、認証リクエストが無効になるような、認証トークンが見つかった場合、
+						//   キャッシュのクリアを行う
+						removeAuthTokenCache(bundle, authToken);
+
+					} else {
+						isValidToken = true;
 					}
-					callback(httpBodyResponse);
+					retry++;
+					if (retry > RETRY_MAX) {
+						break;
+					}
 				}
-				
+				if (isValidToken) {
+					// 認証エラーでなければ、Cookie から ACSIDを取得する
+					for (Cookie cookie : httpClient.getCookieStore().getCookies()) {
+						if ("SACSID".equals(cookie.getName()) ||
+							"ACSID".equals(cookie.getName())) {
+							acsid = cookie.getName() + "=" + cookie.getValue();
+						}
+					}					
+				}
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return acsid;
+		}
+		
+		@Override
+		public void run(AccountManagerFuture<Bundle> future) {
+
+			HttpResponse httpBodyResponse = null;
+			try {
+				Bundle bundle = future.getResult();
+				Intent intent = (Intent)bundle.get(AccountManager.KEY_INTENT);
+				if (intent != null) {
+					// 認証されていない場合、認証画面を起動
+					this.context.startActivity(intent);
+				} else {
+
+					DefaultHttpClient httpClient = new DefaultHttpClient();
+					String acsid = getACSID(bundle);
+					// 認証が正常に行われ、ACSIDが取得できたら、サービスのリクエストをPOSTし、
+					// レスポンスを取得
+					if (acsid != null) {
+						HttpPost httpPost = request();
+						httpPost.setHeader("Cookie", acsid);
+						httpBodyResponse = httpClient.execute(httpPost);
+					} 
+				}
 					
 			} catch (OperationCanceledException e) {
 				// TODO
@@ -221,13 +256,12 @@ public class GoogleServiceUtil {
 			} catch (IOException e) {
 				// TODO
 				e.printStackTrace();
+			} finally {
+				// コールバックする。認証などでエラーが発生している場合、レスポンスは null
+				callback(httpBodyResponse);
 			}
 		}
 
-		public DefaultHttpClient getHttpClient() {
-			return new DefaultHttpClient();
-		}
-		
 		/**
 		 * 認証を行うURLを指定
 		 * たとえばGAEであれば、以下のようなURLを返す
