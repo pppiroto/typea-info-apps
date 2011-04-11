@@ -3,7 +3,7 @@
       package="com.a_yan_android.lbmsg"
       android:versionCode="1"
       android:versionName="1.0">
-    <application android:icon="@drawable/icon" android:label="@string/app_name" android:name="LocationBasedMessageApplication" android:debuggable="true">
+    <application android:icon="@drawable/icon" android:label="@string/app_name" android:name="LocationBasedMessageApplication" android:debuggable="false">
         <activity android:name=".LocationBasedMessageActivity"
                   android:label="@string/app_name">
             <intent-filter>
