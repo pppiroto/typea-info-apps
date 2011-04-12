@@ -10,7 +10,9 @@ class MainPage(webapp.RequestHandler):
 
 application = webapp.WSGIApplication([
                                       ('/', MainPage), 
+                                      ('/lbmsg/',       lbmsg_hander.AuthCheck),
                                       ('/lbmsg/insert', lbmsg_hander.InsertLocalBasedMessage),
+                                      ('/lbmsg/list',   lbmsg_hander.LocalBasedMessageList),
                                      ], debug=True)
 def main():
     run_wsgi_app(application)
