@@ -14,6 +14,6 @@ class LocalBasedMessage(db.Model):
                 'owner':        str(self.owner),
                 'lat':          str(self.geo_pt.lat),
                 'lon':          str(self.geo_pt.lon),
-                'message':      str(self.message),
+                'message':      self.message.encode('utf-8'),
                 'create_date':  str(self.create_date),
                 }
