@@ -17,4 +17,6 @@
 	</bean>
 	<bean id="viewerController" class="info.typea.sample.springmvc.controller.ViewerController"/>
 	<bean id="retrieverController" class="info.typea.sample.springmvc.controller.RetrieverController"/>
+	
+	<mvc:view-controller path="/login.html" view-name="login"/>
 </beans>

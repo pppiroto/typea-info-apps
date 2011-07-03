@@ -16,6 +16,9 @@ public class Menu {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int menuId;
 	
+	@Column(name="DISP_NO")
+	private int dispNo;
+	
 	private String name;
 	
 	private String url;
@@ -45,5 +48,11 @@ public class Menu {
 	}
 	public void setContent(String content) {
 		this.content = content;
+	}
+	public int getDispNo() {
+		return dispNo;
+	}
+	public void setDispNo(int dispNo) {
+		this.dispNo = dispNo;
 	}
 }
