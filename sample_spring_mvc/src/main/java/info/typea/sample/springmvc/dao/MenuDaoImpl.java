@@ -16,7 +16,7 @@ public class MenuDaoImpl implements MenuDao {
 		EntityManager em = emf.createEntityManager();
 
 		@SuppressWarnings("unchecked")
-		List<Menu> list = em.createQuery("select m from Menu m").getResultList();
+		List<Menu> list = em.createQuery("select m from Menu m order by m.dispNo").getResultList();
 		return list;
 	}
 }
