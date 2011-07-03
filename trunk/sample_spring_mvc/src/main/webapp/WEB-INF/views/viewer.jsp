@@ -12,7 +12,7 @@
 </head>
 <body>
 	<h1>Viewer Sample</h1>
-	<p id="usage"><a href="#">使い方</a></p>
+	<p><a href="#" id="usage">使い方</a></p>
 	<div id="usage_dialog" title="このページが含んでいる内容について">
 		この画面は、<a href="http://www.atmarkit.co.jp/fwcr/rensai/design_pattern02/01.html" target="_blank">Viewer（閲覧する） 画面</a>
 		のサンプルです。	以下の内容を含んでいます。
