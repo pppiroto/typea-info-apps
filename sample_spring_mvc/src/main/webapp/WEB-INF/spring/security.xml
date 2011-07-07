@@ -1,0 +1,65 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+  xmlns:beans="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security-3.0.3.xsd">
+
+	<!-- HTTP-Securityの設定
+		auto-configをtrueにすることでデフォルト設定が有効になり、記述量を削減でき  る -->
+	<http auto-config="true">
+		<!-- URL毎に必要な権限を記述する -->
+	  	
+	  	<!-- すべてのURLにアクセスするには、ロールROLE_ADMINを保持していることが必要 -->
+		<!-- <intercept-url pattern="/*/*" access="ROLE_ADMIN" /> -->	
+			
+		<!-- secure で始まるURLには ROLE_ADMIN が必要 -->	
+	  	<intercept-url pattern="/secure/**" access="ROLE_ADMIN" />
+
+		<!-- editで始まるURLにはROLE_USER が必要 -->	
+	  	<intercept-url pattern="/edit**" access="ROLE_USER" />
+	</http>
+	
+	<!-- ユーザ認証の設定
+	  	authentication-managerはユーザ認証処理を
+		1つ以上のauthentication-providerに委譲する -->
+	<authentication-manager>
+	
+		<!-- Bean定義ファイルやRDBMSから主体情報を取得し、
+				ユーザ認証を行うauthentication-provider -->
+
+		<authentication-provider>
+			<!-- Bean定義ファイルから主体情報を取得するuser-service 
+		 		password-encoderタグでshaやmd5、独自ハッシュ関数を指定して、
+				password属性にハッシュ値を利用することも可能 -->
+			<!-- 	
+			<user-service>
+		 		<user name="user"  password="password" authorities="ROLE_USER" />
+		 		<user name="admin" password="password" authorities="ROLE_ADMIN, ROLE_USER" />
+			</user-service>
+		 	-->
+		 
+			<!-- RDBMSから主体情報を取得するjdbc-user-serviceを利用することも可能 -->
+			<jdbc-user-service data-source-ref="securityDataSource"/>
+		</authentication-provider>
+	
+		<!-- LDAPから主体情報を取得して、ユーザ認証を行う
+				ldap-authentication-providerや
+		    	独自のauthentication-providerを利用することも可能 -->
+	</authentication-manager>
+
+	<!-- 
+	<beans:bean id="userDetailsService" class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl" >
+		<beans:property name="dataSource" ref="securityDataSource" />
+	</beans:bean>
+	 -->
+	 
+	<beans:bean id="securityDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<beans:property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver"/>
+		<beans:property name="url" value="jdbc:derby:C:\work\derby\securityDB;create=true"/>
+		<beans:property name="username" value="app"/>
+		<beans:property name="password" value=""/>
+	</beans:bean>	
+
+</beans:beans>

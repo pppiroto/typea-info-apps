@@ -8,13 +8,13 @@
 	<link rel="stylesheet" type="text/css" href="jquery-datatables/media/css/demo_table_jui.css"/>
 	
 	<base href="http://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/" target="_self">
-	<title>Viewer Sample</title>
+	<title>Editor Sample</title>
 </head>
 <body>
-	<h1>Login Sample</h1>
+	<h1>Editor Sample</h1>
 	<p><a href="#" id="usage">使い方</a></p>
 	<div id="usage_dialog" title="このページが含んでいる内容について">
-		この画面は、ログインのサンプルです。	以下の内容を含んでいます。
+		この画面は、Editor(編集する)のサンプルです。	以下の内容を含んでいます。
 		<ul>
 			<li>xxxx</li>
 			<li>xxxx</li>

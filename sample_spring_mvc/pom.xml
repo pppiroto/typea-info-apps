@@ -191,7 +191,6 @@
 		    <version>2.1_3</version>
 		</dependency>
 
-        
 	</dependencies>
 	<repositories>
 		<!-- For testing against latest Spring snapshots -->
