@@ -20,6 +20,7 @@
 	    </jaxrs:serviceBeans>
 	    <jaxrs:providers>
 	    	<ref bean="cityWriter"/>
+	    	<ref bean="cityReader"/>
 	    	<ref bean="citiesWriter"/>
 	    	<ref bean="completeListWriter"/>
 	    </jaxrs:providers>
@@ -38,6 +39,9 @@
 	<bean id="cityResource" class="info.typea.sample.restservice.rs.CityResourceImpl">
 		<property name="cityDao" ref="cityDao"/>
 	</bean> 
+  	<bean id="cityReader" class="info.typea.sample.restservice.provider.CityReader" >
+  		<property name="jaxbContext" ref="jaxbContext" />
+  	</bean>
   	<bean id="cityWriter" class="info.typea.sample.restservice.provider.CityWriter" >
   		<property name="jaxbContext" ref="jaxbContext" />
   	</bean>
