@@ -41,7 +41,7 @@
 		</table>
 	</div>
 	<div class="ui-layout-east">
-    	<table id="tbl_search_city" class="">
+    	<table id="tbl_edit_city" class="">
     		<tbody>
 	    		<tr><td>City ID</td><td><input id="txt_cityId" type="text" /></td></tr>
 				<tr><td>名称        </td><td><input id="txt_cityName" type="text" /></td></tr>
@@ -50,7 +50,10 @@
 				<tr><td>ISOコード</td><td><select id="sel_countryIsoCode"></select></td></tr>
 				<tr><td>地域         </td><td><select id="sel_region"></select></td></tr>	
 			</tbody>
-    	</table>	
+    	</table>
+    	<button id="btn_update_city">更新</button>
+    	<button id="btn_clear_city">クリア</button>
+    	<button id="btn_insert_city">新規作成</button>    	
 	</div>
 	<div class="ui-layout-south">South</div>
 	<!-- 
@@ -184,6 +187,68 @@
 				});
 			}
 		});
+
+		/*
+		 * ダイアログ
+		 */
+		$("#usage_dialog" ).dialog({
+			 show: "blind"
+			,hide: "blind"
+			,modal: true
+			
+		});
+		$("#usage").click(function(){
+			$( "#usage_dialog" ).dialog();
+			return false;
+		});
+		/*
+		 * ボタン
+		 */
+		$("button").button();
+		
+		/* クリア */
+		$("#btn_clear_city").click(function(){
+			var edit_table = $('#tbl_edit_city'); 
+			var targets = ['input','select'];
+			for (var i=0;i<targets.length; i++) {
+				$(targets[i], edit_table).each(function(){
+					$(this).val("");
+				});
+			}
+		});
+		
+		$("#btn_insert_city").click(function(){
+				var xml = 
+				'<city>'
+				+'<airport>AMS</airport>'
+				+'<cityId>1</cityId>'
+				+'<cityName>Amsterdam</cityName>'
+				+'<country>Netherlands</country>'
+				+'<countryBean>'
+				+'<country>Netherlands</country>'
+				+'<countryIsoCode>NL</countryIsoCode>'
+				+'<region>Europe</region>'
+				+'</countryBean>'
+				+'<language>Dutch</language>'
+				+'</city>'
+				;
+			$.ajax({
+				url: 'http://${pageContext.request.serverName}:${pageContext.request.serverPort}/sample_rest_service/city',
+				accepts:     'application/xml',
+				contentType: 'application/xml;charset=UTF-8',
+				type: 'POST',
+				data: xml,
+				success: function(data) {
+					alert(data);
+				}
+			});			
+		});
+		
+		$("#btn_update_city").click(function(){
+		});
+	
+	
+	
 	});
 	
 	/**
@@ -218,21 +283,6 @@
 			}
 		});		
 	}
-
-	/*
-	 * ダイアログ
-	 */
-	$("#usage_dialog" ).dialog({
-		 show: "blind"
-		,hide: "blind"
-		,modal: true
-		
-	});
-	$("#usage").click(function(){
-		$( "#usage_dialog" ).dialog();
-		return false;
-	});
-	
 	</script>
 </body>
 </html>
