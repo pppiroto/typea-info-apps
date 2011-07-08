@@ -95,7 +95,8 @@
 		 * テーブルにDataTable jQuery プラグインの適用
 		 */
 		var citiesTable = $('#tbl_cities').dataTable({
-			"bProcessing": true
+			 "bProcessing": true
+			,"bJQueryUI": true
 		});
 		
 		/*

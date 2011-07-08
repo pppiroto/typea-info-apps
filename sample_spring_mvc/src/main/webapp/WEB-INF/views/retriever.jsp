@@ -21,32 +21,22 @@
 			<li>jQueryUIの利用(タブ、ダイアログ)</li>
 		</ul>
 	</div>
-	
+
 	<div id="tabs"> 
 		<ul> 
 			<li><a href="#tabs-searchcondition">検索条件</a></li> 
 			<li><a href="#tabs-searchresults">検索結果</a></li> 
 		</ul> 
 	    <div id="tabs-searchcondition">
-	    	<table>
-	    		<tr>
-					<td>City ID</td><td><input id="txt_cityId" type="text" /></td>
-				</tr>
-				<tr>
-					<td>名称</td><td><input id="txt_cityName" type="text" /></td>
-				</tr>
-				<tr>
-					<td>国</td><td><input id="txt_country" type="text" /></td>
-				</tr>
-				<tr>
-					<td>言語</td><td><input id="txt_language" type="text" /></td>
-				</tr>
-				<tr>
-					<td>ISOコード</td><td><input id="txt_countryIsoCode" type="text" /></td>
-				</tr>
-				<tr>
-					<td>地域</td><td><input id="txt_region" type="text" /></td>
-				</tr>	
+	    	<table id="tbl_search_city" class="">
+	    		<tbody>
+		    		<tr><td>City ID</td><td><input id="txt_cityId" type="text" /></td></tr>
+					<tr><td>名称</td><td><input id="txt_cityName" type="text" /></td></tr>
+					<tr><td>国</td><td><input id="txt_country" type="text" /></td></tr>
+					<tr><td>言語</td><td><input id="txt_language" type="text" /></td></tr>
+					<tr><td>ISOコード</td><td><input id="txt_countryIsoCode" type="text" /></td></tr>
+					<tr><td>地域</td><td><input id="txt_region" type="text" /></td></tr>	
+				</tbody>
 	    	</table>
 	    	<button id="btn_search">検索</button>
 	    	<button id="btn_cancel">クリア</button>
@@ -104,21 +94,22 @@
 		 * http://jqueryui.com/demos/tabs/
 		 */
 		var tabs = $( "#tabs" ).tabs();
-
+		
 		/*
 		 * テーブルにDataTable jQuery プラグインの適用
 		 */
 		var citiesTable = $('#tbl_cities').dataTable({
-			"bProcessing": true
+			 "bProcessing": true
+			,"bJQueryUI": true
 		});
 		
 		/*
 		 * オートコンプリート用項目を取得
 		 */
-		redyAutoComplete('cityNames', 		    $('#txt_cityName'));
+		redyAutoComplete('cityNames', 		$('#txt_cityName'));
 		redyAutoComplete('country',   		$("#txt_country"));
 		redyAutoComplete('language',  		$("#txt_language"));
-		redyAutoComplete('countryIsoCode', 	$("#countryIsoCode"));
+		redyAutoComplete('countryIsoCode', 	$("#txt_countryIsoCode"));
 		redyAutoComplete('region', 			$("#txt_region"));
 		
 		/*
