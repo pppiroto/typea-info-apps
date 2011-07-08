@@ -12,6 +12,13 @@ public class CityResourceImpl implements CityResource {
 	private static final Logger logger = LoggerFactory.getLogger(CityResourceImpl.class);
 	
 	private CityDao cityDao;
+	
+	public City insertCity(City city) {
+
+		
+		return city;
+	}
+
 	public CityDao getCityDao() {
 		return cityDao;
 	}
@@ -66,5 +73,4 @@ public class CityResourceImpl implements CityResource {
 	public CompleteList getRegionSuggest() {
 		return new CompleteList("region", cityDao.getRegionSuggest());
 	}
-	
 }
