@@ -31,6 +31,7 @@
 				<th>ID</th>
 				<th>名称</th>
 				<th>国</th>
+				<th>空港</th>
 				<th>言語</th>
 				<th>ISO</th>
 				<th>地域</th>
@@ -43,12 +44,12 @@
 	<div class="ui-layout-east">
     	<table id="tbl_edit_city" class="">
     		<tbody>
-	    		<tr><td>City ID</td><td><input id="txt_cityId" type="text" /></td></tr>
+	    		<tr><td>City ID</td><td><input readonly class="ui-state-disabled" id="txt_cityId" type="text" /></td></tr>
 				<tr><td>名称        </td><td><input id="txt_cityName" type="text" /></td></tr>
 				<tr><td>国             </td><td><input id="txt_country" type="text" /></td></tr>
+				<tr><td>空港        </td><td><input id="txt_airport" type="text" /></td></tr>
 				<tr><td>言語        </td><td><input id="txt_language" type="text" /></td></tr>
 				<tr><td>ISOコード</td><td><select id="sel_countryIsoCode"></select></td></tr>
-				<tr><td>地域         </td><td><select id="sel_region"></select></td></tr>	
 			</tbody>
     	</table>
     	<button id="btn_update_city">更新</button>
@@ -133,6 +134,9 @@
 							 { "sSortDataType": "dom-text", "sType": "numeric", "aTargets": [ 0 ] }
 			                ,{ "sWidth": "20px", "aTargets": [ 0, 4 ] }
 			 			]
+			,"fnInitComplete": function() {
+				reloadTableData(this);
+			}
 		});	
 		/*
 		 * テーブルにコールバックイベントハンドラを追加する
@@ -156,38 +160,7 @@
 		 * ドロップダウンの設定
 		 */
 		redyDropDown('countryIsoCode', 	$("#sel_countryIsoCode"));
-		redyDropDown('region', 			$("#sel_region"));
 		
-		/*
-		 * テーブル表示する内容を取得する
-		 */
-		$.ajax({
-			url: 'http://${pageContext.request.serverName}:${pageContext.request.serverPort}/sample_rest_service/city/all',
-			success: function(data) {
-				$(data).find('city').each(function(){
-					var item = $(this);
-					
-					/*
-					 * Debug Log
-					 */
-					//console.log(item.text());
-					
-					/*
-					 * DataTables API http://www.datatables.net/api
-					 */
-					var row = [
-						    item.children("cityId").text(),  
-					        item.children("cityName").text(),
-					        item.children("country").text(), 
-					        item.children("language").text(),
-							item.children("countryBean").children("countryIsoCode").text(),
-					        item.children("countryBean").children("region").text(),
-							];
-					citiesTable.fnAddData(row);
-				});
-			}
-		});
-
 		/*
 		 * ダイアログ
 		 */
@@ -218,37 +191,37 @@
 		});
 		
 		$("#btn_insert_city").click(function(){
-				var xml = 
+			if ($("#txt_cityId").val().trim() != "") {
+				alert("Error : 新規作成時、IDはブランク");
+				exit();	
+			}
+			var xml = 
 				'<city>'
-				+'<airport>AMS</airport>'
-				+'<cityId>1</cityId>'
-				+'<cityName>Amsterdam</cityName>'
-				+'<country>Netherlands</country>'
+				+'<cityId></cityId>'
+				+'<airport>'          + $("#txt_airport").val() +'</airport>'
+				+'<cityName>'         + $("#txt_cityName").val() +'</cityName>'
+				+'<country>'          + $("#txt_country").val() +'</country>'
+				+'<language>'         + $("#txt_language").val() +'</language>'
 				+'<countryBean>'
-				+'<country>Netherlands</country>'
-				+'<countryIsoCode>NL</countryIsoCode>'
-				+'<region>Europe</region>'
-				+'</countryBean>'
-				+'<language>Dutch</language>'
+				+  '<countryIsoCode>' + $("#sel_countryIsoCode").val() +'</countryIsoCode>'
+				+  '</countryBean>'
 				+'</city>'
 				;
 			$.ajax({
-				url: 'http://${pageContext.request.serverName}:${pageContext.request.serverPort}/sample_rest_service/city',
-				accepts:     'application/xml',
-				contentType: 'application/xml;charset=UTF-8',
-				type: 'POST',
-				data: xml,
-				success: function(data) {
-					alert(data);
+				url: 'http://${pageContext.request.serverName}:${pageContext.request.serverPort}/sample_rest_service/city'
+				,contentType: 'application/xml;charset=UTF-8'   
+				,type: 'POST'
+				,data: xml
+				,success: function(data) {
+					alert("Inserted : " + $(data).text() + ", Reload Table data.")
+					reloadTableData(citiesTable);
 				}
-			});			
+			});
+			
 		});
 		
 		$("#btn_update_city").click(function(){
 		});
-	
-	
-	
 	});
 	
 	/**
@@ -259,9 +232,10 @@
 		$("#txt_cityId").val(row[0]);
 		$("#txt_cityName").val(row[1]);
 		$("#txt_country").val(row[2]);
-		$("#txt_language").val(row[3]);
-		$("#sel_countryIsoCode").val(row[4]);
-		$("#sel_region").val(row[5]);
+		$("#txt_airport").val(row[3]);
+		$("#txt_language").val(row[4]);
+		$("#sel_countryIsoCode").val(row[5]);
+		$("#sel_region").val(row[6]);
 		
 	}
 	/**
@@ -283,6 +257,48 @@
 			}
 		});		
 	}
+	
+	/*
+	 * テーブル表示する内容を取得する
+	 */	
+	function reloadTableData(target) {
+		$.ajax({
+			url: 'http://${pageContext.request.serverName}:${pageContext.request.serverPort}/sample_rest_service/city/all',
+			success: function(data) {
+				target.fnClearTable();
+				$(data).find('city').each(function(){
+					var item = $(this);
+					
+					/*
+					 * Debug Log
+					 */
+					//console.log(item.text());
+					
+					/*
+					 * DataTables API http://www.datatables.net/api
+					 */
+					var row = [
+						    item.children("cityId").text(),  
+					        item.children("cityName").text(),
+					        item.children("country").text(), 
+					        item.children("airport").text(), 
+					        item.children("language").text(),
+							item.children("countryBean").children("countryIsoCode").text(),
+					        item.children("countryBean").children("region").text(),
+							];
+					target.fnAddData(row);
+				});
+			}
+		});	
+	}
+	
+	
+	/**
+	 * City オブジェクト
+	 */
+	
+	
+	
 	</script>
 </body>
 </html>
