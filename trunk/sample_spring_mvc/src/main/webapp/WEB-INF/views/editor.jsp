@@ -14,7 +14,7 @@
 	<div id="usage_dialog" title="このページが含んでいる内容について">
 		この画面は、Editor(編集する)のサンプルです。	以下の内容を含んでいます。
 		<ul>
-			<li>xxxx</li>
+			<li>データのCRUD操作</li>
 			<li>xxxx</li>
 			<li>xxxx</li>
 		</ul>
@@ -195,6 +195,8 @@
 				alert("Error : 新規作成時、IDはブランク");
 				exit();	
 			}
+			var city = new City();
+			test = city;
 			var xml = 
 				'<city>'
 				+'<cityId></cityId>'
@@ -292,13 +294,35 @@
 		});	
 	}
 	
-	
 	/**
-	 * City オブジェクト
+	 * City オブジェクト  TODO
 	 */
+	function City() {
+		this.cityId = '';
+		this.cityName = '';
+		this.country = '';
+		this.airport = '';
+		this.language = '';
+		this.countryIsoCode = '';
+	}
 	
-	
-	
+	City.prototype = {
+		toXML : function() {
+			var xml = 
+				'<city>'
+				+'<cityId></cityId>'
+				+'<airport>'          + $("#txt_airport").val() +'</airport>'
+				+'<cityName>'         + $("#txt_cityName").val() +'</cityName>'
+				+'<country>'          + $("#txt_country").val() +'</country>'
+				+'<language>'         + $("#txt_language").val() +'</language>'
+				+'<countryBean>'
+				+  '<countryIsoCode>' + $("#sel_countryIsoCode").val() +'</countryIsoCode>'
+				+  '</countryBean>'
+				+'</city>'
+				;			
+			return xml;
+		}
+	}
 	</script>
 </body>
 </html>
