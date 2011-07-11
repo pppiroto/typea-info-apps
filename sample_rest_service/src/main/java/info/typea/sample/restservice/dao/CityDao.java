@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface CityDao {
 	public City findById(String cityId);
+	public City insertCity(City city);
 	public List<City> findAll();
 	public List<City> find(Integer cityId, String cityName, String country,
 						   String language, String countryIsoCode, String region);

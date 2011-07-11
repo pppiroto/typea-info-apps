@@ -2,8 +2,11 @@ package info.typea.sample.restservice.entity;
 
 import java.io.Serializable;
 
+import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -11,6 +14,8 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
@@ -27,7 +32,7 @@ public class City implements Serializable {
 
 	@Id
 	@Column(name="CITY_ID")
-	private int cityId;
+	private Integer cityId;
 
 	private String airport;
 
@@ -46,11 +51,11 @@ public class City implements Serializable {
     public City() {
     }
 
-	public int getCityId() {
+	public Integer getCityId() {
 		return this.cityId;
 	}
 
-	public void setCityId(int cityId) {
+	public void setCityId(Integer cityId) {
 		this.cityId = cityId;
 	}
 

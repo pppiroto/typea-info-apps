@@ -21,6 +21,7 @@ import javax.xml.bind.Marshaller;
 /**
  * @author 
  * @see http://d.hatena.ne.jp/shin/20100921/p3
+ * @deprecated
  */
 @Provider
 public class CitiesWriter implements MessageBodyWriter<Cities> {

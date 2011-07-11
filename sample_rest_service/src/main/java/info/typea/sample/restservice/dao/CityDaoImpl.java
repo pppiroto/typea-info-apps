@@ -8,12 +8,53 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class CityDaoImpl implements CityDao {
 	private static final String PERSISTENCE_UNIT = "toursdb_persistence_unit";
-	//private static final Logger logger = LoggerFactory.getLogger(CityDaoImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(CityDaoImpl.class);
+	
+	/**
+	 * テーブル定義が、自動採番でないため、最大値＋1を取得
+	 * 自動採番の場合、Entity に @GeneratedValue(strategy = GenerationType.IDENTITY) を指定
+	 * @return
+	 */
+	public int getNextCityId() {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
+		EntityManager em = emf.createEntityManager();
+
+		Integer cityId = (Integer) em.createQuery("select max(c.cityId) from City c").getSingleResult();
+		
+		return cityId.intValue()  + 1;
+	}
+	
+	public City insertCity(City city) {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
+		EntityManager em = emf.createEntityManager();
+		
+		try {
+			
+			EntityTransaction trn = em.getTransaction();
+			trn.begin();
+			int cityId = getNextCityId();
+			city.setCityId(new Integer(cityId));
+			
+			em.persist(city);
+			
+			trn.commit();
+		
+		} catch (Exception e) {
+			logger.error("failur insert to city :", e);
+		} finally {
+			em.close();
+		}
+		return city;
+	}
 	
 	public City findById(String cityId) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
@@ -146,5 +187,4 @@ public class CityDaoImpl implements CityDao {
 		
 		return list;
 	}
-
 }
