@@ -44,11 +44,11 @@
 	<div class="ui-layout-east">
     	<table id="tbl_edit_city" class="">
     		<tbody>
-	    		<tr><td>City ID</td><td><input readonly class="ui-state-disabled" id="txt_cityId" type="text" /></td></tr>
-				<tr><td>名称        </td><td><input id="txt_cityName" type="text" /></td></tr>
-				<tr><td>国             </td><td><input id="txt_country" type="text" /></td></tr>
-				<tr><td>空港        </td><td><input id="txt_airport" type="text" /></td></tr>
-				<tr><td>言語        </td><td><input id="txt_language" type="text" /></td></tr>
+	    		<tr><td>City ID</td><td><input id="txt_cityId" type="text" readonly class="ui-state-disabled" size="6" /></td></tr>
+				<tr><td>名称        </td><td><input id="txt_cityName" type="text" size="16" maxlength="24"/></td></tr>
+				<tr><td>国             </td><td><input id="txt_country" type="text" size="16" maxlength="26"/></td></tr>
+				<tr><td>空港        </td><td><input id="txt_airport" type="text" size="3" maxlength="3"/></td></tr>
+				<tr><td>言語        </td><td><input id="txt_language" type="text" size="10" maxlength="16"/></td></tr>
 				<tr><td>ISOコード</td><td><select id="sel_countryIsoCode"></select></td></tr>
 			</tbody>
     	</table>
@@ -196,26 +196,20 @@
 				exit();	
 			}
 			var city = new City();
-			test = city;
-			var xml = 
-				'<city>'
-				+'<cityId></cityId>'
-				+'<airport>'          + $("#txt_airport").val() +'</airport>'
-				+'<cityName>'         + $("#txt_cityName").val() +'</cityName>'
-				+'<country>'          + $("#txt_country").val() +'</country>'
-				+'<language>'         + $("#txt_language").val() +'</language>'
-				+'<countryBean>'
-				+  '<countryIsoCode>' + $("#sel_countryIsoCode").val() +'</countryIsoCode>'
-				+  '</countryBean>'
-				+'</city>'
-				;
+			city.cityId = '';
+			city.cityName = $("#txt_cityName").val();
+			city.country = $("#txt_country").val();
+			city.airport = $("#txt_airport").val();
+			city.language = $("#txt_language").val();
+			city.countryIsoCode = $("#sel_countryIsoCode").val();
+			
 			$.ajax({
 				url: 'http://${pageContext.request.serverName}:${pageContext.request.serverPort}/sample_rest_service/city'
 				,contentType: 'application/xml;charset=UTF-8'   
 				,type: 'POST'
-				,data: xml
+				,data: city.toXML()
 				,success: function(data) {
-					alert("Inserted : " + $(data).text() + ", Reload Table data.")
+					//alert("Inserted : " + $(data).text() + ", Reload Table data.")
 					reloadTableData(citiesTable);
 				}
 			});
@@ -295,7 +289,7 @@
 	}
 	
 	/**
-	 * City オブジェクト  TODO
+	 * City オブジェクト 
 	 */
 	function City() {
 		this.cityId = '';
@@ -308,15 +302,20 @@
 	
 	City.prototype = {
 		toXML : function() {
+			// TODO 
+			//   URI エンコーディング対応方法検討
+			//     1.エンコードする
+			//     2.入力不可とする
+			//
 			var xml = 
 				'<city>'
-				+'<cityId></cityId>'
-				+'<airport>'          + $("#txt_airport").val() +'</airport>'
-				+'<cityName>'         + $("#txt_cityName").val() +'</cityName>'
-				+'<country>'          + $("#txt_country").val() +'</country>'
-				+'<language>'         + $("#txt_language").val() +'</language>'
+				+'<cityId>'           + this.cityId   + '</cityId>'
+				+'<cityName>'         + this.cityName + '</cityName>'
+				+'<airport>'          + this.airport  + '</airport>'
+				+'<country>'          + this.country  + '</country>'
+				+'<language>'         + this.language + '</language>'
 				+'<countryBean>'
-				+  '<countryIsoCode>' + $("#sel_countryIsoCode").val() +'</countryIsoCode>'
+				+  '<countryIsoCode>' + this.countryIsoCode +'</countryIsoCode>'
 				+  '</countryBean>'
 				+'</city>'
 				;			
