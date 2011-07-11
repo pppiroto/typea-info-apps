@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
@@ -17,6 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @see http://docs.huihoo.com/apache/cxf/2.2.4/jax-rs.html#JAX-RS-MessageBodyProviders
  */
 @XmlRootElement(name="city")
+@XmlAccessorType(XmlAccessType.PROPERTY)
 @Entity
 @Table(name="CITIES")
 public class City implements Serializable {

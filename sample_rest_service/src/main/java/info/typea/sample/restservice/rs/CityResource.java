@@ -17,23 +17,18 @@ import javax.ws.rs.core.MediaType;
 public interface CityResource {
 
 	@POST
-	@Consumes({MediaType.APPLICATION_XML})
-	@Produces(MediaType.APPLICATION_XML)
 	public City insertCity(City city);
 	
 	@GET
 	@Path("/{cityId}")
-	@Produces("{application/xml}")
 	public City getCity(@PathParam("cityId") String cityId);
 	
 	@GET
 	@Path("/all")
-	@Produces("{application/xml}")
 	public Cities getCities();
 
 	@GET
 	@Path("/search")
-	@Produces("{application/xml}")
 	public Cities find(
 			@QueryParam("cityId")  			String cityId,
 			@QueryParam("cityName") 		String cityName,
@@ -44,26 +39,21 @@ public interface CityResource {
 	
 	@GET
 	@Path("/suggest/cityNames")
-	@Produces("{application/xml}")
 	public CompleteList getCityNamesSuggest();
 	
 	@GET
 	@Path("/suggest/country")
-	@Produces("{application/xml}")
 	public CompleteList getCountrySuggest();
 	
 	@GET
 	@Path("/suggest/language")
-	@Produces("{application/xml}")
 	public CompleteList getLanguageSuggest();
 
 	@GET
 	@Path("/suggest/countryIsoCode")
-	@Produces("{application/xml}")
 	public CompleteList getCountryIsoCodeSuggest();
 	
 	@GET
 	@Path("/suggest/region")
-	@Produces("{application/xml}")
 	public CompleteList getRegionSuggest();
 }

@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -17,6 +19,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * 
  */
 @XmlRootElement(name="country")
+@XmlAccessorType(XmlAccessType.PROPERTY)
 @Entity
 @Table(name="COUNTRIES")
 public class Country implements Serializable {

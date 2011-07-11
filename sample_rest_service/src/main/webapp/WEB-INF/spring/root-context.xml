@@ -18,6 +18,21 @@
 	    <jaxrs:serviceBeans>
 	        <ref bean="cityResource" />
 	    </jaxrs:serviceBeans>
+	</jaxrs:server>
+	<bean id="cityDao" class="info.typea.sample.restservice.dao.CityDaoImpl"/>
+	<bean id="cityResource" class="info.typea.sample.restservice.rs.CityResourceImpl">
+		<property name="cityDao" ref="cityDao"/>
+	</bean> 
+
+	<!-- 
+	Service のアノテーションから、@Produces(MediaType.APPLICATION_XML) 記述を削除、
+	XMLへマーシャリングするクラスへ、@XmlAccessorType(XmlAccessType.PROPERTY) を付加(プロパティがXMLElementになる)
+	することで、以下の、プロバイダーは基本不要(カスタムの場合実装) 、自動でXMLに変換される
+	
+	<jaxrs:server id="cityResourceService" address="/">
+	    <jaxrs:serviceBeans>
+	        <ref bean="cityResource" />
+	    </jaxrs:serviceBeans>
 	    <jaxrs:providers>
 	    	<ref bean="cityWriter"/>
 	    	<ref bean="cityReader"/>
@@ -25,7 +40,6 @@
 	    	<ref bean="completeListWriter"/>
 	    </jaxrs:providers>
 	</jaxrs:server>
-
 	<bean id="jaxbContext" class="javax.xml.bind.JAXBContext" factory-method="newInstance">
 		<constructor-arg>
 			<list>
@@ -35,11 +49,7 @@
 			</list>
 		</constructor-arg>
 	</bean>
-	<bean id="cityDao" class="info.typea.sample.restservice.dao.CityDaoImpl"/>
-	<bean id="cityResource" class="info.typea.sample.restservice.rs.CityResourceImpl">
-		<property name="cityDao" ref="cityDao"/>
-	</bean> 
-  	<bean id="cityReader" class="info.typea.sample.restservice.provider.CityReader" >
+	<bean id="cityReader" class="info.typea.sample.restservice.provider.CityReader" >
   		<property name="jaxbContext" ref="jaxbContext" />
   	</bean>
   	<bean id="cityWriter" class="info.typea.sample.restservice.provider.CityWriter" >
@@ -51,25 +61,5 @@
   	<bean id="completeListWriter" class="info.typea.sample.restservice.provider.CompleteListWriter" >
   		<property name="jaxbContext" ref="jaxbContext" />
   	</bean>
-  	
-	<!-- NG 1. http://cxf.apache.org/docs/jax-rs-data-bindings.html#JAX-RSDataBindings-ConfiguringJAXBprovider
-	<bean id="jaxbProvider" class="org.apache.cxf.jaxrs.provider.JAXBElementProvider">
-		<property name="marshallerProperties" ref="propertiesMap"/>
-	</bean>
-	<util:map id="propertiesMap" map-class="java.util.Hashtable">
-		<entry key="jaxb.formatted.output">
-			<value type="java.lang.Boolean">true</value>
-		</entry>
-    </util:map> 
-  	-->
-	<!-- NG 2. http://cxf.apache.org/docs/jax-rs-data-bindings.html#JAX-RSDataBindings-ConfiguringJAXBprovider	
-	<bean id="jaxb" class="org.apache.cxf.jaxrs.provider.JAXBElementProvider">
-      <property name="singleJaxbContext" value="true"/>
-      <property name="extraClass">
-         <list>
-           <value>info.typea.sample.restservice.entity.City</value>
-         </list>
-      </property>
-	</bean>
-	-->
+   -->
 </beans>
