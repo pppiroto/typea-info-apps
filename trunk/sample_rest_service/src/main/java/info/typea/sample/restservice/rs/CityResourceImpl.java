@@ -15,18 +15,19 @@ public class CityResourceImpl implements CityResource {
 	
 	private CityDao cityDao;
 	
-	public City insertCity(City city) {
-
-		
-		return city;
-	}
-
 	public CityDao getCityDao() {
 		return cityDao;
 	}
 
 	public void setCityDao(CityDao cityDao) {
 		this.cityDao = cityDao;
+	}
+	
+	
+	
+	public City insertCity(City city) {
+		
+		return cityDao.insertCity(city);
 	}
 	
 	public City getCity(String cityId) {

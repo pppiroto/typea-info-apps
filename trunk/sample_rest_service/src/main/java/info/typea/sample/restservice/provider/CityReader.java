@@ -20,6 +20,7 @@ import javax.xml.bind.Unmarshaller;
 /**
  * @author piroto
  * @see http://docs.huihoo.com/apache/cxf/2.2.4/jax-rs.html#JAX-RS-MessageBodyProviders	
+ * @deprecated
  */
 @Consumes("application/xml")
 @Provider
