@@ -1,5 +1,7 @@
 package info.typea.sample.restservice.rs;
 
+import javax.ws.rs.Path;
+
 import info.typea.sample.restservice.dao.CityDao;
 import info.typea.sample.restservice.dto.CompleteList;
 import info.typea.sample.restservice.entity.Cities;
