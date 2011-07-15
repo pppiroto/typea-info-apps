@@ -86,7 +86,7 @@
 		 * レシピ 16.2 Ajax リクエストのデフォルト値を定義
 		 */
 		$.ajaxSetup({
-			 chache: true,  				// Ajaxレスポンスをキャッシュするか
+			 chache: false,  				// Ajaxレスポンスをキャッシュするか
 			 dataType: 'xml',  				// レスポンスの形式
 			 error: function(xhr, status, error) {
 				 alert('An error occurred:' + error);
@@ -127,7 +127,9 @@
 		 */
 		var citiesTable = $('#tbl_cities').dataTable({
 			 "bProcessing": true
-			,"sScrollY": "300px"
+			,"sScrollX": "100%"
+		 	,"sScrollXInner": "150%"
+		 	,"sScrollY": "300px"
 			,"bScrollCollapse": true
 			,"bPaginate": true
 			,"bJQueryUI": true
@@ -138,7 +140,8 @@
 			,"fnInitComplete": function() {
 				reloadTableData(this);
 			}
-		});	
+		});
+	 	
 		/*
 		 * テーブルにコールバックイベントハンドラを追加する
 		 */
@@ -193,7 +196,7 @@
 		
 		/* 新規作成 */
 		$("#btn_insert_city").click(function(){
-			if ($("#txt_cityId").val().trim() != "") {
+			if ($("#txt_cityId").val() != "") {
 				alert("Error : 新規作成時、IDはブランク");
 				return;	
 			}
@@ -218,7 +221,7 @@
 		});
 		
 		$("#btn_update_city").click(function(){
-			if ($("#txt_cityId").val().trim() == "") {
+			if ($("#txt_cityId").val() == "") {
 				alert("Error : 更新時、IDは必須");
 				return;	
 			}
@@ -245,7 +248,7 @@
 		
 		/* 削除 */
 		$("#btn_delete_city").click(function(){
-			if ($("#txt_cityId").val().trim() == "") {
+			if ($("#txt_cityId").val() == "") {
 				alert("Error : 削除時、IDは必須");
 				return;	
 			}

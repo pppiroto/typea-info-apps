@@ -68,7 +68,7 @@
 		 * レシピ 16.2 Ajax リクエストのデフォルト値を定義
 		 */
 		$.ajaxSetup({
-			 chache: true,  				// Ajaxレスポンスをキャッシュするか
+			 chache: false,  				// Ajaxレスポンスをキャッシュするか
 			 dataType: 'xml',  				// レスポンスの形式
 			 error: function(xhr, status, error) {
 				 alert('An error occurred:' + error);
