@@ -136,6 +136,11 @@
 			citiesTable.fnClearTable();
 			$.ajax({
 				url: 'http://${pageContext.request.serverName}:${pageContext.request.serverPort}/sample_rest_service/city/search/',
+				/*
+				 * ajax を利用すると、パラメータはURLエンコードされるため encodeURIComponent 不要
+				 * サーバー側で、@Encoded を利用しても デコードされない・・・
+				 * サービスの入り口で処理するしかないか!?
+				 */
 				data: {
 					"cityId"         : $("#txt_cityId").val(),
 					"cityName"       : $("#txt_cityName").val(),
@@ -145,6 +150,7 @@
 					"region"         : $("#txt_region").val()
 				},
 				success: function(data) {
+					test = data;
 					$(data).find('city').each(function(){
 						var item = $(this);
 						
@@ -159,9 +165,9 @@
 						 */
 						var row = [
 							    item.children("cityId").text(),  
-						        item.children("cityName").text(),
-						        item.children("country").text(), 
-						        item.children("language").text(),
+							    item.children("cityName").text(),
+							    item.children("country").text(), 
+							    item.children("language").text(),
 								item.children("countryBean").children("countryIsoCode").text(),
 						        item.children("countryBean").children("region").text(),
 								];
