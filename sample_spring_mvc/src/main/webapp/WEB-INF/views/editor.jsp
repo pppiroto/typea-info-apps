@@ -15,8 +15,8 @@
 		この画面は、Editor(編集する)のサンプルです。	以下の内容を含んでいます。
 		<ul>
 			<li>データのCRUD操作</li>
-			<li>xxxx</li>
-			<li>xxxx</li>
+			<li>HTML特殊文字の処理</li>
+			<li>UIのレイアウト</li>
 		</ul>
 	</div>
 	
@@ -55,6 +55,7 @@
     	<button id="btn_update_city">更新</button>
     	<button id="btn_clear_city">クリア</button>
     	<button id="btn_insert_city">新規作成</button>    	
+    	<button id="btn_delete_city">削除</button>
 	</div>
 	<div class="ui-layout-south">South</div>
 	<!-- 
@@ -190,10 +191,11 @@
 			}
 		});
 		
+		/* 新規作成 */
 		$("#btn_insert_city").click(function(){
 			if ($("#txt_cityId").val().trim() != "") {
 				alert("Error : 新規作成時、IDはブランク");
-				exit();	
+				return;	
 			}
 			var city = new City();
 			city.cityId = '';
@@ -209,15 +211,55 @@
 				,type: 'POST'
 				,data: city.toXML()
 				,success: function(data) {
-					//alert("Inserted : " + $(data).text() + ", Reload Table data.")
-					reloadTableData(citiesTable);
+					var msg = "Inserted : " + $(data).text() + ", Reload Table data.";
+					reloadTableData(citiesTable, msg);
 				}
 			});
-			
 		});
 		
 		$("#btn_update_city").click(function(){
+			if ($("#txt_cityId").val().trim() == "") {
+				alert("Error : 更新時、IDは必須");
+				return;	
+			}
+			var city = new City();
+			city.cityId = $("#txt_cityId").val();
+			city.cityName = $("#txt_cityName").val();
+			city.country = $("#txt_country").val();
+			city.airport = $("#txt_airport").val();
+			city.language = $("#txt_language").val();
+			city.countryIsoCode = $("#sel_countryIsoCode").val();
+			alert(city.toXML());
+			
+			$.ajax({
+				url: 'http://${pageContext.request.serverName}:${pageContext.request.serverPort}/sample_rest_service/city'
+				,contentType: 'application/xml;charset=UTF-8'   
+				,type: 'PUT'
+				,data: city.toXML()
+				,success: function(data) {
+					var msg = "Updated : " +  $("#txt_cityId").val() + ", Reload Table data.";
+					reloadTableData(citiesTable, msg);
+				}
+			});
 		});
+		
+		/* 削除 */
+		$("#btn_delete_city").click(function(){
+			if ($("#txt_cityId").val().trim() == "") {
+				alert("Error : 削除時、IDは必須");
+				return;	
+			}
+			$.ajax({
+				url: 'http://${pageContext.request.serverName}:${pageContext.request.serverPort}/sample_rest_service/city/'
+				      + $("#txt_cityId").val()
+				,type: 'DELETE'
+				,success: function(data) {
+					var msg = "Deleted : " + $("#txt_cityId").val() + ", Reload Table data.";
+					reloadTableData(citiesTable, msg);
+				}
+			});			
+		});
+		
 	});
 	
 	/**
@@ -257,7 +299,7 @@
 	/*
 	 * テーブル表示する内容を取得する
 	 */	
-	function reloadTableData(target) {
+	function reloadTableData(target, msg) {
 		$.ajax({
 			url: 'http://${pageContext.request.serverName}:${pageContext.request.serverPort}/sample_rest_service/city/all',
 			success: function(data) {
@@ -284,6 +326,9 @@
 							];
 					target.fnAddData(row);
 				});
+				if (msg != null) {
+					alert(msg);
+				}
 			}
 		});	
 	}
