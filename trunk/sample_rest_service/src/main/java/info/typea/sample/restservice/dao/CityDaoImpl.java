@@ -89,6 +89,11 @@ public class CityDaoImpl implements CityDao {
 		parm.put("c.countryBean.countryIsoCode", 	countryIsoCode);
 		parm.put("c.countryBean.region", 			region);
 		
+		logger.info("*** CityDao find parameters ***");
+		for (String key : parm.keySet()) {
+			logger.info(key + " = " + parm.get(key));
+		}
+		
 		StringBuffer qbuf = new StringBuffer("select c from City c");
 		boolean isFirst 	= true;
 		boolean isInputted 	= false;

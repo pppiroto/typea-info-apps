@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 import info.typea.sample.restservice.entity.City;
 
@@ -17,10 +19,11 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.springframework.web.util.HtmlUtils;
+
 /**
  * @author piroto
  * @see http://docs.huihoo.com/apache/cxf/2.2.4/jax-rs.html#JAX-RS-MessageBodyProviders	
- * @deprecated
  */
 @Consumes("application/xml")
 @Provider
@@ -29,7 +32,7 @@ public class CityReader implements MessageBodyReader<City> {
 
 	public boolean isReadable(Class<?> type, Type argenericType, Annotation[] annotations, MediaType mediaType) {
 		
-		return InputStream.class.isAssignableFrom(type);
+		return (City.class == type);
 	}
 
 	public City readFrom(Class<City> type, Type argenericType, Annotation[] annotations,
@@ -38,8 +41,12 @@ public class CityReader implements MessageBodyReader<City> {
 	
 		try {
 			Unmarshaller unmshr = jaxbContext.createUnmarshaller();
-			return (City)unmshr.unmarshal(in);
-	
+			City city = (City)unmshr.unmarshal(in);
+			
+			// Ç±Ç±Ç≈HTMLÇÃì¡éÍï∂éöÇ ñæé¶ìIÇ… UnEscape ÇµÇ»Ç≠ÇƒÇ‡ÅAé©ìÆìIÇ…Ç≥ÇÍÇƒÇ¢ÇÈ
+			
+			return city;
+			
 		} catch (JAXBException e) {
 			throw new WebApplicationException(e);
 		}
