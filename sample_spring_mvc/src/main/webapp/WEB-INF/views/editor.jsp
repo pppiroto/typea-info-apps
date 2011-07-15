@@ -202,7 +202,7 @@
 			city.airport = $("#txt_airport").val();
 			city.language = $("#txt_language").val();
 			city.countryIsoCode = $("#sel_countryIsoCode").val();
-			
+			alert(city.toXML());
 			$.ajax({
 				url: 'http://${pageContext.request.serverName}:${pageContext.request.serverPort}/sample_rest_service/city'
 				,contentType: 'application/xml;charset=UTF-8'   
@@ -275,10 +275,10 @@
 					 */
 					var row = [
 						    item.children("cityId").text(),  
-					        item.children("cityName").text(),
-					        item.children("country").text(), 
-					        item.children("airport").text(), 
-					        item.children("language").text(),
+						    item.children("cityName").text(),
+						    item.children("country").text(), 
+						    item.children("airport").text(), 
+						    item.children("language").text(),
 							item.children("countryBean").children("countryIsoCode").text(),
 					        item.children("countryBean").children("region").text(),
 							];
@@ -302,18 +302,18 @@
 	
 	City.prototype = {
 		toXML : function() {
-			// TODO 
-			//   URI エンコーディング対応方法検討
-			//     1.エンコードする
-			//     2.入力不可とする
+			// 1.登録
+			//     XML として データを送信するので、特殊文字のエスケープ(入口)
+			//     サーバー側では、アンエスケープされるので、特に処理は不要
+			//     結果をXMLで返すので、サーバー側 MessageBodyWriter でエスケープ(出口)
 			//
 			var xml = 
 				'<city>'
 				+'<cityId>'           + this.cityId   + '</cityId>'
-				+'<cityName>'         + this.cityName + '</cityName>'
-				+'<airport>'          + this.airport  + '</airport>'
-				+'<country>'          + this.country  + '</country>'
-				+'<language>'         + this.language + '</language>'
+				+'<cityName>'         + escapeHTML(this.cityName) + '</cityName>'
+				+'<airport>'          + escapeHTML(this.airport)  + '</airport>'
+				+'<country>'          + escapeHTML(this.country)  + '</country>'
+				+'<language>'         + escapeHTML(this.language) + '</language>'
 				+'<countryBean>'
 				+  '<countryIsoCode>' + this.countryIsoCode +'</countryIsoCode>'
 				+  '</countryBean>'
@@ -321,6 +321,23 @@
 				;			
 			return xml;
 		}
+	};
+	
+	/*
+	 * XML で登録データを送信するときには、特殊文字のエスケープが必要
+	 */
+	function escapeHTML( text ) {
+	    var replacement = function( word ) {
+	        var characterReference = {
+	            '"':'&quot;',
+	            '&':'&amp;',
+	            '\'':'&#39;',
+	            '<':'&lt;',
+	            '>':'&gt;'
+	        };
+	        return characterReference[ word ];
+	    };
+	    return text.replace( /"|&|'|<|>/g, replacement );
 	}
 	</script>
 </body>
