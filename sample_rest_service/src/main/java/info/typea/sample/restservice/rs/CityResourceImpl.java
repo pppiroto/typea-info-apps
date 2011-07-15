@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 import javax.ws.rs.Encoded;
+import javax.ws.rs.WebApplicationException;
 
 import info.typea.sample.restservice.dao.CityDao;
 import info.typea.sample.restservice.dto.CompleteList;
@@ -29,8 +30,30 @@ public class CityResourceImpl implements CityResource {
 	
 	
 	public City insertCity(City city) {
+		try {
+			return cityDao.insertCity(city);
+		} catch (Exception e) {
+			throw new WebApplicationException(e);
+		}
 		
-		return cityDao.insertCity(city);
+	}
+	
+	public void updateCity(City city) {
+		try {
+			cityDao.updateCity(city);
+		} catch (Exception e) {
+			throw new WebApplicationException(e);
+		}
+		return;
+	}
+	
+	public void deleteCity(String cityId) {
+		try {
+			cityDao.deleteById(cityId);
+		} catch (Exception e) {
+			throw new WebApplicationException(e);
+		}
+		return;
 	}
 	
 	public City getCity(String cityId) {
@@ -59,8 +82,6 @@ public class CityResourceImpl implements CityResource {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 		
 		logger.info("cityId=" + cityId);
 		logger.info("cityName=" + cityName);

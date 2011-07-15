@@ -50,6 +50,7 @@ public class CityDaoImpl implements CityDao {
 		
 		} catch (Exception e) {
 			logger.error("failur insert to city :", e);
+			throw new RuntimeException(e);
 		} finally {
 			em.close();
 		}
@@ -66,6 +67,58 @@ public class CityDaoImpl implements CityDao {
 		return (City)query.getSingleResult();
 	}
 
+	public boolean updateCity(City dstCity) {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
+		EntityManager em = emf.createEntityManager();
+		
+		try {
+			
+			EntityTransaction trn = em.getTransaction();
+			trn.begin();
+
+			// MANAGED 状態のオブジェクトを取得し更新
+			City city = em.find(City.class, dstCity.getCityId());
+			
+			city.setCityName(dstCity.getCityName());
+			city.setCountry(dstCity.getCountry());
+			city.setLanguage(dstCity.getLanguage());
+			city.setAirport(dstCity.getAirport());
+			
+			trn.commit();
+					
+		} catch (Exception e) {
+			logger.error("failur delete city :", e);
+			throw new RuntimeException(e);
+		} finally {
+			em.close();
+		}
+		return true;
+	}
+	
+	public boolean deleteById(String cityId) {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
+		EntityManager em = emf.createEntityManager();
+		
+		try {
+			
+			EntityTransaction trn = em.getTransaction();
+			trn.begin();
+
+			// MANAGED 状態のオブジェクトを取得し削除
+			City city = em.find(City.class, new Integer(cityId));
+			em.remove(city);
+
+			trn.commit();
+					
+		} catch (Exception e) {
+			logger.error("failur delete city :", e);
+			throw new RuntimeException(e);
+		} finally {
+			em.close();
+		}
+		return true;
+	}
+	
 	public List<City> findAll() {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
 		EntityManager em = emf.createEntityManager();
