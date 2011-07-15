@@ -30,11 +30,11 @@ public interface CityResource {
 	
 	@PUT
 	@Consumes("application/xml")
-	public void updateCity(City city);
+	public City updateCity(City city);
 
 	@DELETE
 	@Path("/{cityId}")
-	public void deleteCity(@PathParam("cityId") String cityId);
+	public City deleteCity(@PathParam("cityId") String cityId);
 
 	@GET
 	@Path("/{cityId}")
