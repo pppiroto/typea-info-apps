@@ -67,7 +67,7 @@ public class CityDaoImpl implements CityDao {
 		return (City)query.getSingleResult();
 	}
 
-	public boolean updateCity(City dstCity) {
+	public City updateCity(City dstCity) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
 		EntityManager em = emf.createEntityManager();
 		
@@ -78,12 +78,12 @@ public class CityDaoImpl implements CityDao {
 
 			// MANAGED 状態のオブジェクトを取得し更新
 			City city = em.find(City.class, dstCity.getCityId());
-			
-			city.setCityName(dstCity.getCityName());
-			city.setCountry(dstCity.getCountry());
-			city.setLanguage(dstCity.getLanguage());
-			city.setAirport(dstCity.getAirport());
-			
+			if (city != null) {
+				city.setCityName(dstCity.getCityName());
+				city.setCountry(dstCity.getCountry());
+				city.setLanguage(dstCity.getLanguage());
+				city.setAirport(dstCity.getAirport());
+			}
 			trn.commit();
 					
 		} catch (Exception e) {
@@ -92,22 +92,23 @@ public class CityDaoImpl implements CityDao {
 		} finally {
 			em.close();
 		}
-		return true;
+		return dstCity;
 	}
 	
-	public boolean deleteById(String cityId) {
+	public City deleteById(String cityId) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
 		EntityManager em = emf.createEntityManager();
-		
+		City city;
 		try {
 			
 			EntityTransaction trn = em.getTransaction();
 			trn.begin();
 
 			// MANAGED 状態のオブジェクトを取得し削除
-			City city = em.find(City.class, new Integer(cityId));
-			em.remove(city);
-
+			city = em.find(City.class, new Integer(cityId));
+			if (city != null) {
+				em.remove(city);
+			}
 			trn.commit();
 					
 		} catch (Exception e) {
@@ -116,7 +117,7 @@ public class CityDaoImpl implements CityDao {
 		} finally {
 			em.close();
 		}
-		return true;
+		return city;
 	}
 	
 	public List<City> findAll() {

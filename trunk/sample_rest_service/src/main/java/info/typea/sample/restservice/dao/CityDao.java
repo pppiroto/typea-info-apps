@@ -7,8 +7,8 @@ import java.util.List;
 public interface CityDao {
 	public City findById(String cityId);
 	public City insertCity(City city);
-	public boolean updateCity(City city);
-	public boolean deleteById(String cityId);
+	public City updateCity(City city);
+	public City deleteById(String cityId);
 	
 	public List<City> findAll();
 	public List<City> find(Integer cityId, String cityName, String country,

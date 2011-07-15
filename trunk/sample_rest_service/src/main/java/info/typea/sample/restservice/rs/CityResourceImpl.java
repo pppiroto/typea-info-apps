@@ -38,22 +38,20 @@ public class CityResourceImpl implements CityResource {
 		
 	}
 	
-	public void updateCity(City city) {
+	public City updateCity(City city) {
 		try {
-			cityDao.updateCity(city);
+			return cityDao.updateCity(city);
 		} catch (Exception e) {
 			throw new WebApplicationException(e);
 		}
-		return;
 	}
 	
-	public void deleteCity(String cityId) {
+	public City deleteCity(String cityId) {
 		try {
-			cityDao.deleteById(cityId);
+			return cityDao.deleteById(cityId);
 		} catch (Exception e) {
 			throw new WebApplicationException(e);
 		}
-		return;
 	}
 	
 	public City getCity(String cityId) {

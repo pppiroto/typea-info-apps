@@ -59,6 +59,15 @@ public class CitiesWriter implements MessageBodyWriter<Cities> {
 		
 		try {
 			httpHeaders.add("Content-Type", "application/xml");
+
+			// IE キャッシュコントロール
+			// http://support.microsoft.com/kb/234067/ja
+			 
+			httpHeaders.add("Cache-Control", "no-cache");
+			httpHeaders.add("Pragma", "no-cache");
+			httpHeaders.add("Expires", "-1");
+			
+			
 			Writer writer = new OutputStreamWriter(entityStream, "UTF-8");
 
 			Marshaller mshr = jaxbContext.createMarshaller();
