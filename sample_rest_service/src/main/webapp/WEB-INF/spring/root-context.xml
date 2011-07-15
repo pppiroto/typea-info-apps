@@ -18,6 +18,11 @@
 	    <jaxrs:serviceBeans>
 	        <ref bean="cityResource" />
 	    </jaxrs:serviceBeans>
+	    <jaxrs:providers>
+	    	<ref bean="cityWriter"/>
+	    	<ref bean="cityReader"/>
+	    	<ref bean="citiesWriter"/>
+		</jaxrs:providers>
 	</jaxrs:server>
 	<bean id="cityDao" class="info.typea.sample.restservice.dao.CityDaoImpl"/>
 	<bean id="cityResource" class="info.typea.sample.restservice.rs.CityResourceImpl">
@@ -25,10 +30,30 @@
 	</bean> 
 
 	<!-- 
+		URLエンコード/デコード をどこでするのが適当か？
+	エンドポイントのReader/Writer で行うために、Cityについてプロバイダーを使用し、そこで行う
+	 -->
+	<bean id="jaxbContext" class="javax.xml.bind.JAXBContext" factory-method="newInstance">
+		<constructor-arg>
+			<list>
+			     <value>info.typea.sample.restservice.entity.City</value>
+			     <value>info.typea.sample.restservice.entity.Cities</value>
+			</list>
+		</constructor-arg>
+	</bean>
+	<bean id="cityReader" class="info.typea.sample.restservice.provider.CityReader" >
+  		<property name="jaxbContext" ref="jaxbContext" />
+  	</bean>
+  	<bean id="cityWriter" class="info.typea.sample.restservice.provider.CityWriter" >
+  		<property name="jaxbContext" ref="jaxbContext" />
+  	</bean>
+  	<bean id="citiesWriter" class="info.typea.sample.restservice.provider.CitiesWriter" >
+  		<property name="jaxbContext" ref="jaxbContext" />
+  	</bean>
+	<!-- 
 	Service のアノテーションから、@Produces(MediaType.APPLICATION_XML) 記述を削除、
 	XMLへマーシャリングするクラスへ、@XmlAccessorType(XmlAccessType.PROPERTY) を付加(プロパティがXMLElementになる)
 	することで、以下の、プロバイダーは基本不要(カスタムの場合実装) 、自動でXMLに変換される
-	
 	<jaxrs:server id="cityResourceService" address="/">
 	    <jaxrs:serviceBeans>
 	        <ref bean="cityResource" />

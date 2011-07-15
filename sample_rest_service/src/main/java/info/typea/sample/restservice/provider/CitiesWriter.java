@@ -1,6 +1,7 @@
 package info.typea.sample.restservice.provider;
 
 import info.typea.sample.restservice.entity.Cities;
+import info.typea.sample.restservice.entity.City;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -8,6 +9,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -18,10 +20,11 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import org.springframework.web.util.HtmlUtils;
+
 /**
  * @author 
  * @see http://d.hatena.ne.jp/shin/20100921/p3
- * @deprecated
  */
 @Provider
 public class CitiesWriter implements MessageBodyWriter<Cities> {
@@ -60,6 +63,14 @@ public class CitiesWriter implements MessageBodyWriter<Cities> {
 
 			Marshaller mshr = jaxbContext.createMarshaller();
 			mshr.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			
+			for (City city : cities.getCity()) {
+				city.setCityName(HtmlUtils.htmlEscape(city.getCityName()));
+				city.setCountry(HtmlUtils.htmlEscape(city.getCountry()));
+				city.setLanguage(HtmlUtils.htmlEscape(city.getLanguage()));
+				city.setAirport(HtmlUtils.htmlEscape(city.getAirport()));
+			}
+			
 			mshr.marshal(cities, writer);
 			
 		} catch (JAXBException e) {

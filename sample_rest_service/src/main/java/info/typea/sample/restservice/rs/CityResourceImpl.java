@@ -1,6 +1,9 @@
 package info.typea.sample.restservice.rs;
 
-import javax.ws.rs.Path;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
+import javax.ws.rs.Encoded;
 
 import info.typea.sample.restservice.dao.CityDao;
 import info.typea.sample.restservice.dto.CompleteList;
@@ -40,8 +43,25 @@ public class CityResourceImpl implements CityResource {
 		return new Cities(cityDao.findAll());
 	}
 
-	public Cities find(String cityId, String cityName, String country,
-			           String language, String countryIsoCode, String region) {
+	public Cities find(	String cityId, 
+						String cityName, 
+						String country,
+						String language, 
+						String countryIsoCode, 
+						String region) {
+		
+		// @Encoded å¯Ç©Ç»Ç¢ÅH
+		try {
+			cityName = URLDecoder.decode(cityName,"UTF-8");
+			country = URLDecoder.decode(country,"UTF-8");
+			language = URLDecoder.decode(language,"UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
 		logger.info("cityId=" + cityId);
 		logger.info("cityName=" + cityName);
 		logger.info("country=" + country);

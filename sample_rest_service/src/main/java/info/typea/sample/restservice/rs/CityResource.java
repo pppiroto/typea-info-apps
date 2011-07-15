@@ -5,6 +5,7 @@ import info.typea.sample.restservice.entity.Cities;
 import info.typea.sample.restservice.entity.City;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.Encoded;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -16,7 +17,13 @@ import javax.ws.rs.core.MediaType;
 @Path("/city")
 public interface CityResource {
 
+	/**
+	 * @param city
+	 * @return
+	 * @see http://www.ibm.com/developerworks/jp/web/library/wa-jaxrs/
+	 */
 	@POST
+	@Consumes("application/xml")
 	public City insertCity(City city);
 	
 	@GET
@@ -29,6 +36,7 @@ public interface CityResource {
 
 	@GET
 	@Path("/search")
+	@Encoded  /* TODO URLデコードされない!? */
 	public Cities find(
 			@QueryParam("cityId")  			String cityId,
 			@QueryParam("cityName") 		String cityName,
