@@ -1,0 +1,39 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+  xmlns:beans="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security-3.0.3.xsd">
+
+	<http auto-config="true">
+		<custom-filter position="PRE_AUTH_FILTER" ref="myPreAuthenticatedProcessingFilter"/>
+		<intercept-url pattern="/**" access="ROLE_USER" />
+	</http>
+	
+	<authentication-manager />
+	<beans:bean id="authenticationManager" class="org.springframework.security.authentication.ProviderManager">
+		<beans:property name="providers">
+			<beans:list>
+				<beans:ref local="preauthAuthProvider"/>				
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+	 
+	<beans:bean id="preauthAuthProvider" class="info.typea.custom_spring_security.security.MyPreAuthenticatedAuthenticationProvider">
+		<beans:property name="preAuthenticatedUserDetailsService" ref="preAuthenticatedUserDetailsService"/>
+	</beans:bean>
+	<beans:bean id="preAuthenticatedUserDetailsService" class="org.springframework.security.web.authentication.preauth.PreAuthenticatedGrantedAuthoritiesUserDetailsService"/>
+	 
+	<beans:bean id="securityDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<beans:property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver"/>
+		<beans:property name="url" value="jdbc:derby:C:\work\derby\securityDB;create=true"/>
+		<beans:property name="username" value="app"/>
+		<beans:property name="password" value=""/>
+	</beans:bean>	
+
+	<beans:bean id="myPreAuthenticatedProcessingFilter" class="info.typea.custom_spring_security.security.MyPreAuthenticatedProcessingFilter">
+		<beans:property name="authenticationManager" ref="authenticationManager"/>
+	</beans:bean>
+
+</beans:beans>
