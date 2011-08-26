@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -24,6 +25,7 @@ public class MyAuthenticationProcessingFilter extends
 
 	private boolean continueChainBeforeSuccessfulAuthentication = false;
 	private SessionAuthenticationStrategy sessionStrategy = new NullAuthenticatedSessionStrategy();
+    private boolean postOnly = false;
 
 	public MyAuthenticationProcessingFilter() {
 		super();
@@ -31,11 +33,12 @@ public class MyAuthenticationProcessingFilter extends
 
 	public Authentication attemptAuthentication(HttpServletRequest request,
 			HttpServletResponse response) throws AuthenticationException {
-		// if (postOnly && !request.getMethod().equals("POST")) {
-		// throw new
-		// AuthenticationServiceException("Authentication method not supported: "
-		// + request.getMethod());
-		// }
+
+		if (postOnly && !request.getMethod().equals("POST")) {
+			throw new
+			AuthenticationServiceException("Authentication method not supported: "
+					+ request.getMethod());
+		}
 
 		String username = obtainUsername(request);
 		String password = obtainPassword(request);
@@ -128,6 +131,10 @@ public class MyAuthenticationProcessingFilter extends
 
 	public void setSessionStrategy(SessionAuthenticationStrategy sessionStrategy) {
 		this.sessionStrategy = sessionStrategy;
+	}
+
+	public void setPostOnly(boolean postOnly) {
+		this.postOnly = postOnly;
 	}
 
 }
